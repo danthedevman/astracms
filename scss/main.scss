@@ -1,0 +1,52 @@
+$sidemenuWidth:250px;
+$sidemenuBG:#000;
+
+html,body{
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
+}
+
+.sidemenu{
+    position: fixed;
+    left:0;
+    top:0;
+    width:$sidemenuWidth;
+    background: $sidemenuBG;
+    min-height: 100vh;
+    padding:25px 0;
+
+    .sidemenu_header{
+        color:#fff;
+        font-weight: bold;
+        font-size:20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom:25px;
+    }
+
+    .link{
+        text-decoration: none;
+        margin:10px;
+        padding:0 10px;
+        height:50px;
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        color:#6b7280;
+        border-radius: 6px;
+
+        &.active,&:hover{
+            background:rgba(255,255,255,.15);
+            color:#fff;
+        }
+
+    }
+
+}
+
+main{
+    margin-left:calc($sidemenuWidth + 15px);
+    margin-top:15px;
+}
