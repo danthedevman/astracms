@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getDashboard } = require('../controllers/dashboard');
+const {getAssets} = require('../controllers/assets');
 
-router.get('/', getDashboard);
+router.get('/', getAssets);
 
 module.exports = router;

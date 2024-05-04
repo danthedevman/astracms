@@ -14,7 +14,8 @@ html,body{
     width:$sidemenuWidth;
     background: $sidemenuBG;
     min-height: 100vh;
-    padding:25px 0;
+    padding:24px 0;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 
     .sidemenu_header{
         color:#fff;
@@ -48,5 +49,46 @@ html,body{
 
 main{
     margin-left:calc($sidemenuWidth + 15px);
-    margin-top:15px;
+    margin-top: 12px;
+}
+
+.main_search_wrapper{
+    padding:0 10px;
+
+    .main_search_input{
+        background: rgba(255,255,255,.10);
+        border:0;
+        font-size: 18px;
+        transition: all .3s ease;
+
+        &:focus{
+            background: #fff;
+            color: #000;
+        }
+    }
+}
+
+.dashboard_count_card{
+    height:100px;
+    border:2px solid #e2e8f0;
+    border-left:6px solid #5eead4;
+    border-radius: 6px;
+    //padding:8px 16px;
+
+    .label{
+        font-size:16px;
+        font-weight: normal;
+        color: #1e293b;
+    }
+
+    .count{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+    }
+    
+    .label,.count{
+        text-align: center;
+    }
 }

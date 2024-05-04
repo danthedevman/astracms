@@ -1,25 +1,28 @@
 <div class="sidemenu">
- <div class="sidemenu_header">
+  <div class="sidemenu_header">
     <i class="me-1 text-white bi bi-rocket-takeoff"></i> AstraCMS
- </div>
+  </div>
   <div class="sidemenu_body">
-    <div class="link_wrapper">
-      <a href="/" class="link active">Dashboard</a>
+    <div class="main_search_wrapper">
+      <input class="form-control main_search_input" placeholder="Search...">
     </div>
     <div class="link_wrapper">
-      <a href="/content" class="link">Content</a>
+      <a href="/" class="link <%if(locals.path === '' || locals.path ==='dashboard'){%>active<%}%>">Dashboard</a>
     </div>
     <div class="link_wrapper">
-      <a href="/models" class="link">Models</a>
+      <a href="/content" class="link <%if(locals.path.indexOf('content') !== -1){%>active<%}%>">Content</a>
     </div>
     <div class="link_wrapper">
-      <a href="/assets" class="link">Assets</a>
+      <a href="/models" class="link <%if(locals.path.indexOf('models') !== -1){%>active<%}%>" >Models</a>
     </div>
     <div class="link_wrapper">
-      <a href="/users" class="link">Users</a>
+      <a href="/assets" class="link <%if(locals.path.indexOf('assets') !== -1){%>active<%}%>">Assets</a>
     </div>
     <div class="link_wrapper">
-      <a href="/settings" class="link">Settings</a>
+      <a href="/users" class="link  <%if(locals.path.indexOf('users') !== -1){%>active<%}%>">Users</a>
+    </div>
+    <div class="link_wrapper">
+      <a href="/settings" class="link  <%if(locals.path.indexOf('settings') !== -1){%>active<%}%>">Settings</a>
     </div>
   </div>
 </div>
