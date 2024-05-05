@@ -8,6 +8,7 @@ const expressLayouts = require('express-ejs-layouts');
 
 //routers
 const indexRouter = require('./routes/index');
+const dashboardRouter = require('./routes/dashboard');
 const contentRouter = require('./routes/content');
 const modelsRouter = require('./routes/models');
 const assetsRouter = require('./routes/assets');
@@ -29,6 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/dashboard', dashboardRouter);
 app.use('/content', contentRouter);
 app.use('/models', modelsRouter);
 app.use('/assets', assetsRouter);

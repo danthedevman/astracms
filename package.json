@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "build": "node ./bin/www",
-    "scss": "sass --watch ./scss/main.scss public/css/main.css"
+    "scss": "sass --watch ./scss/main.scss:public/css/main.css ./scss/bases.scss:public/css/bases.css"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

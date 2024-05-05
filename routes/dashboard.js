@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getBases } = require('../controllers/index');
+const { getDashboard } = require('../controllers/dashboard');
 
-router.get('/', getBases);
+router.get('/', getDashboard);
 
 module.exports = router;
