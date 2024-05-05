@@ -25,8 +25,12 @@ body {
 .content_pills_wrapper {
   height: 50px;
 }
+.content_pills_wrapper .link_pill_divider {
+  height: 50px;
+}
 
 .link_pill {
+  align-self: center;
   border-radius: 6px;
   border: thin solid #e6e6e6;
   min-width: 100px;
@@ -113,7 +117,7 @@ nav {
 }
 
 main {
-  margin-top: 104px;
+  margin-top: 80px;
   margin-left: 250px;
   overflow-x: auto;
   min-height: calc(100vh - 80px - 24px);

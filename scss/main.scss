@@ -30,9 +30,14 @@ body{
 
 .content_pills_wrapper{
     height:50px;
+
+    .link_pill_divider{
+        height: 50px;
+    }
 }
 
 .link_pill{
+    align-self: center; 
     border-radius: 6px;
     border:thin solid #e6e6e6;
     min-width:100px;
@@ -125,7 +130,7 @@ nav{
 }
 
 main{
-    margin-top:calc($navbarHeight + 24px);
+    margin-top:calc($navbarHeight);
     margin-left:calc($sidemenuWidth);
     overflow-x:auto;
     min-height: calc(100vh - $navbarHeight - 24px);
