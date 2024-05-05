@@ -28,6 +28,10 @@ body{
     display: none;
 }
 
+.content_pills_wrapper{
+    height:50px;
+}
+
 .link_pill{
     border-radius: 6px;
     border:thin solid #e6e6e6;
@@ -35,6 +39,8 @@ body{
     background: #fff;
     text-align: center;
     padding:6px 12px;
+    color:#4a4a4a;
+    text-decoration: none;
 
     &.active,&:hover{
         background: #4338ca;
@@ -115,6 +121,7 @@ nav{
     padding:12px;
     display: flex;
     align-items: center;
+    border-bottom: thin solid #e6e6e6;
 }
 
 main{
