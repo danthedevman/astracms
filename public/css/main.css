@@ -4,6 +4,59 @@ html, body {
   overflow-x: hidden;
 }
 
+body {
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.link_pill_divider {
+  border-left: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  height: 100%;
+}
+
+.title_divider {
+  border-left: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  height: 100%;
+  display: none;
+}
+
+.link_pill {
+  border-radius: 6px;
+  border: thin solid #e6e6e6;
+  min-width: 100px;
+  background: #fff;
+  text-align: center;
+  padding: 6px 12px;
+}
+.link_pill.active, .link_pill:hover {
+  background: #4338ca;
+  color: #fff;
+}
+
+.btn-primary {
+  background: #4338ca;
+}
+
+.field_title {
+  background: #c7d2fe;
+  border-radius: 6px;
+  width: 100%;
+  font-weight: bold;
+}
+
+.field_value {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.field_value, .field_title {
+  padding: 6px 12px;
+}
+
 .sidemenu {
   position: fixed;
   left: 0;
@@ -39,9 +92,34 @@ html, body {
   color: #fff;
 }
 
+nav {
+  position: fixed;
+  left: 250px;
+  top: 0;
+  height: 80px;
+  background: #fff;
+  z-index: 1002;
+  width: 100%;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+}
+
 main {
-  margin-left: 265px;
-  margin-top: 12px;
+  margin-top: 104px;
+  margin-left: 250px;
+  overflow-x: auto;
+  min-height: calc(100vh - 80px - 24px);
+}
+
+.card-title {
+  margin: 0 !important;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.card-body {
+  font-size: 16px;
 }
 
 .main_search_wrapper {
@@ -61,7 +139,7 @@ main {
 .dashboard_count_card {
   height: 100px;
   border: 2px solid #e2e8f0;
-  border-left: 6px solid #5eead4;
+  border-left: 6px solid #6ee7b7;
   border-radius: 6px;
 }
 .dashboard_count_card .label {

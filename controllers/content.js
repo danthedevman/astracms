@@ -6,6 +6,15 @@ const getContent= (req,res,next)=>{
       });
 };
 
+const getContentByModel = (req,res,next)=>{
+    res.render("./pages/content_by_model", {
+        title: "Content",
+        layout: "./layouts/default",
+        path:"content"
+      });
+};
+
 module.exports = {
-    getContent
+    getContent,
+    getContentByModel
   };
