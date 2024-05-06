@@ -10,8 +10,39 @@ const getRegisterPage = async (req, res, next) => {
 };
 
 const registerUser = async (req, res, next) => {
-    console.log("Registering user");
-    res.status(200).send()
+console.log("Registering user");
+const db = await DBConnection.getDB(process.env.MAIN_DB);
+await db.createCollection("sys_user");
+let user = await db.collection("sys_user").insertOne({
+  name: String(req.body.name),
+  email: String(req.body.email),
+  sys_created: new Date(),
+});
+
+const registeredUser = await db
+.collection("sys_user")
+.findOne({ _id: user.insertedId });
+
+
+let password = String(req.body.pw);
+
+console.log(registeredUser)
+
+  const authManagementClient = new ManagementClient({
+    domain: process.env.AUTH_DOMAIN,
+    clientId: process.env.AUTH_CLIENT_ID,
+    clientSecret: process.env.AUTH_SECRET,
+  });
+
+  const userData = {
+    email: registeredUser.email,
+    password: password,
+    connection: "Username-Password-Authentication",
+  };
+
+  //Create user in Auth0
+  await authManagementClient.users.create(userData);
+  res.status(200).send()
 };
 
 module.exports = {

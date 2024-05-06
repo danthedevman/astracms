@@ -2,7 +2,7 @@ const DBConnection = require("../database/DBConnection");
 
 const getBases = async (req, res, next) => {
   const db = await DBConnection.getDB(process.env.MAIN_DB);
-  const bases = await db.collection("sys_base").find({email:res.locals.email}).toArray();
+  const bases = await db.collection("sys_base").find({user:req.oidc.user.email}).toArray();
   res.render("./pages/bases", {
     title: "Bases",
     layout: "./layouts/bases",
@@ -17,7 +17,7 @@ const createBase = async (req, res, next) => {
   await db.createCollection("sys_base");
   let base = await db.collection("sys_base").insertOne({
     name: String("Base 1"),
-    user: String("dev.danielpalmer@gmail.com"),
+    user: String(req.oidc.user.email),
     description: String("This is a test base"),
     sys_created: new Date(),
   });
