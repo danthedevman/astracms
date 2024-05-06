@@ -6,7 +6,7 @@
     <div class="sidemenu_dropdown_select_wrapper">
       <div class="dropdown w-100 ">
         <button class="btn btn-light border-secondary d-flex align-items-center justify-content-between w-100" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          <div>Base: <strong>Blog</strong></div>
+          <div>Base:<strong class="ms-1"><%=locals.base.name%></strong></div>
           <div><i class="bi bi-chevron-down"></i></div>
         </button>
         <ul style="width:300px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -17,7 +17,7 @@
             <hr class="dropdown-divider">
           </li>
           <%locals.bases && locals.bases.forEach((base)=>{%>
-          <li><a class="dropdown-item" href="#"><%=base.name%></a></li>
+          <li><a class="dropdown-item" href="/<%=base._id%>/dashboard"><%=base.name%></a></li>
           <%})%>
         </ul>
       </div>
@@ -26,19 +26,19 @@
       <input class="form-control main_search_input" placeholder="Search...">
     </div>
     <div class="link_wrapper">
-      <a href="/<%=locals.base%>/dashboard" class="link <%if(locals.path === '' || locals.path ==='dashboard'){%>active<%}%>">Dashboard</a>
+      <a href="/<%=locals.base._id%>/dashboard" class="link <%if(locals.path === '' || locals.path ==='dashboard'){%>active<%}%>">Dashboard</a>
     </div>
     <div class="link_wrapper">
-      <a href="/<%=locals.base%>/content" class="link <%if(locals.path.indexOf('content') !== -1){%>active<%}%>">Content</a>
+      <a href="/<%=locals.base._id%>/content" class="link <%if(locals.path.indexOf('content') !== -1){%>active<%}%>">Content</a>
     </div>
     <div class="link_wrapper">
-      <a href="/<%=locals.base%>/models" class="link <%if(locals.path.indexOf('models') !== -1){%>active<%}%>" >Models</a>
+      <a href="/<%=locals.base._id%>/models" class="link <%if(locals.path.indexOf('models') !== -1){%>active<%}%>" >Models</a>
     </div>
     <div class="link_wrapper">
-      <a href="/<%=locals.base%>/assets" class="link <%if(locals.path.indexOf('assets') !== -1){%>active<%}%>">Assets</a>
+      <a href="/<%=locals.base._id%>/assets" class="link <%if(locals.path.indexOf('assets') !== -1){%>active<%}%>">Assets</a>
     </div>
     <div class="link_wrapper">
-      <a href="/<%=locals.base%>/settings" class="link  <%if(locals.path.indexOf('settings') !== -1){%>active<%}%>">Settings</a>
+      <a href="/<%=locals.base._id%>/settings" class="link  <%if(locals.path.indexOf('settings') !== -1){%>active<%}%>">Settings</a>
     </div>
     <div class="link_wrapper">
         <div class="d-flex align-items-center" style="padding-left:10px;">

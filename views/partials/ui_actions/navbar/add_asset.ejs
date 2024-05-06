@@ -1,0 +1,16 @@
+<div data-upload_asset_wrapper>
+  <button data-action="upload_asset" class="btn btn-primary border-secondary d-flex align-items-center justify-content-between" type="button">
+    <div><i class="bi bi-plus me-2"></i>Add Asset</div>
+  </button>
+  <input type="file" class="d-none" />
+</div>
+<script>
+  (() => {
+    const uploadAssetBtn = document.querySelector('[data-action="upload_asset"]');
+    uploadAssetBtn.onclick = (evt) => {
+      evt.preventDefault();
+      uploadAssetBtn.closest("[data-upload_asset_wrapper]").querySelector("input[type='file']").click();
+    };
+
+  })();
+</script>

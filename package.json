@@ -9,6 +9,7 @@
     "scss": "sass --watch ./scss/main.scss:public/css/main.css ./scss/bases.scss:public/css/bases.css"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.569.0",
     "auth0": "^4.3.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
