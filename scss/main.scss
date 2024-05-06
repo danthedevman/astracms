@@ -96,6 +96,10 @@ body{
         margin-bottom:25px;
     }
 
+    .sidemenu_body{
+        overflow-y: auto;
+    }
+
     .link{
         text-decoration: none;
         margin:10px;
@@ -116,9 +120,13 @@ body{
 
 }
 
-.bases_select_wrapper{
- padding:0 10px;  
- margin-bottom: 10px;     
+.navbar_dropdown_select_wrapper{
+   
+}
+
+.sidemenu_dropdown_select_wrapper{
+    padding:0 10px;
+    margin-bottom: 10px;      
 }
 
 nav{

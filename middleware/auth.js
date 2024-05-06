@@ -1,3 +1,4 @@
+const { locals } = require("../app");
 const DBConnection = require("../database/DBConnection");
 
 const isLoggedIn = async (req, res, next) => {
@@ -9,6 +10,8 @@ const isLoggedIn = async (req, res, next) => {
     if(user){
         console.log(`Found an existing user ${user.email}`)
         req.user = user;
+        res.locals.user = {};
+        res.locals.user.initial = String(user.name)[0];
         return next();
     }
 

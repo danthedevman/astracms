@@ -13,13 +13,17 @@ const getBases = async (req, res, next) => {
 };
 
 const createBase = async (req, res, next) => {
+  if(!req.body){
+    res.status(503).send();
+    return;
+  }
   console.log("Creating Base");
   const db = await DBConnection.getDB(process.env.MAIN_DB);
   await db.createCollection("sys_base");
   let base = await db.collection("sys_base").insertOne({
-    name: String("Base 1"),
+    name: req.body.name,
     user: new ObjectId(req.user._id),
-    description: String("This is a test base"),
+    description: req.body.description,
     sys_created: new Date(),
   });
 

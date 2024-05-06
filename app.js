@@ -35,7 +35,6 @@ const config = {
 };
 
 app.use(auth(config));
-app.use(localMiddleware);
 
 app.use(expressLayouts);
 app.set("layout", "./layouts/bases");
@@ -49,10 +48,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/register', registerRouter);
-app.use('/', isLoggedIn, indexRouter);
-app.use('/sys_base', isLoggedIn, indexRouter);
-app.use('/:base/', isLoggedIn, canAccessBase);
-app.use('/:base/dashboard' , dashboardRouter);
+//require auth for all routes below
+app.use(isLoggedIn);
+app.use(localMiddleware);
+
+app.use('/', indexRouter);
+app.use('/sys_base', indexRouter);
+
+app.use('/:base/', canAccessBase);
+app.use('/:base/dashboard',dashboardRouter);
 app.use('/:base/content', contentRouter);
 app.use('/:base/models', modelsRouter);
 app.use('/:base/assets',assetsRouter);

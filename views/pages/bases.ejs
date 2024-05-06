@@ -3,7 +3,7 @@
   <div class="col-12">
     <div class="d-flex align-items-center justify-content-between">
       <h1 class="m-0">Bases</h1>
-      <button data-action="add_base" class="ms-2 btn btn-primary">
+      <button data-bs-toggle="modal" data-bs-target="#add_base_modal" class="ms-2 btn btn-primary">
         <i class="bi bi-plus me-1"></i>Add Base
       </button>
     </div>
@@ -12,7 +12,7 @@
 <div class="row">
   <%if(typeof bases !== "undefined"){%>
   <%bases.forEach((base)=>{%>
-  <div class="col-md-4">
+  <div class="col-md-4 mb-2">
     <a href="/<%=base._id%>/dashboard" class="card text-decoration-none">
       <div class="card-body">
         <%=base.name%>
@@ -24,17 +24,5 @@
 </div>
 <%-include('../partials/container_end.ejs')%>
 
-  <script type="module">
-    import BaseUtil from "../scripts/bases/BaseUtil.js";
-    (() => {
-      const addBaseBtn = document.querySelector("[data-action='add_base']");
-      addBaseBtn.onclick = (evt) => {
-        evt.preventDefault();
-        alert('Creating Base')
-        new BaseUtil().createBase({
-          name: "Base 1",
-          description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem atque quae, id consectetur quas facilis omnis architecto vitae quaerat at possimus voluptate quis amet illo deserunt quia animi tempora? Odio."
-        });
-      }
-    })()
-  </script>
+<%-include('../partials/bases/modals/add_base.ejs')%>
+

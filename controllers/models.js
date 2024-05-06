@@ -1,7 +1,7 @@
 const getModels = (req,res,next)=>{
     res.render("./pages/models", {
         title: "Models",
-        layout: "./layouts/default",
+        layout: "./layouts/base",
         path:"models"
       });
 };
