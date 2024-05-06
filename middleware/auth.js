@@ -8,7 +8,7 @@ const isLoggedIn = async (req, res, next) => {
     let user = await db.collection("sys_user").findOne({email:email});
     if(user){
         console.log(`Found an existing user ${user.email}`)
-        res.locals.user = user;
+        req.user = user;
         return next();
     }
 

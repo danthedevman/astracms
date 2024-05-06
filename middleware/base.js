@@ -1,16 +1,21 @@
 const DBConnection = require("../database/DBConnection");
 const ObjectId = require("mongodb").ObjectId;
 const canAccessBase = async (req, res, next) => {
-    const base = req.params.base;
-    if(!ObjectId.isValid(base)){
-        console.log(base)
-        res.redirect("/");
-        return;
-    }
-    const db = await DBConnection.getDB(base);
+  const baseId = req.params.base;
+  if (!ObjectId.isValid(baseId)) {
+    res.redirect("/");
+    return;
+  }
+  const mainDB = await DBConnection.getDB(process.env.MAIN_DB);
+  const base = await mainDB
+    .collection("sys_base")
+    .findOne({ user: req.user._id, _id: new ObjectId(baseId) });
+  if (!base) {
+    res.redirect("/");
+    return;
+  }
 
-    return next();
-  };
-  
-  module.exports = { canAccessBase };
-  
+  return next();
+};
+
+module.exports = { canAccessBase };

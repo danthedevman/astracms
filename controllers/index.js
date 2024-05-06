@@ -1,8 +1,9 @@
+const ObjectId = require("mongodb").ObjectId;
 const DBConnection = require("../database/DBConnection");
 
 const getBases = async (req, res, next) => {
   const db = await DBConnection.getDB(process.env.MAIN_DB);
-  const bases = await db.collection("sys_base").find({user:req.oidc.user.email}).toArray();
+  const bases = await db.collection("sys_base").find({user:new ObjectId(req.user._id)}).toArray();
   res.render("./pages/bases", {
     title: "Bases",
     layout: "./layouts/bases",
@@ -17,7 +18,7 @@ const createBase = async (req, res, next) => {
   await db.createCollection("sys_base");
   let base = await db.collection("sys_base").insertOne({
     name: String("Base 1"),
-    user: String(req.oidc.user.email),
+    user: new ObjectId(req.user._id),
     description: String("This is a test base"),
     sys_created: new Date(),
   });

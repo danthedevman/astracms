@@ -51,12 +51,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/register', registerRouter);
 app.use('/', isLoggedIn, indexRouter);
 app.use('/sys_base', isLoggedIn, indexRouter);
-app.use('/:base/dashboard', isLoggedIn, canAccessBase, dashboardRouter);
-app.use('/:base/content',isLoggedIn, canAccessBase, contentRouter);
-app.use('/:base/models',isLoggedIn, canAccessBase, modelsRouter);
-app.use('/:base/assets',isLoggedIn,canAccessBase, assetsRouter);
-app.use('/:base/users',isLoggedIn,canAccessBase, usersRouter);
-app.use('/:base/settings',isLoggedIn,canAccessBase, settingsRouter);
+app.use('/:base/', isLoggedIn, canAccessBase);
+app.use('/:base/dashboard' , dashboardRouter);
+app.use('/:base/content', contentRouter);
+app.use('/:base/models', modelsRouter);
+app.use('/:base/assets',assetsRouter);
+app.use('/:base/users', usersRouter);
+app.use('/:base/settings', settingsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
