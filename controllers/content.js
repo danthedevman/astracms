@@ -1,7 +1,7 @@
 const getContent= (req,res,next)=>{
     res.render("./pages/content", {
         title: "Content",
-        layout: "./layouts/default",
+        layout: "./layouts/base",
         path:"content"
       });
 };
@@ -9,7 +9,7 @@ const getContent= (req,res,next)=>{
 const getContentByModel = (req,res,next)=>{
     res.render("./pages/content_by_model", {
         title: "Content",
-        layout: "./layouts/default",
+        layout: "./layouts/base",
         path:"content"
       });
 };

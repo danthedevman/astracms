@@ -1,7 +1,7 @@
 const getAssets= (req,res,next)=>{
     res.render("./pages/assets", {
         title: "Assets",
-        layout: "./layouts/default",
+        layout: "./layouts/base",
         path:"assets"
       });
 };

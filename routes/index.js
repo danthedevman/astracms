@@ -1,7 +1,8 @@
 const express = require('express');
-const router = express.Router();
-const { getBases } = require('../controllers/index');
+const router = express.Router({ mergeParams: true });
+const { getBases, createBase } = require('../controllers/index');
 
 router.get('/', getBases);
+router.post('/sys_base/new', createBase);
 
 module.exports = router;
