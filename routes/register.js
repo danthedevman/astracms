@@ -3,6 +3,6 @@ const router = express.Router({ mergeParams: true });
 const { getRegisterPage, registerUser } = require('../controllers/register');
 
 router.get('/', getRegisterPage);
-router.post('/register', registerUser);
+router.post('/', registerUser);
 
 module.exports = router;

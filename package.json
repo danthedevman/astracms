@@ -9,6 +9,7 @@
     "scss": "sass --watch ./scss/main.scss:public/css/main.css ./scss/bases.scss:public/css/bases.css"
   },
   "dependencies": {
+    "auth0": "^4.3.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.4.5",
