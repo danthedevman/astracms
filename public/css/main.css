@@ -88,6 +88,9 @@ body {
 }
 .sidemenu .sidemenu_body {
   overflow-y: auto;
+  overflow: visible;
+  height: 100%;
+  padding-bottom: 80px;
 }
 .sidemenu .link {
   text-decoration: none;

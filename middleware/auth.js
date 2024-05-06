@@ -12,6 +12,7 @@ const isLoggedIn = async (req, res, next) => {
         req.user = user;
         res.locals.user = {};
         res.locals.user.initial = String(user.name)[0];
+        res.locals.user.email = String(user.email);
         return next();
     }
 

@@ -98,6 +98,9 @@ body{
 
     .sidemenu_body{
         overflow-y: auto;
+        overflow: visible;
+        height: 100%;
+        padding-bottom:80px;
     }
 
     .link{
