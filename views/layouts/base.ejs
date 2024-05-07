@@ -18,6 +18,12 @@
   <main>
     <%-body%>
   </main>
+  <script>
+    (() => {
+      window._astracms = {};
+      window._astracms.base_id = "<%=locals.base._id%>";
+    })()
+  </script>
 </body>
 
 </html>

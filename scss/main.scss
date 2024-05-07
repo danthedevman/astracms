@@ -80,9 +80,10 @@ body{
     position: fixed;
     left:0;
     top:0;
+    bottom:0;
     width:$sidemenuWidth;
     background: $sidemenuBG;
-    min-height: 100vh;
+    min-height: calc(100vh);
     padding:24px 0;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 
@@ -97,7 +98,6 @@ body{
     }
 
     .sidemenu_body{
-        overflow-y: auto;
         overflow: visible;
         height: 100%;
         padding-bottom:80px;
@@ -150,7 +150,7 @@ nav{
 main{
     margin-top:calc($navbarHeight);
     margin-left:calc($sidemenuWidth);
-    overflow-x:auto;
+    overflow-x:hidden;
     min-height: calc(100vh - $navbarHeight - 24px);
 }
 

@@ -42,7 +42,7 @@
     </div>
     <div class="link_wrapper">
         <div class="d-flex align-items-center" style="padding-left:10px;">
-        <%-include('../../partials/profile_dropdown.ejs',{show_email:true})%>
+        <%-include('../../partials/profile_dropdown.ejs',{show_email:true,drop_class:"dropup"})%>
         </div>
     </div>
 
@@ -50,7 +50,7 @@
     bottom:0;height:60px;background:rgba(255,255,255,.10);z-index: 2;padding:0 20px;">
         <div class="link_wrapper w-100">
            <div class="">
-            <%-include('../../partials/profile_dropdown.ejs')%><span class="ms-2 text-white">Profile</span>
+            <%-include('../../partials/profile_dropdown.ejs',{drop_class:"dropup"})%><span class="ms-2 text-white">Profile</span>
            </div>
           </div>
     </div>

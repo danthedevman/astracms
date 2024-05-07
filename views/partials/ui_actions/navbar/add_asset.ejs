@@ -9,8 +9,31 @@
     const uploadAssetBtn = document.querySelector('[data-action="upload_asset"]');
     uploadAssetBtn.onclick = (evt) => {
       evt.preventDefault();
-      uploadAssetBtn.closest("[data-upload_asset_wrapper]").querySelector("input[type='file']").click();
-    };
+      const fileInput = uploadAssetBtn.closest("[data-upload_asset_wrapper]").querySelector("input[type='file']");
+
+      fileInput.click();
+
+      fileInput.onchange = (evt) => {
+        let file = fileInput.files[0];
+
+        if (!file) {
+          return
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+        fetch(`/${window._astracms.base_id}/assets/upload`, {
+          method: "POST",
+          body: formData,
+        }).then((res) => {
+          if (res.status === 200) {
+            if (Turbo) {
+              Turbo.visit(`${document.location.pathname}${document.location.search}`);
+            }
+          }
+        });
+      };
+    }
 
   })();
 </script>

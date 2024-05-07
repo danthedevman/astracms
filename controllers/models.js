@@ -14,11 +14,10 @@ const getModels = async (req,res,next)=>{
 };
 
 const createModel = async (req,res,next)=>{
-  if(!req.body){
+  if(!req.body || !req.params.base){
     res.status(503).send();
     return;
   }
-  console.log("Creating Model");
   const db = await DBConnection.getDB(req.params.base);
   await db.createCollection("sys_model");
   let model = await db.collection("sys_model").insertOne({

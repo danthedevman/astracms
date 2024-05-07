@@ -71,6 +71,7 @@ body {
   position: fixed;
   left: 0;
   top: 0;
+  bottom: 0;
   width: 250px;
   background: #000;
   min-height: 100vh;
@@ -87,7 +88,6 @@ body {
   margin-bottom: 25px;
 }
 .sidemenu .sidemenu_body {
-  overflow-y: auto;
   overflow: visible;
   height: 100%;
   padding-bottom: 80px;
@@ -131,7 +131,7 @@ nav {
 main {
   margin-top: 80px;
   margin-left: 250px;
-  overflow-x: auto;
+  overflow-x: hidden;
   min-height: calc(100vh - 80px - 24px);
 }
 
