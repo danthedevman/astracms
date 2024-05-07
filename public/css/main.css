@@ -88,7 +88,9 @@ body {
   margin-bottom: 25px;
 }
 .sidemenu .sidemenu_body {
-  overflow: visible;
+  overflow: auto;
+  scrollbar-color: #818cf8 #000;
+  scrollbar-width: thin;
   height: 100%;
   padding-bottom: 80px;
 }

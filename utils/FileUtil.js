@@ -1,4 +1,4 @@
-const {S3Client,PutObjectCommand,GetObjectCommand} = require("@aws-sdk/client-s3");
+const {S3Client,PutObjectCommand,GetObjectCommand, DeleteObjectCommand} = require("@aws-sdk/client-s3");
 
 class FileUtil {
     constructor() {
@@ -24,6 +24,15 @@ class FileUtil {
         });
 
         await this.CLIENT.send(putObjectCommand);
+    }
+
+    async delete(key) {
+        const deleteObjectCommand = new DeleteObjectCommand({
+            Bucket: "astracms",
+            Key: key,
+        });
+
+        await this.CLIENT.send(deleteObjectCommand);
     }
 
     async get(key) {
