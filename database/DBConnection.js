@@ -5,8 +5,8 @@ const connections = {};
 module.exports = {
   connect: async (database, callback) => {
     const client = new MongoClient(process.env.DATABASE_URL);
-    let connection = await client.connect();
-    let db = connection.db(database);
+    //let connection = await client.connect();
+    let db = client.db(database);
     if(!db){
         console.log("No database found.");
         if (callback && typeof callback == "function") {
@@ -15,14 +15,16 @@ module.exports = {
         return;
     }
     connections[String(database).toLowerCase()] = db;
+    console.log("DB Created")
     if (callback && typeof callback == "function") {
       callback();
     }
+    return connections[String(database).toLowerCase()];
   },
 
   getDB:async function (database) {
     if (!connections[database]) {
-        console.log(`Reconnecting to database ${database}`);
+        console.log(`Connecting to database ${database}`);
       return await this.connect(database);
     }
     console.log(`Found connection to database ${database}`);

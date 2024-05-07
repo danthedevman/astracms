@@ -1,8 +1,8 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const {getModels,createModel} = require('../controllers/models');
 
 router.get('/', getModels);
-router.post('/sys_model/new', createModel);
+router.post('/new', createModel);
 
 module.exports = router;

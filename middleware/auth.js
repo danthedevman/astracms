@@ -1,4 +1,3 @@
-const { locals } = require("../app");
 const DBConnection = require("../database/DBConnection");
 
 const isLoggedIn = async (req, res, next) => {

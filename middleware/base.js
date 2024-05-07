@@ -1,4 +1,3 @@
-const { locals } = require("../app");
 const DBConnection = require("../database/DBConnection");
 const ObjectId = require("mongodb").ObjectId;
 const canAccessBase = async (req, res, next) => {
