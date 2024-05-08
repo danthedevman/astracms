@@ -161,9 +161,24 @@ table td {
   border-color: #818cf8;
 }
 
+.turbo-progress-bar {
+  background: #818cf8 !important;
+}
+
 .sidemenu_dropdown_select_wrapper {
   padding: 0 10px;
   margin-bottom: 10px;
+}
+.sidemenu_dropdown_select_wrapper button, .sidemenu_dropdown_select_wrapper .dropdown-menu {
+  background-color: #020617 !important;
+  color: #fff !important;
+  border-color: #4338ca !important;
+}
+.sidemenu_dropdown_select_wrapper button li a:hover, .sidemenu_dropdown_select_wrapper .dropdown-menu li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.sidemenu_dropdown_select_wrapper button a, .sidemenu_dropdown_select_wrapper .dropdown-menu a {
+  color: #fff !important;
 }
 
 nav {
@@ -269,6 +284,22 @@ main {
 }
 .add_field_btn:hover {
   color: #818cf8;
+}
+
+.nav-tabs {
+  border-bottom: 0;
+}
+.nav-tabs .nav-link {
+  background: rgba(0, 0, 0, 0.1) !important;
+  color: #e6e6e6;
+  border: 0;
+  border-radius: 0;
+  margin-right: 10px;
+  font-size: 20px;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-link:hover {
+  border-bottom: 4px solid #818cf8;
+  color: #fff;
 }
 
 /*# sourceMappingURL=main.css.map */

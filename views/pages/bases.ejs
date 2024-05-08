@@ -10,7 +10,7 @@
   </div>
 </div>
 <div class="row">
-  <%if(typeof bases !== "undefined"){%>
+  <%if(typeof bases !== "undefined" && bases.length > 0){%>
   <%bases.forEach((base)=>{%>
   <div class="col-12 col-md-6 mb-2">
     <a href="/<%=base._id%>/dashboard" class="card text-decoration-none base_card shadow">
@@ -21,7 +21,15 @@
     </a>
   </div>
   <%})%>
-  <%}%>
+<%}else{%>
+
+    <div style="min-height:calc(100vh - 200px)" class="empty_state_wrapper align-items-center justify-content-center d-flex flex-column">
+        <div class="text-muted h2">Add a Base to Get Started</div>
+        <div>
+            <img style="height:200px;width:200px;border-radius:50%;" class="img-responsive shadow" src="../images/space_base.png"/>
+        </div>
+    </div>
+    <%}%>
 </div>
 <%-include('../partials/container_end.ejs')%>
 

@@ -192,9 +192,30 @@ table {
 
 .navbar_dropdown_select_wrapper {}
 
+.turbo-progress-bar{
+    background: $secondaryColor !important;
+}
+
 .sidemenu_dropdown_select_wrapper {
     padding: 0 10px;
     margin-bottom: 10px;
+
+    button,.dropdown-menu{
+        background-color: $navbarBG !important;
+        color: #fff !important;
+        border-color:$primaryColor !important;
+
+        li{
+            a:hover{
+                background-color: rgba(255,255,255,.10);
+            }
+        }
+
+        a{
+        color: #fff !important;
+        }
+    }
+    
 }
 
 nav {
@@ -315,4 +336,22 @@ main {
 
 .filter_search_wrapper{
 
+}
+
+.nav-tabs{
+    border-bottom: 0;
+    .nav-link{
+        background:rgba(0,0,0,.10) !important;
+        color:#e6e6e6;
+        border:0;
+        border-radius: 0;
+        margin-right: 10px;
+        font-size: 20px;
+
+        &.active,&:hover{
+    
+            border-bottom:4px solid $secondaryColor;
+            color: #fff;
+        }
+    }
 }
