@@ -1,20 +1,32 @@
 const ObjectId = require("mongodb").ObjectId;
 const DBConnection = require("../database/DBConnection");
 
-const getModels = async (req,res,next)=>{
+const getModels = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
   const models = await db.collection("sys_model").find({}).toArray();
-    res.render("./pages/models", {
-        title: "Models",
-        layout: "./layouts/base",
-        models:models,
-        path:"models",
-        navbar_actions:[{name:"add_model",order:100}]
-      });
+  res.render("./pages/models", {
+    title: "Models",
+    layout: "./layouts/base",
+    models: models,
+    path: "models",
+    navbar_actions: [{ name: "add_model", order: 100 }],
+  });
 };
 
-const createModel = async (req,res,next)=>{
-  if(!req.body || !req.params.base){
+const getModel = async (req, res, next) => {
+  const db = await DBConnection.getDB(req.params.base);
+  const model = await db.collection("sys_model").findOne({_id:new ObjectId(req.params.id)});
+  res.render("./pages/model", {
+    title: `Model - ${model.name}`,
+    layout: "./layouts/base",
+    model: model,
+    path: "models",
+    navbar_actions: [{name:"model_actions"}],
+  });
+};
+
+const createModel = async (req, res, next) => {
+  if (!req.body || !req.params.base) {
     res.status(503).send();
     return;
   }
@@ -27,10 +39,11 @@ const createModel = async (req,res,next)=>{
     sys_created: new Date(),
   });
 
-  if (model) res.status(200).send({ sys_model: String(model._id) });
+  if (model) res.status(200).send({ record_id: String(model.insertedId) });
 };
 
 module.exports = {
-    getModels,
-    createModel
-  };
+  getModels,
+  getModel,
+  createModel,
+};

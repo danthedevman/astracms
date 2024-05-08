@@ -1,0 +1,17 @@
+<%if(typeof model !== "undefined"){%>
+<%-include('../partials/container_start.ejs')%>
+<div class="row">
+  <div class="col-12">
+
+  </div>
+</div>
+
+<%-include('../partials/container_end.ejs')%>
+<%}else{%>
+<div class="empty_state_wrapper">
+  <div></div>
+  <div>No model found</div>
+</div>
+<%}%>
+    
+<%-include('../partials/base/modals/add_field.ejs')%>

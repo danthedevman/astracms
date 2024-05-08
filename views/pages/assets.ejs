@@ -1,15 +1,15 @@
+<%if(typeof assets !== "undefined" && assets.length > 0){%>
 <%-include('../partials/container_start.ejs')%>
-<%if(typeof assets !== "undefined"){%>
 <div class="row mb-2">
   <%assets.forEach((asset)=>{%>
-  <div class="col-6 mb-3">
+  <div class="col-12 col-md-6 col-lg-4 mb-3">
     <div class="card">
       <div class="card-header">
         <div class="card-title" style="font-size:16px;">
           <div><%=asset.name%></div>
         </div>
       </div>
-      <div class="card-body" style="height:300px;overflow: hidden;">
+      <div class="card-body" style="height:200px;overflow: hidden;">
         <div class="d-flex align-items-center flex-column justify-content-center" style="height:100%;">
           <%if(asset.mimetype.indexOf("image") !== -1){%>
           <img style="width:100%;height:100%;object-fit: contain;" class="img-responsive" src="<%=locals.BUCKET_PUBLIC_HOST_URL+'/'+base._id+'__'+asset.name%>" />
@@ -33,8 +33,13 @@
   </div>
   <%})%>
 </div>
-<%}%>
 <%-include('../partials/container_end.ejs')%>
+<%}else{%>
+<div class="empty_state_wrapper">
+  <div></div>
+  <div>No assets found</div>
+</div>
+<%}%>
 
 <script>
   (() => {

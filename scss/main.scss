@@ -22,6 +22,11 @@ body{
     
 }
 
+.card-header{
+    background: $primaryColor;
+    color: #fff;
+}
+
 .title_divider {
     border-left:1px solid #e2e8f0;
     border-right:1px solid #e2e8f0; 
@@ -205,4 +210,13 @@ main{
     .label,.count{
         text-align: center;
     }
+}
+
+.empty_state_wrapper{
+    min-height: calc(100vh - $navbarHeight);
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

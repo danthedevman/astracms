@@ -47,10 +47,6 @@ class FormUtil {
       }
     });
 
-    if (!isValid) {
-      this.setTab();
-    }
-
     return isValid;
   }
 
@@ -83,7 +79,7 @@ class FormUtil {
       if (this.notNil(formGroup)) {
         if (formGroup.querySelector("label"))
           formGroup.querySelector("label").classList.add("text-danger");
-        let requiredSpan = formFieldWrapper.querySelector("span.required");
+        let requiredSpan = formGroup.querySelector("span.required");
         if (requiredSpan) {
           requiredSpan.classList.remove("text-secondary");
           requiredSpan.classList.add("text-danger");

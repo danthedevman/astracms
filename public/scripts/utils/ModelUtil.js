@@ -7,7 +7,7 @@ class ModelUtil {
         description: options.description,
       };
   
-      await fetch(`/${window._astracms.base_id}/models/new`, {
+      return await fetch(`/${window._astracms.base_id}/models/new`, {
         method: "POST",
         credentials: "same-origin",
         headers: {

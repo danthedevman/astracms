@@ -9,7 +9,7 @@
           <form name="add_model_form">
             <div data-form_group class="mb-3">
               <label for="base_name" class="form-label">Name (required)</label>
-              <input data-mandatory="true" type="type" class="form-control" name="name" placeholder="Enter a name for you model...">
+              <input data-mandatory="true" type="type" class="form-control" name="name" placeholder="Enter a name for your model...">
             </div>
             <div data-form_group class="mb-3">
               <label for="base_description" class="form-label">Description (optional)</label>
@@ -25,25 +25,28 @@
     </div>
   </div>
   <script type="module">
-    import FormUtil from "../scripts/utils/FormUtil.js";
-    import ModelUtil from "../scripts/utils/ModelUtil.js";
+    import FormUtil from "/scripts/utils/FormUtil.js";
+    import ModelUtil from "/scripts/utils/ModelUtil.js";
     (() => {
       const form = new FormUtil({
         selector: "[name='add_model_form']"
       }).init();
       const addBaseBtn = document.querySelector("[data-action='add_model']");
-      addBaseBtn.onclick = (evt) => {
+      addBaseBtn.onclick = async (evt) => {
         evt.preventDefault();
         if (!form.canSubmit()) {
           return;
         }
-        new ModelUtil().createModel({
+
+        let res = await new ModelUtil().createModel({
           name: form.getValue("[name='name']"),
           description: form.getValue("[name='description']")
         });
-  
-        if (Turbo) {
-          Turbo.visit(`${document.location.pathname}${document.location.search}`);
+        
+        if (Turbo && res.status === 200) {
+          let json = await res.json();
+          console.log(json);
+          Turbo.visit(`/<%=locals.base._id%>/models/${json.record_id}`);
         }
       }
   

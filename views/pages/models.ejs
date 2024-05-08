@@ -1,5 +1,41 @@
+<%if(typeof models !== "undefined" && models.length > 0){%>
 <%-include('../partials/container_start.ejs')%>
-      
+<div class="row">
+  <%models.forEach((model)=>{%>
+  <div class="col-md-6 mb-3">
+    <div class="card shadow">
+      <div class="card-header d-flex align-items-center justify-content-between">
+        <div class="card-title">
+          <%=model.name%>
+        </div>
+      </div>
+      <div class="card-body">
+        <div>
+          <label class="text-muted">Description</label>
+          <div><%=model.description%></div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="d-flex align-items-center justify-content-between">
+          <button data-action="delete_model" class="btn btn-outline-danger btn-sm me-2">
+            Delete
+          </button>
+          <a href="/<%=locals.base._id%>/models/<%=model._id%>" class="btn btn-outline-primary btn-sm">
+            Edit
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%})%>
+</div>
+
 <%-include('../partials/container_end.ejs')%>
+<%}else{%>
+<div class="empty_state_wrapper">
+  <div></div>
+  <div>No models found</div>
+</div>
+<%}%>
 
 <%-include('../partials/base/modals/add_model.ejs')%>
