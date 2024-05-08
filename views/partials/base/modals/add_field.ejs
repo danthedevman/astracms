@@ -62,6 +62,31 @@
               </div>
             </div>
           </div>
+          <!--row 2-->
+          <div class="row">
+            <div class="forn_group">
+              <label class="form-label">Choices</label>
+              <div class="choice_list_wrapper">
+                <div class="choice_list_row mb-2 row">
+                  <div class="col-6">
+                    <div class="d-flex align-items-center">
+                      <button class="btn grip_btn"><i class="bi bi-grip-vertical"></i></button>
+                      <input class="form-control" type="text" placeholder="Label">
+                    </div>
+                  </div>
+                  <div class="col-6">
+                 <div class="d-flex align-items-center">
+                    <input class="form-control" type="text" placeholder="Value">
+                    <button data-action="remove_choice_row" class="btn-sm btn-danger ms-2"><i class="bi bi-trash"></i></button>
+                 </div>
+                  </div>
+                </div>
+              </div>
+              <div class="choice_add_btn_wrapper mt-3">
+                <button data-action="add_choice" class="btn btn-primary w-100">Add Choice</button>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
       <div class="modal-footer d-flex align-items-center justify-content-between">
@@ -100,6 +125,19 @@
     const add_model_modal = document.getElementById('add_field_modal');
     add_model_modal.addEventListener('hidden.bs.modal', function(event) {
       form.reset();
-    })
+    });
+
+    add_model_modal.querySelector('[data-action="add_choice"]').onclick = (evt) => {
+      evt.preventDefault();
+      let x = document.querySelector(".choice_list_row");
+
+      let y = x.cloneNode(true);
+
+      y.querySelectorAll("input").forEach(element => {
+        element.value="";
+      });
+  
+      x.parentNode.appendChild(y);
+    }
   })()
 </script>

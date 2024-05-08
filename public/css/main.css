@@ -265,6 +265,7 @@ main {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   height: 80px;
+  font-size: 20px;
 }
 .add_field_btn:hover {
   color: #818cf8;
