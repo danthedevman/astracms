@@ -22,6 +22,11 @@
     (() => {
       window._astracms = {};
       window._astracms.base_id = "<%=locals.base._id%>";
+
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+      })
     })()
   </script>
 </body>

@@ -1,4 +1,6 @@
 $navbarHeight:60px;
+$navbarBG:#020617;
+$bodyBG:#0f172a;
 $primaryColor:#4338ca;
 $secondaryColor:#818cf8;
 
@@ -9,6 +11,8 @@ html,body{
 }
 
 body{
+    min-height: 100vh;
+    background-color: $bodyBG;
     font-size: 16px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -16,7 +20,7 @@ body{
 nav{
     height:$navbarHeight;
     width:100%;
-    background:#000;
+    background:$navbarBG;
 
     .logo_wrapper{
         font-size: 24px;
@@ -25,8 +29,65 @@ nav{
 
 h1,h2,h3,h4,h5,h6{
     margin: 0;
+    color: #fff;
 }
 
 .btn-primary{
     background: $primaryColor;
+}
+
+.base_card{
+    background:rgba(255,255,255,.05);
+    color:#fff;
+    border-left:6px solid $secondaryColor;
+    transition: all .3s ease;
+    font-size: 18px;
+
+    &:hover{
+        color:$secondaryColor;
+        background:rgba(255,255,255,.15);
+    }
+}
+
+
+.modal {
+    .modal-content {
+        background: $bodyBG;
+
+        * {
+            color: #fff;
+        }
+
+        .modal-header,
+        .modal-footer {
+            border: 0;
+        }
+
+        .form-control,
+        .form-select {
+            background: rgba(255, 255, 255, .10);
+            border-color: rgba(255, 255, 255, .10);
+        }
+
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            background: rgba(255, 255, 255, .10);
+            border-color: rgba(255, 255, 255, .10);
+        }
+
+    }
+}
+
+[data-form_group] {
+
+    .border-danger {
+        border-color: $secondaryColor  !important;
+    }
+
+    .text-danger {
+        color: $secondaryColor  !important;
+    }
 }

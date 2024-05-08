@@ -1,14 +1,28 @@
-<nav>
+<nav class="shadow">
   <div class="d-flex align-items-center justify-content-between w-100">
-    <div class="nav_title h3 m-0">
-      <%if(typeof title !== "undefined"){%><%=title%><%}%>
-    </div>
+    <ol class="m-0 breadcrumb d-flex">
+      <%if(typeof crumbs !== "undefined"){%>
+      <%crumbs.forEach((crumb)=>{%>
+      <li class="breadcrumb-item">
+        <%if(crumb.href){%>
+        <a class="crumb" href="/<%=locals.base._id%>/<%=crumb.href%>">
+          <%=crumb.label%>
+        </a>
+        <%}else{%>
+        <div class="crumb">
+          <%=crumb.label%>
+        </div>
+        <%}%>
+    </li>
+       <%})%>
+        <%}%>
+    </ol>
     <div>
       <%if(typeof navbar_actions !== "undefined"){%>
-      <%navbar_actions.forEach((action)=>{%>
-      <%-include(`../../partials/ui_actions/navbar/${action.name}.ejs`)%>
-      <%})%>
-      <%}%>
+        <%navbar_actions.forEach((action)=>{%>
+        <%-include(`../../partials/ui_actions/navbar/${action.name}.ejs`)%>
+        <%})%>
+        <%}%>
     </div>
 </div>
 </nav>

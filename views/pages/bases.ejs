@@ -12,10 +12,11 @@
 <div class="row">
   <%if(typeof bases !== "undefined"){%>
   <%bases.forEach((base)=>{%>
-  <div class="col-md-4 mb-2">
-    <a href="/<%=base._id%>/dashboard" class="card text-decoration-none">
-      <div class="card-body">
-        <%=base.name%>
+  <div class="col-12 col-md-6 mb-2">
+    <a href="/<%=base._id%>/dashboard" class="card text-decoration-none base_card shadow">
+      <div class="card-body d-flex align-items-center justify-content-between">
+       <div class="text-truncate"><%=base.name%></div>
+       <div><i class="bi bi-rocket-takeoff"></i></div>
       </div>
     </a>
   </div>

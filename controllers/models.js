@@ -10,6 +10,7 @@ const getModels = async (req, res, next) => {
     models: models,
     path: "models",
     navbar_actions: [{ name: "add_model", order: 100 }],
+    crumbs:[{label:"Models"}]
   });
 };
 
@@ -22,6 +23,7 @@ const getModel = async (req, res, next) => {
     model: model,
     path: "models",
     navbar_actions: [{name:"model_actions"}],
+    crumbs:[{label:"Models",href:`models`},{label:`${model.name}`}]
   });
 };
 
@@ -42,8 +44,15 @@ const createModel = async (req, res, next) => {
   if (model) res.status(200).send({ record_id: String(model.insertedId) });
 };
 
+const deleteModel = async (req, res, next) => {
+  const db = await DBConnection.getDB(req.params.base);
+  const model = await db.collection("sys_model").deleteOne({_id:new ObjectId(req.params.id)});
+  res.status(200).send();
+};
+
 module.exports = {
   getModels,
   getModel,
   createModel,
+  deleteModel
 };

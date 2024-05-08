@@ -1,222 +1,317 @@
-$sidemenuWidth:250px;
-$sidemenuBG:#000;
-$navbarHeight:80px;
-$primaryColor:#4338ca;
-$secondaryColor:#818cf8;
+$sidemenuWidth: 250px;
+$sidemenuBG: #0f172a; //#000;
+$navbarHeight: 80px;
+$primaryColor: #4338ca;
+$secondaryColor: #818cf8;
+$navbarBG: #020617;
+$bodyBG: #0f172a;
 
-html,body{
-    margin:0;
-    padding:0;
-    overflow-x:hidden;
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
-body{
+body {
+    background-color: $bodyBG;
     font-size: 16px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-.link_pill_divider {
-    border-left:1px solid #e2e8f0; 
-    border-right:1px solid #e2e8f0; 
-    height:100%;
-    
+.btn-close {
+    color: #fff !important;
 }
 
-.card-header{
+.link_pill_divider {
+    border-left: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    height: 100%;
+
+}
+
+.card {
+    background: rgba(255, 255, 255, .05);
+}
+
+.card-header {
     background: $primaryColor;
     color: #fff;
 }
 
+.card-body {
+    color: #fff;
+}
+
 .title_divider {
-    border-left:1px solid #e2e8f0;
-    border-right:1px solid #e2e8f0; 
-    height:100%;
+    border-left: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    height: 100%;
     display: none;
 }
 
-.content_pills_wrapper{
-    height:50px;
+.content_pills_wrapper {
+    height: 50px;
 
-    .link_pill_divider{
+    .link_pill_divider {
         height: 50px;
     }
 }
 
-.link_pill{
-    align-self: center; 
+.link_pill {
+    align-self: center;
     border-radius: 6px;
-    border:thin solid #e6e6e6;
-    min-width:100px;
+    min-width: 100px;
     background: #fff;
     text-align: center;
-    padding:6px 12px;
-    color:#4a4a4a;
+    padding: 6px 12px;
+    color: #4a4a4a;
     text-decoration: none;
 
-    &.active,&:hover{
+    &.active,
+    &:hover {
         background: #4338ca;
-        color:#fff;
+        color: #fff;
     }
 }
 
-.btn-primary{
+.btn-primary {
     background: $primaryColor;
+    border-color: $primaryColor  !important;
 }
 
-.field_title{
+.field_title {
     background: #c7d2fe;
     border-radius: 6px;
     width: 100%;
     font-weight: bold;
 }
 
-.field_value{
+.field_value {
     display: -webkit-box;
     -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;  
+    -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-.field_value,.field_title{
-    padding:6px 12px;
+.field_value,
+.field_title {
+    padding: 6px 12px;
 }
 
-.sidemenu{
+.modal {
+    .modal-content {
+        left:calc($sidemenuWidth / 2);
+        background: $bodyBG;
+
+        * {
+            color: #fff;
+        }
+
+        .modal-header,
+        .modal-footer {
+            border: 0;
+        }
+
+        .form-control,
+        .form-select {
+            background: rgba(255, 255, 255, .10);
+            border-color: rgba(255, 255, 255, .10);
+        }
+
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            background: rgba(255, 255, 255, .10);
+            border-color: rgba(255, 255, 255, .10);
+        }
+
+    }
+}
+
+table {
+    td {
+        color: #fff;
+    }
+}
+
+.sidemenu {
     position: fixed;
-    left:0;
-    top:0;
-    bottom:0;
-    width:$sidemenuWidth;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: $sidemenuWidth;
     background: $sidemenuBG;
+    border-right: thin solid #1e293b;
     min-height: calc(100vh);
-    padding:24px 0;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 
-    .sidemenu_header{
-        color:#fff;
+    .sidemenu_header {
+        color: #fff;
         font-weight: bold;
-        font-size:20px;
+        font-size: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom:25px;
+        background-color: $navbarBG;
+        height: 80px;
     }
 
-    .sidemenu_body{
+    .sidemenu_body {
         overflow: auto;
         scrollbar-color: #818cf8 #000;
         scrollbar-width: thin;
         height: 100%;
-        padding-bottom:80px;
+        padding: 24px 0 104px 0;
     }
 
-    .link{
+    .link {
         text-decoration: none;
-        margin:10px;
-        padding:0 10px;
-        height:50px;
+        margin: 10px;
+        padding: 0 10px;
+        height: 50px;
         display: flex;
         align-items: center;
         font-size: 18px;
-        color:#6b7280;
-        border-radius: 6px;
+        color: #6b7280;
+        border-radius: 2px;
+        border-left:4px solid transparent;
 
-        &.active,&:hover{
-            background:rgba(255,255,255,.15);
-            color:#fff;
+        &.active,
+        &:hover {
+            background: rgba(255, 255, 255, .20);
+            color: #fff;
+            border-color: $secondaryColor;
         }
 
     }
 
 }
 
-.navbar_dropdown_select_wrapper{
-   
+.navbar_dropdown_select_wrapper {}
+
+.sidemenu_dropdown_select_wrapper {
+    padding: 0 10px;
+    margin-bottom: 10px;
 }
 
-.sidemenu_dropdown_select_wrapper{
-    padding:0 10px;
-    margin-bottom: 10px;      
-}
-
-nav{
+nav {
     position: fixed;
-    left:$sidemenuWidth;
-    padding-right:calc($sidemenuWidth + 12px);
-    top:0;
-    height:$navbarHeight;
-    background: #fff;
+    left: $sidemenuWidth;
+    padding-right: calc($sidemenuWidth + 12px);
+    top: 0;
+    height: $navbarHeight;
+    background: $navbarBG;
     z-index: 1002;
-    width:100%;
-    padding-left:12px;
+    width: 100%;
+    padding-left: 12px;
     display: flex;
     align-items: center;
-    border-bottom: thin solid #e6e6e6;
+    color: #fff;
 }
 
-main{
-    margin-top:calc($navbarHeight);
-    margin-left:calc($sidemenuWidth);
-    overflow-x:hidden;
+main {
+    margin-top: calc($navbarHeight);
+    margin-left: calc($sidemenuWidth);
+    overflow-x: hidden;
     min-height: calc(100vh - $navbarHeight - 24px);
 }
 
-.card-title{
-    margin:0 !important;
+.card-title {
+    margin: 0 !important;
     font-size: 20px;
     font-weight: bold;
 }
 
-.card-body{
+.card-body {
     font-size: 16px;
 }
 
-.main_search_wrapper{
-    padding:0 10px;
+.main_search_wrapper {
+    padding: 0 10px;
 
-    .main_search_input{
-        background: rgba(255,255,255,.10);
-        border:0;
+    .main_search_input {
+        background: rgba(255, 255, 255, .10);
+        border: 0;
         font-size: 18px;
         transition: all .3s ease;
 
-        &:focus{
+        &:focus {
             background: #fff;
             color: #000;
         }
     }
 }
 
-.dashboard_count_card{
-    height:100px;
-    border:2px solid #e2e8f0;
-    border-left:6px solid $secondaryColor;
+.dashboard_count_card {
+    height: 100px;
+    border: 2px solid #e2e8f0;
+    border-left: 6px solid $secondaryColor;
     border-radius: 6px;
     //padding:8px 16px;
 
-    .label{
-        font-size:16px;
+    .label {
+        font-size: 16px;
         font-weight: normal;
         color: #1e293b;
     }
 
-    .count{
+    .count {
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 34px;
     }
-    
-    .label,.count{
+
+    .label,
+    .count {
         text-align: center;
     }
 }
 
-.empty_state_wrapper{
+.empty_state_wrapper {
     min-height: calc(100vh - $navbarHeight);
-    width:100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 40px;
+    color: $secondaryColor;
+}
+
+[data-form_group] {
+
+    .border-danger {
+        border-color: $secondaryColor  !important;
+    }
+
+    .text-danger {
+        color: $secondaryColor  !important;
+    }
+}
+
+.breadcrumb-item{
+    white-space: nowrap;
+    font-size: 18px;
+    a{
+        color:$secondaryColor;
+        text-decoration: none;
+    }
+}
+
+.add_field_btn{
+    background: rgba(255,255,255,.10);
+    color:#fff;
+    height: 80px;
+
+    &:hover{
+        color:$secondaryColor;
+    }
+}
+
+.filter_search_wrapper{
+    
 }

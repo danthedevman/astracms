@@ -17,10 +17,10 @@
       </div>
       <div class="card-footer">
         <div class="d-flex align-items-center justify-content-between">
-          <button data-action="delete_model" class="btn btn-outline-danger btn-sm me-2">
+          <button data-model_id="<%=model._id%>" data-action="delete_model" class="btn btn-danger btn-sm me-2">
             Delete
           </button>
-          <a href="/<%=locals.base._id%>/models/<%=model._id%>" class="btn btn-outline-primary btn-sm">
+          <a href="/<%=locals.base._id%>/models/<%=model._id%>" class="btn btn-primary btn-sm">
             Edit
           </a>
         </div>
@@ -39,3 +39,28 @@
 <%}%>
 
 <%-include('../partials/base/modals/add_model.ejs')%>
+
+<script>
+    (() => {
+      const deleteAssetBtns = document.querySelectorAll('[data-action="delete_model"]');
+      deleteAssetBtns.forEach((btn) => {
+        btn.onclick = async (evt) => {
+          evt.preventDefault();
+          let asset_id = btn.getAttribute("data-model_id");
+          let res = await fetch(`/${window._astracms.base_id}/models/${asset_id}/delete`, {
+            method: "DELETE",
+            credentials: "same-origin",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+  
+          if (res.status === 200) {
+              if (Turbo) {
+                Turbo.visit(`${document.location.pathname}${document.location.search}`);
+              }
+            }
+        }
+      })
+    })()
+  </script>

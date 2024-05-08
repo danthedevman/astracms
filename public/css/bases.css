@@ -5,6 +5,8 @@ html, body {
 }
 
 body {
+  min-height: 100vh;
+  background-color: #0f172a;
   font-size: 16px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -12,7 +14,7 @@ body {
 nav {
   height: 60px;
   width: 100%;
-  background: #000;
+  background: #020617;
 }
 nav .logo_wrapper {
   font-size: 24px;
@@ -20,10 +22,53 @@ nav .logo_wrapper {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
+  color: #fff;
 }
 
 .btn-primary {
   background: #4338ca;
+}
+
+.base_card {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border-left: 6px solid #818cf8;
+  transition: all 0.3s ease;
+  font-size: 18px;
+}
+.base_card:hover {
+  color: #818cf8;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.modal .modal-content {
+  background: #0f172a;
+}
+.modal .modal-content * {
+  color: #fff;
+}
+.modal .modal-content .modal-header,
+.modal .modal-content .modal-footer {
+  border: 0;
+}
+.modal .modal-content .form-control,
+.modal .modal-content .form-select {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.modal .modal-content input:-webkit-autofill,
+.modal .modal-content input:-webkit-autofill:hover,
+.modal .modal-content input:-webkit-autofill:focus,
+.modal .modal-content input:-webkit-autofill:active {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-form_group] .border-danger {
+  border-color: #818cf8 !important;
+}
+[data-form_group] .text-danger {
+  color: #818cf8 !important;
 }
 
 /*# sourceMappingURL=bases.css.map */

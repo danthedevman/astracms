@@ -11,7 +11,8 @@ const getAssets = async (req, res, next) => {
     layout: "./layouts/base",
     path: "assets",
     assets:assets,
-    navbar_actions: [{ name: "add_asset", order: 100 }]
+    navbar_actions: [{ name: "add_asset", order: 100 }],
+    crumbs:[{label:"Assets"}]
   });
 };
 

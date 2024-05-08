@@ -3,7 +3,8 @@ const getContent= (req,res,next)=>{
         title: "Content",
         layout: "./layouts/base",
         path:"content",
-        navbar_actions:[{name:"add_content_all",order:100}]
+        navbar_actions:[{name:"add_content_all",order:100}],
+        crumbs:[{label:"Content"}]
       });
 };
 
