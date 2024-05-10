@@ -67,10 +67,10 @@
             <div class="forn_group">
               <label class="form-label">Choices</label>
               <div id="choice_list" class="choice_list_wrapper">
-                <div class="choice_list_row mb-2 row">
+                <div data-order="100" class="choice_list_row mb-2 row">
                   <div class="col-6">
                     <div class="d-flex align-items-center">
-                      <button class="btn grip_btn me-2"><i class="bi bi-grip-vertical"></i></button>
+                      <button type="button" class="btn grip_btn me-2"><i class="bi bi-grip-vertical"></i></button>
                       <input class="form-control" type="text" placeholder="Label">
                     </div>
                   </div>
@@ -154,11 +154,13 @@
       new Sortable(document.getElementById("choice_list"), {
         animation: 150,
         ghostClass: 'sortable-ghost',
-        /*onSort: function (evt) {
-        if(evt.newIndex === 0){
-            evt.item.querySelector('[data-action="remove_choice"]').classList.add();
+        onEnd: function(evt) {
+          let choiceArr = Array.from(evt.target.children);
+          choiceArr.forEach((choice, i) => {
+            choice.setAttribute("data-order", (i + 1) * 100);
+          });
+
         }
-       }*/
       });
 
       x.parentNode.appendChild(y);
