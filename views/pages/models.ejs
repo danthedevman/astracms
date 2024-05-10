@@ -1,5 +1,13 @@
 <%if(typeof models !== "undefined" && models.length > 0){%>
 <%-include('../partials/container_start.ejs')%>
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="d-flex align-items-center justify-content-between">
+            <input class="form-control filter_search" type="search" placeholder="Search...">
+            <div></div>
+        </div>
+    </div>
+</div>
 <div class="row">
   <%models.forEach((model)=>{%>
   <div class="col-md-6 mb-3">

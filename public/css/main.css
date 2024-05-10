@@ -302,4 +302,15 @@ main {
   color: #fff;
 }
 
+.filter_search {
+  background: rgba(0, 0, 0, 0.15);
+  color: #fff;
+  height: 50px;
+}
+
+.grip_btn {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: #e6e6e6;
+}
+
 /*# sourceMappingURL=main.css.map */

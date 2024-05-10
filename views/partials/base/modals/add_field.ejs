@@ -66,19 +66,19 @@
           <div class="row">
             <div class="forn_group">
               <label class="form-label">Choices</label>
-              <div class="choice_list_wrapper">
+              <div id="choice_list" class="choice_list_wrapper">
                 <div class="choice_list_row mb-2 row">
                   <div class="col-6">
                     <div class="d-flex align-items-center">
-                      <button class="btn grip_btn"><i class="bi bi-grip-vertical"></i></button>
+                      <button class="btn grip_btn me-2"><i class="bi bi-grip-vertical"></i></button>
                       <input class="form-control" type="text" placeholder="Label">
                     </div>
                   </div>
                   <div class="col-6">
-                 <div class="d-flex align-items-center">
-                    <input class="form-control" type="text" placeholder="Value">
-                    <button data-action="remove_choice_row" class="btn-sm btn-danger ms-2"><i class="bi bi-trash"></i></button>
-                 </div>
+                    <div class="d-flex align-items-center">
+                      <input class="form-control" type="text" placeholder="Value">
+                      <button data-action="remove_choice" class="btn-sm btn-danger ms-2"><i class="bi bi-trash"></i></button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -127,6 +127,15 @@
       form.reset();
     });
 
+    const choiceList = document.getElementById("choice_list");
+
+    choiceList.querySelector('[data-action="remove_choice"]').onclick = (evt) => {
+      evt.preventDefault();
+      evt.currentTarget.closest(".choice_list_row").querySelectorAll("input").forEach(element => {
+        element.value = "";
+      });
+    };
+
     add_model_modal.querySelector('[data-action="add_choice"]').onclick = (evt) => {
       evt.preventDefault();
       let x = document.querySelector(".choice_list_row");
@@ -134,10 +143,26 @@
       let y = x.cloneNode(true);
 
       y.querySelectorAll("input").forEach(element => {
-        element.value="";
+        element.value = "";
       });
-  
+
+      y.querySelector('[data-action="remove_choice"]').onclick = (evt) => {
+        y.remove();
+      };
+
+      y.querySelector('[data-action="remove_choice"]').classList.remove("d-none");
+      new Sortable(document.getElementById("choice_list"), {
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        /*onSort: function (evt) {
+        if(evt.newIndex === 0){
+            evt.item.querySelector('[data-action="remove_choice"]').classList.add();
+        }
+       }*/
+      });
+
       x.parentNode.appendChild(y);
     }
+
   })()
 </script>

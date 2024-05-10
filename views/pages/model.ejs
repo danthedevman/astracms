@@ -1,5 +1,18 @@
 <%if(typeof model !== "undefined"){%>
 <%-include('../partials/container_start.ejs')%>
+<div class="row mb-2">
+    <div class="d-flex align-items-center justify-content-between">
+        <div>
+            <button data-bs-toggle="modal" data-bs-target="#add_field_modal" class="btn btn-primary shadow">
+                <i class="bi bi-plus-circle me-2"></i>Add Field
+            </button>
+        </div>
+        <div class="d-flex align-items-center" >
+            <button class="btn text-white"><i class="bi bi-grid me-1"></i></button>
+            <button class="btn text-white"><i class="bi bi-list"></i></button>
+        </div>
+    </div>
+</div>
 <div class="row">
   <div class="col-12">
     <button data-bs-toggle="modal" data-bs-target="#add_field_modal" class="btn add_field_btn w-100 shadow">

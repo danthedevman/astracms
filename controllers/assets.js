@@ -21,9 +21,6 @@ const uploadAsset = async (req, res, next) => {
     res.status(503).send();
     return;
   }
-  const fileUtil = new FileUtil();
-  const file = req.file;
-  await fileUtil.upload(`${req.params.base}__${file.originalname}`,file);
  // console.log(file)
  
   const db = await DBConnection.getDB(req.params.base);
@@ -34,6 +31,12 @@ const uploadAsset = async (req, res, next) => {
     sys_created: new Date(),
     mimetype:file.mimetype
   });
+
+  if(asset && asset.insertedId){
+  const fileUtil = new FileUtil();
+  const file = req.file;
+  await fileUtil.upload(`${req.params.base}__${file.insertedId}`,file);
+  }
 
   res.status(200).send({sys_asset:asset._id});
 };
@@ -48,7 +51,7 @@ const deleteAsset = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
   const asset = await db.collection("sys_asset").findOne({_id:new ObjectId(req.params.id)});
   const fileUtil = new FileUtil();
-  await fileUtil.delete(`${req.params.base}__${asset.name}`);
+  await fileUtil.delete(`${req.params.base}_${asset._id}`);
 
   await db.collection("sys_asset").deleteOne({_id:new ObjectId(asset._id)});
   console.log("deleted asset")
