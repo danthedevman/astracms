@@ -23,7 +23,14 @@
                   <option value="choice">Choice</option>
                   <option value="number">Number</option>
                   <option value="asset">Asset</option>
-                  <option value="choice">Reference</option>
+                  <option value="reference">Reference</option>
+                </select>
+              </div>
+              <div data-form_group="reference_type" class="mb-3 d-none">
+                <label for="name" class="form-label">Reference Type</label>
+                <select class="form-select">
+                  <option selected value="single">Single Record</option>
+                  <option value="multiple">Multiple Records</option>
                 </select>
               </div>
               <div data-form_group="mandatory" class="mb-3">
@@ -174,13 +181,38 @@
     if (fieldType.value === "choice") {
       choiceMacro.classList.remove("d-none");
     }
+
+    function resetHiddenFields(){
+        document.querySelector("[data-choices_macro]").classList.add("d-none");
+        document.querySelector('[data-form_group="select_model"]').classList.add("d-none");
+        document.querySelector('[data-form_group="reference_type"]').classList.add("d-none");
+    }
+
     fieldType.onchange = (evt) => {
+        resetHiddenFields()
       if (fieldType.value === "choice") {
         choiceMacro.classList.remove("d-none");
         return;
+      }else{
+        choiceMacro.classList.add("d-none");
       }
 
-      choiceMacro.classList.add("d-none");
+      if (fieldType.value === "reference") {
+        document.querySelector('[data-form_group="select_model"]').classList.remove("d-none");
+        document.querySelector('[data-form_group="reference_type"]').classList.remove("d-none");
+        return;
+      }else{
+        document.querySelector('[data-form_group="select_model"]').classList.add("d-none");
+        document.querySelector('[data-form_group="reference_type"]').classList.add("d-none");
+      }
+
+      if (fieldType.value === "asset") {
+        document.querySelector('[data-form_group="reference_type"]').classList.remove("d-none");
+        return;
+      }else{
+        document.querySelector('[data-form_group="reference_type"]').classList.add("d-none");
+      }
+
     };
 
     function resetChoicesMacro() {
