@@ -158,28 +158,25 @@
           console.log(json);
           let template = "";
           json.results.forEach((result)=>{
-            template+=`<li class="list-group-item border-0 bg-dark p-0""><a class="d-block w-100" href="javascript:void(0)">${result.label}</a></li>`
+            template+=`<li class="list-group-item border-0 bg-dark p-0""><a class="d-block w-100" data-result data-value="${result._id.toString()}" data-display_value="${result.label}" href="javascript:void(0)">${result.label}</a></li>`
           })
           const results = evt.target.closest(".dropdown").querySelector("[data-lookup_results]");
           results.innerHTML = template;
+          evt.target.closest(".dropdown").querySelectorAll("[data-result]").forEach((r)=>{
+            r.onclick = (e)=>{
+              e.preventDefault();
+              evt.target.closest(".dropdown").querySelector("[data-lookup]").setAttribute("data-value",r.getAttribute("data-value"))
+              evt.target.closest(".dropdown").querySelector("[data-lookup]").value = r.getAttribute("data-display_value");
+         modelDropdownMenu.classList.remove("show");
+            };
+          });
          }
+
+         modelDropdownMenu.classList.add("show");
 
          },600);
 
-
-         modelDropdownMenu.classList.add("show");
     }
-
-
-    //lookup field logic
-    const lookupFields = form.getElements("[data-lookup");
-    lookupFields.forEach((field)=>{
-      field.onfocus = (evt)=>{
-        evt.preventDefault();
-        triggerLookup();
-      };
-    });
-
 
     const addBaseBtn = document.querySelector("[data-action='add_model']");
     addBaseBtn.onclick = async (evt) => {

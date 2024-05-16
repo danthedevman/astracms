@@ -9,7 +9,8 @@ const getSearch = async (req,res,next)=>{
     await searchCollection.createIndex({ name: "text", label: "text", title:"text" });
     
     let agg = await searchCollection.aggregate([
-    {$match:{ $text: { $search: `${decodeURI(String(query.sys_text_search))}`}}}
+   // {$match:{ $text: { $search: `\"${decodeURI(String(query.sys_text_search))}\"`}}}
+   {$match:{label:{'$regex' : `^${decodeURI(String(query.sys_text_search))}`, '$options' : 'i'}}}
     ]);
 
     let arr = await agg.toArray();
