@@ -9,6 +9,7 @@ const expressLayouts = require('express-ejs-layouts');
 //routers
 const registerRouter = require('./routes/register');
 const indexRouter = require('./routes/index');
+const searchRouter = require('./routes/search');
 const dashboardRouter = require('./routes/dashboard');
 const contentRouter = require('./routes/content');
 const modelsRouter = require('./routes/models');
@@ -56,6 +57,7 @@ app.use('/', indexRouter);
 app.use('/sys_base', indexRouter);
 
 app.use('/:base/', canAccessBase);
+app.use('/:base/:model/search',searchRouter);
 app.use('/:base/dashboard',dashboardRouter);
 app.use('/:base/content', contentRouter);
 app.use('/:base/models', modelsRouter);

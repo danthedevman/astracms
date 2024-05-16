@@ -23,11 +23,11 @@ const getModel = async (req, res, next) => {
     model: model,
     path: "models",
     navbar_actions: [{name:"model_actions"}],
-    crumbs:[{label:"Models",href:`models`},{label:`${model.name}`}]
+    crumbs:[{label:"Models",href:`models`},{label:`${model.label}`}]
   });
 };
 
-const createModel = async (req, res, next) => {
+const saveModel = async (req, res, next) => {
   if (!req.body || !req.params.base) {
     res.status(503).send();
     return;
@@ -35,6 +35,7 @@ const createModel = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
   await db.createCollection("sys_model");
   let model = await db.collection("sys_model").insertOne({
+    label: req.body.label,
     name: req.body.name,
     sys_created_by: new ObjectId(req.user._id),
     description: req.body.description,
@@ -53,6 +54,6 @@ const deleteModel = async (req, res, next) => {
 module.exports = {
   getModels,
   getModel,
-  createModel,
+  saveModel,
   deleteModel
 };

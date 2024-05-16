@@ -1,0 +1,78 @@
+<div class="modal" tabindex="-1" id="save_model_modal" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><%=typeof model !== 'undefined' ? 'Edit' : 'Add'%> Model</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form name="save_model_form">
+          <div data-form_group class="mb-3">
+            <label for="base_name" class="form-label">Label (required)</label>
+            <input data-mandatory="true" type="type" class="form-control" name="label" placeholder="Enter a label for your model..." value="<%=typeof model !== 'undefined' ? model.label : ''%>">
+          </div>
+          <div data-form_group class="mb-3">
+            <label for="base_name" class="form-label">API Name (required)</label>
+            <input data-mandatory="true" type="type" class="form-control" name="name" placeholder="" value="<%=typeof model !== 'undefined' ? model.name : ''%>">
+          </div>
+          <div data-form_group class="mb-3">
+            <label for="base_description" class="form-label">Description (optional)</label>
+            <textarea class="form-control" name="description"><%=typeof model !== 'undefined' ? model.description : ''%></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex align-items-center justify-content-between">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button data-action="save_model" type="button" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="module">
+  import FormUtil from "/scripts/utils/FormUtil.js";
+  import ModelUtil from "/scripts/utils/ModelUtil.js";
+  (() => {
+    const form = new FormUtil({
+      selector: "[name='save_model_form']"
+    }).init();
+
+    const labelInput = form.getElement("[name='label']");
+    const nameInput = form.getElement("[name='name']");
+    if (labelInput && !nameInput.value) {
+      labelInput.onchange = (evt) => {
+        nameInput.value = String(labelInput.value).toLowerCase().replace(/\s/gi, "_");
+      };
+    } else {
+
+      nameInput.onchange = (evt) => {
+        nameInput.value = String(nameInput.value).toLowerCase().replace(/\s/gi, "_");
+      };
+    }
+
+    const saveModelBtn = document.querySelector("[data-action='save_model']");
+    saveModelBtn.onclick = async (evt) => {
+      evt.preventDefault();
+      if (!form.canSubmit()) {
+        return;
+      }
+
+      let res = await new ModelUtil().saveModel({
+        label: form.getValue("[name='label']"),
+        name: form.getValue("[name='name']"),
+        description: form.getValue("[name='description']"),
+        record_id: "<%=typeof model !== 'undefined' ? model._id : null%>"
+      });
+
+      if (Turbo && res.status === 200) {
+        let json = await res.json();
+        console.log(json);
+        Turbo.visit(`/<%=locals.base._id%>/models/${json.record_id}`);
+      }
+    }
+
+    const add_model_modal = document.getElementById('save_model_modal');
+    add_model_modal.addEventListener('hidden.bs.modal', function(event) {
+      form.reset();
+    })
+  })()
+</script>

@@ -3,7 +3,7 @@
 <div class="row mb-2">
     <div class="d-flex align-items-center justify-content-between">
         <div>
-            <button data-bs-toggle="modal" data-bs-target="#add_field_modal" class="btn btn-primary shadow">
+            <button data-bs-toggle="modal" data-bs-target="#save_field_modal" class="btn btn-primary shadow">
                 <i class="bi bi-plus-circle me-2"></i>Add Field
             </button>
         </div>
@@ -15,7 +15,7 @@
 </div>
 <div class="row">
   <div class="col-12">
-    <button data-bs-toggle="modal" data-bs-target="#add_field_modal" class="btn add_field_btn w-100 shadow">
+    <button data-bs-toggle="modal" data-bs-target="#save_field_modal" class="btn add_field_btn w-100 shadow">
         <i class="bi bi-plus-circle me-2"></i>Add Field
     </button>
   </div>
@@ -29,4 +29,5 @@
 </div>
 <%}%>
     
-<%-include('../partials/base/modals/add_field.ejs')%>
+<%-include('../partials/base/modals/model.ejs')%>
+<%-include('../partials/base/modals/field.ejs')%>

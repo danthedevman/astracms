@@ -11,6 +11,10 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+a {
+  text-decoration: none;
+}
+
 .btn-close {
   color: #fff !important;
 }
@@ -141,7 +145,7 @@ table td {
   scrollbar-color: #818cf8 #000;
   scrollbar-width: thin;
   height: 100%;
-  padding: 24px 0 104px 0;
+  padding: 0 0 104px 0;
 }
 .sidemenu .link {
   text-decoration: none;
@@ -165,19 +169,31 @@ table td {
   background: #818cf8 !important;
 }
 
-.sidemenu_dropdown_select_wrapper {
+.dropdown_select_wrapper {
   padding: 0 10px;
   margin-bottom: 10px;
 }
-.sidemenu_dropdown_select_wrapper button, .sidemenu_dropdown_select_wrapper .dropdown-menu {
+.dropdown_select_wrapper .dropdown .btn:focus {
+  box-shadow: none;
+}
+.dropdown_select_wrapper .dropdown .btn.show .bi-chevron-up {
+  display: block !important;
+}
+.dropdown_select_wrapper .dropdown .btn.show .bi-chevron-down {
+  display: none !important;
+}
+.dropdown_select_wrapper button,
+.dropdown_select_wrapper .dropdown-menu {
   background-color: #020617 !important;
   color: #fff !important;
   border-color: #4338ca !important;
 }
-.sidemenu_dropdown_select_wrapper button li a:hover, .sidemenu_dropdown_select_wrapper .dropdown-menu li a:hover {
+.dropdown_select_wrapper button li a:hover,
+.dropdown_select_wrapper .dropdown-menu li a:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
-.sidemenu_dropdown_select_wrapper button a, .sidemenu_dropdown_select_wrapper .dropdown-menu a {
+.dropdown_select_wrapper button a,
+.dropdown_select_wrapper .dropdown-menu a {
   color: #fff !important;
 }
 
@@ -305,12 +321,15 @@ main {
 .filter_search {
   background: rgba(0, 0, 0, 0.15);
   color: #fff;
-  height: 50px;
 }
 
 .grip_btn {
   background: rgba(0, 0, 0, 0.3);
-  border-color: #e6e6e6;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+.grip_btn:hover {
+  cursor: move;
+  cursor: grab;
 }
 
 /*# sourceMappingURL=main.css.map */

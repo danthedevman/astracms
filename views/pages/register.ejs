@@ -46,6 +46,10 @@
             pw
         }),
       });
+
+      if(res.status === 200){
+        Turbo.visit("/");
+      }
     };
 
   })();

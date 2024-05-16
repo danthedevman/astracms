@@ -11,6 +11,21 @@ class FormUtil {
     return this;
   }
 
+  getElement(selector) {
+    if (!selector) {
+      return;
+    }
+    return this.form.querySelector(selector);
+  }
+
+
+  getElements(selector) {
+    if (!selector) {
+      return;
+    }
+    return this.form.querySelectorAll(selector);
+  }
+
   reset() {
     this.form.reset();
     this.getMandatoryFields().forEach((f) => {
@@ -74,7 +89,11 @@ class FormUtil {
     if (this.nil(target)) return;
     const formGroup = target.closest("[data-form_group]");
     if (bool) {
-      target.classList.add("border-danger");
+      if (target.closest(".dropdown")) {
+        target.closest(".dropdown").querySelector("[data-dropdown_btn]").classList.add("border-danger");
+      } else {
+        target.classList.add("border-danger");
+      }
       target.setAttribute("data-invalid_field", bool);
       if (this.notNil(formGroup)) {
         if (formGroup.querySelector("label"))
@@ -87,7 +106,11 @@ class FormUtil {
       }
     } else {
       //its valid and not mandatory
-      target.classList.remove("border-danger");
+      if (target.closest(".dropdown")) {
+        target.closest(".dropdown").querySelector("[data-dropdown_btn]").classList.remove("border-danger");
+      } else {
+        target.classList.remove("border-danger");
+      }
       if (this.notNil(formGroup)) {
         if (formGroup.querySelector("label"))
           formGroup.querySelector("label").classList.remove("text-danger");

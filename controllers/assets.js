@@ -22,7 +22,7 @@ const uploadAsset = async (req, res, next) => {
     return;
   }
  // console.log(file)
- 
+  const file = req.file;
   const db = await DBConnection.getDB(req.params.base);
   await db.createCollection("sys_asset");
   let asset = await db.collection("sys_asset").insertOne({
@@ -34,11 +34,10 @@ const uploadAsset = async (req, res, next) => {
 
   if(asset && asset.insertedId){
   const fileUtil = new FileUtil();
-  const file = req.file;
-  await fileUtil.upload(`${req.params.base}__${file.insertedId}`,file);
+  await fileUtil.upload(`${req.params.base}${asset.insertedId}`,file);
   }
 
-  res.status(200).send({sys_asset:asset._id});
+  res.status(200).send({sys_asset:asset.insertedId});
 };
 
 const deleteAsset = async (req, res, next) => {

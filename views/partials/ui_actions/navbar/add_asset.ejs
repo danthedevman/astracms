@@ -19,7 +19,7 @@
         if (!file) {
           return
         }
-
+        uploadAssetBtn.setAttribute("disabled",true);
         const formData = new FormData();
         formData.append("file", file);
         fetch(`/${window._astracms.base_id}/assets/upload`, {
@@ -31,6 +31,7 @@
               Turbo.visit(`${document.location.pathname}${document.location.search}`);
             }
           }
+          uploadAssetBtn.removeAttribute("disabled");
         });
       };
     }

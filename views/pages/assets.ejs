@@ -12,7 +12,7 @@
       <div class="card-body" style="height:200px;overflow: hidden;">
         <div class="d-flex align-items-center flex-column justify-content-center" style="height:100%;">
           <%if(asset.mimetype.indexOf("image") !== -1){%>
-          <img style="width:100%;height:100%;object-fit: contain;" class="img-responsive" src="<%=locals.BUCKET_PUBLIC_HOST_URL+'/'+base._id+'__'+asset.name%>" />
+          <img style="width:100%;height:100%;object-fit: contain;" class="img-responsive" src="<%=locals.BUCKET_PUBLIC_HOST_URL+'/'+base._id+asset._id%>" />
           <%}%>
             <%if(asset.mimetype.indexOf("video") !== -1){%>
           <video width="100%" height="100%" controls>
@@ -24,8 +24,11 @@
      </div>
      <div class="card-footer">
         <div class="d-flex align-items-center justify-content-between">
-            <button data-asset_id="<%=asset._id.toString()%>" data-action="delete_asset" class="btn btn-danger btn-sm">
-          Delete
+            <button data-asset_name="<%=asset.name.toString()%>" data-asset_id="<%=asset._id.toString()%>" data-action="delete_asset" class="btn btn-danger btn-sm">
+          <i class="bi bi-trash"></i>
+          </button>
+          <button data-asset_name="<%=asset.name.toString()%>" data-asset_id="<%=asset._id.toString()%>" data-action="copy_asset_link" class="btn btn-primary btn-sm">
+            <i class="bi bi-link"></i>
           </button>
         </div>
       </div>
@@ -47,6 +50,12 @@
     deleteAssetBtns.forEach((btn) => {
       btn.onclick = async (evt) => {
         evt.preventDefault();
+        btn.setAttribute("disabled",true);
+        const confirmDelete = confirm(`Are you sure you want to delete asset ${btn.getAttribute('data-asset_name')}?`);
+        if(!confirmDelete){
+            btn.removeAttribute("disabled");
+            return;
+        }
         let asset_id = btn.getAttribute("data-asset_id");
         let res = await fetch(`/${window._astracms.base_id}/assets/${asset_id}/delete`, {
           method: "DELETE",
@@ -61,6 +70,8 @@
               Turbo.visit(`${document.location.pathname}${document.location.search}`);
             }
           }
+
+          btn.removeAttribute("disabled");
       }
     })
   })()

@@ -1,17 +1,17 @@
-<div class="modal" tabindex="-1" id="add_field_modal" data-bs-backdrop="static">
+<div class="modal" tabindex="-1" id="save_field_modal" data-bs-backdrop="static">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Add Field</h5>
+        <h5 class="modal-title"><%=typeof field !== 'undefined' ? 'Edit' : 'Add'%> Field</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form name="add_field_form">
+        <form name="save_field_form">
           <div class="row">
             <div class="col-md-6">
               <div data-form_group="label" class="mb-3">
                 <label for="label" class="form-label">Label (required)</label>
-                <input data-mandatory="true" type="type" class="form-control" name="label" placeholder="Enter a label for your field...">
+                <input data-mandatory="true" type="text" class="form-control" name="label" placeholder="Enter a label for your field...">
               </div>
               <div data-form_group="type" class="mb-3">
                 <label for="label" class="form-label">Type (required)</label>
@@ -22,13 +22,15 @@
                   <option value="rich_text">Rich Text</option>
                   <option value="choice">Choice</option>
                   <option value="number">Number</option>
+                  <option value="checkbox">Checkbox</option>
+                  <option value="yes_no">Yes/No</option>
                   <option value="asset">Asset</option>
                   <option value="reference">Reference</option>
                 </select>
               </div>
               <div data-form_group="reference_type" class="mb-3 d-none">
                 <label for="name" class="form-label">Reference Type</label>
-                <select class="form-select">
+                <select data-mandatory="false" class="form-select">
                   <option selected value="single">Single Record</option>
                   <option value="multiple">Multiple Records</option>
                 </select>
@@ -37,21 +39,49 @@
                 <label for="label" class="form-label">Mandatory</label>
                 <select class="form-select">
                   <option selected value="no">No</option>
-                  <option value="yes">Yet</option>
+                  <option value="yes">Yes</option>
                 </select>
+
+                <div class="dropdown w-100 d-none">
+                  <button class="btn form-control d-flex align-items-center justify-content-between w-100" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div>No</div>
+                    <div><i class="bi bi-chevron-down"></i><i class="bi bi-chevron-up d-none"></i></div>
+                  </button>
+                  <ul style="width:100%;max-height:200px;overflow-y: auto;" class="dropdown-menu bg-dark p-3" aria-labelledby="dropdownMenuButton1">
+                    <li class="mb-2"><a class="w-100 d-block" href="javascript:void(0)" data-value="yes">Yes</a></li>
+                    <li class=""><a class="w-100 d-block" href="javascript:void(0)"  data-value="no">No</a></li>
+                  </ul>
+                  <input data-mandatory="false" value="no" type="hidden"  />
+                </div>
+
+                
               </div>
             </div>
             <div class="col-md-6">
               <div data-form_group="name" class="mb-3">
                 <label for="name" class="form-label">Name (required)</label>
-                <input data-mandatory="true" type="type" class="form-control" name="name" placeholder="">
+                <input data-mandatory="true" type="text" class="form-control" name="name" placeholder="">
               </div>
               <div data-form_group="select_model" class="mb-3 d-none">
                 <label for="name" class="form-label">Select Model</label>
-                <select class="form-select">
-                  <option selected value="no">No</option>
-                  <option value="yes">Yes</option>
-                </select>
+               <!--<input data-mandatory="false" type="text" class="form-control d-none" name="lookup_model" placeholder="Select a model...">-->
+              
+                <div data-lookup_wrapper class="dropdown w-100">
+                  <input data-lookup="sys_model" autofocus data-lookup_search class="form-control rounded-0" id="lookup_sys_model" placeholder="Search..." data-dropdown_btn/>
+                  <!--<button data-lookup="sys_model" class="btn form-control d-flex align-items-center justify-content-between w-100" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div>-Select-</div>
+                    <div><i class="bi bi-search"></i></div>
+                  </button>-->
+                  <ul class="dropdown-menu bg-dark p-0 w-100" aria-labelledby="dropdownMenuButton1">
+                    <li></li>
+                    <li class="mb-2 p-3">
+                      <ul data-lookup_results class="list-group bg-dark p-0" style="width:100%;max-height:200px;overflow-y: auto;">
+                      </ul>
+                    </li>
+                  </ul>
+                  <input data-mandatory="false" value="" name="lookup_model" type="hidden"  />
+                </div>
+              
               </div>
               <div data-form_group="title_field" class="mb-3">
                 <label for="name" class="form-label">Title Field</label>
@@ -107,9 +137,50 @@
   import FormUtil from "/scripts/utils/FormUtil.js";
   import ModelUtil from "/scripts/utils/ModelUtil.js";
   (() => {
+
+    let deferLookup;
     const form = new FormUtil({
-      selector: "[name='add_field_form']"
+      selector: "[name='save_field_form']"
     }).init();
+
+    const modelDropdownMenu = document.querySelector("#lookup_sys_model").closest(".dropdown").querySelector(".dropdown-menu")
+
+    document.getElementById("lookup_sys_model").onkeyup = triggerLookup;
+
+
+    function triggerLookup(evt){
+      clearTimeout(deferLookup);
+         deferLookup = setTimeout(async ()=>{
+         let res = await fetch(`/<%=locals.base._id%>/${this.getAttribute("data-lookup")}/search?sys_text_search=${encodeURI(this.value)}`);
+
+         if(res.status === 200){
+          let json = await res.json();
+          console.log(json);
+          let template = "";
+          json.results.forEach((result)=>{
+            template+=`<li class="list-group-item border-0 bg-dark p-0""><a class="d-block w-100" href="javascript:void(0)">${result.label}</a></li>`
+          })
+          const results = evt.target.closest(".dropdown").querySelector("[data-lookup_results]");
+          results.innerHTML = template;
+         }
+
+         },600);
+
+
+         modelDropdownMenu.classList.add("show");
+    }
+
+
+    //lookup field logic
+    const lookupFields = form.getElements("[data-lookup");
+    lookupFields.forEach((field)=>{
+      field.onfocus = (evt)=>{
+        evt.preventDefault();
+        triggerLookup();
+      };
+    });
+
+
     const addBaseBtn = document.querySelector("[data-action='add_model']");
     addBaseBtn.onclick = async (evt) => {
       evt.preventDefault();
@@ -129,10 +200,10 @@
       }
     }
 
-    const add_model_modal = document.getElementById('add_field_modal');
+    const add_model_modal = document.getElementById('save_field_modal');
     add_model_modal.addEventListener('hidden.bs.modal', function(event) {
       form.reset();
-      resetChoicesMacro();
+      resetHiddenFields();
     });
 
     const choiceList = document.getElementById("choice_list");
@@ -177,6 +248,8 @@
 
     const fieldType = document.getElementById("field_type");
     const choiceMacro = document.querySelector("[data-choices_macro]");
+    const select_model =  document.querySelector('[data-form_group="select_model"]');
+    const reference_type =  document.querySelector('[data-form_group="reference_type"]');
 
     if (fieldType.value === "choice") {
       choiceMacro.classList.remove("d-none");
@@ -186,32 +259,30 @@
         document.querySelector("[data-choices_macro]").classList.add("d-none");
         document.querySelector('[data-form_group="select_model"]').classList.add("d-none");
         document.querySelector('[data-form_group="reference_type"]').classList.add("d-none");
+        document.querySelector('[data-form_group="select_model"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
+       // document.querySelector('[data-form_group="reference_type"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
     }
 
     fieldType.onchange = (evt) => {
         resetHiddenFields()
       if (fieldType.value === "choice") {
         choiceMacro.classList.remove("d-none");
-        return;
-      }else{
-        choiceMacro.classList.add("d-none");
       }
 
       if (fieldType.value === "reference") {
+        select_model.querySelector("[data-mandatory]").setAttribute("data-mandatory",true);
+        //reference_type.querySelector("[data-mandatory]").setAttribute("data-mandatory",true);
+        //reference_type.setAttribute("data-mandatory",true);
         document.querySelector('[data-form_group="select_model"]').classList.remove("d-none");
         document.querySelector('[data-form_group="reference_type"]').classList.remove("d-none");
-        return;
-      }else{
-        document.querySelector('[data-form_group="select_model"]').classList.add("d-none");
-        document.querySelector('[data-form_group="reference_type"]').classList.add("d-none");
       }
 
       if (fieldType.value === "asset") {
+        reference_type.querySelector("[data-mandatory]").setAttribute("data-mandatory",true);
         document.querySelector('[data-form_group="reference_type"]').classList.remove("d-none");
-        return;
-      }else{
-        document.querySelector('[data-form_group="reference_type"]').classList.add("d-none");
       }
+
+      form.init();
 
     };
 
