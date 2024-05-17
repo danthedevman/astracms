@@ -10,20 +10,29 @@ const getModels = async (req, res, next) => {
     models: models,
     path: "models",
     navbar_actions: [{ name: "add_model", order: 100 }],
-    crumbs:[{label:"Models"}]
+    crumbs: [{ label: "Models" }],
   });
 };
 
 const getModel = async (req, res, next) => {
+  if(!ObjectId.isValid(req.params.id)){
+    return res.redirect(`/${req.params.base}/models`);
+  }
   const db = await DBConnection.getDB(req.params.base);
-  const model = await db.collection("sys_model").findOne({_id:new ObjectId(req.params.id)});
+  const model = await db
+    .collection("sys_model")
+    .findOne({ _id: new ObjectId(req.params.id) });
+
+const fields =  await db.collection("sys_field").find({ sys_model: new ObjectId(req.params.id) }).toArray();
+console.log(fields)
   res.render("./pages/model", {
     title: `Model - ${model.name}`,
     layout: "./layouts/base",
     model: model,
+    fields:fields,
     path: "models",
-    navbar_actions: [{name:"model_actions"}],
-    crumbs:[{label:"Models",href:`models`},{label:`${model.label}`}]
+    navbar_actions: [{ name: "model_actions" }],
+    crumbs: [{ label: "Models", href: `models` }, { label: `${model.label}` }],
   });
 };
 
@@ -32,28 +41,86 @@ const saveModel = async (req, res, next) => {
     res.status(503).send();
     return;
   }
+  let model;
   const db = await DBConnection.getDB(req.params.base);
-  await db.createCollection("sys_model");
-  let model = await db.collection("sys_model").insertOne({
+  const modelCollection = await db.collection("sys_model");
+  const saveData = {
     label: req.body.label,
     name: req.body.name,
     sys_created_by: new ObjectId(req.user._id),
     description: req.body.description,
     sys_created: new Date(),
-  });
+  };
 
-  if (model) res.status(200).send({ record_id: String(model.insertedId) });
+  if (req.params.id && ObjectId.isValid(req.params.id)) {
+    model = await modelCollection.findOneAndUpdate({
+      _id: new ObjectId(req.params.id),
+    },{ $set:saveData});
+  } else {
+    model = await modelCollection.insertOne(saveData);
+  }
+
+  console.log(model)
+  if (model)
+    res
+      .status(200)
+      .send({ record_id: model && model._id || model && model.insertedId});
 };
 
 const deleteModel = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
-  const model = await db.collection("sys_model").deleteOne({_id:new ObjectId(req.params.id)});
+  await db
+    .collection("sys_model")
+    .deleteOne({ _id: new ObjectId(req.params.id) });
   res.status(200).send();
 };
+
+
+const saveField = async (req,res,next) => {
+  if (!req.body || !req.params.base || !req.params.id || !ObjectId.isValid(req.params.id)) {
+    res.status(503).send();
+    return;
+  }
+  let field;
+  const db = await DBConnection.getDB(req.params.base);
+  const modelCollection = await db.collection("sys_model");
+  const model = await modelCollection.findOne({_id:new ObjectId(req.params.id)});
+  if(!model){
+    return res.status(404).send({});
+  }
+
+  const fieldCollection = await db.collection("sys_field");
+  const saveData = req.body;
+  saveData.sys_model = new ObjectId(req.params.id);
+
+  if (req.params.field_id && ObjectId.isValid(req.params.field_id)) {
+    field = await fieldCollection.findOneAndUpdate({
+      _id: new ObjectId(req.params.field_id),
+    },{ $set:saveData});
+  } else {
+    field = await fieldCollection.insertOne(saveData);
+  }
+
+  if (field)
+    res
+      .status(200)
+      .send({ record_id: model && model._id});
+};
+
+const deleteField = async () => {};
+
+
+function _getFieldData(data){
+  let answer = {};
+  answer.label = data.label;
+  answer.name = data.name;
+}
 
 module.exports = {
   getModels,
   getModel,
   saveModel,
-  deleteModel
+  deleteModel,
+  saveField,
+  deleteField,
 };

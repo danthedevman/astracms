@@ -65,13 +65,12 @@
 
       if (Turbo && res.status === 200) {
         let json = await res.json();
-        console.log(json);
         Turbo.visit(`/<%=locals.base._id%>/models/${json.record_id}`);
       }
     }
 
-    const add_model_modal = document.getElementById('save_model_modal');
-    add_model_modal.addEventListener('hidden.bs.modal', function(event) {
+    const save_model_modal = document.getElementById('save_model_modal');
+    save_model_modal.addEventListener('hidden.bs.modal', function(event) {
       form.reset();
     })
   })()

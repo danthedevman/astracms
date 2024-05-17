@@ -15,7 +15,7 @@
               </div>
               <div data-form_group="type" class="mb-3">
                 <label for="label" class="form-label">Type (required)</label>
-                <select id="field_type" data-mandatory="true" class="form-select">
+                <select name="type" id="field_type" data-mandatory="true" class="form-select">
                   <option selected value="">-Select-</option>
                   <option value="single_line_text">Single Line Text</option>
                   <option value="multi_line_text">Multi Line Text</option>
@@ -30,31 +30,17 @@
               </div>
               <div data-form_group="reference_type" class="mb-3 d-none">
                 <label for="name" class="form-label">Reference Type</label>
-                <select data-mandatory="false" class="form-select">
+                <select name="reference_type" data-mandatory="false" class="form-select">
                   <option selected value="single">Single Record</option>
                   <option value="multiple">Multiple Records</option>
                 </select>
               </div>
               <div data-form_group="mandatory" class="mb-3">
                 <label for="label" class="form-label">Mandatory</label>
-                <select class="form-select">
+                <select name="mandatory" class="form-select">
                   <option selected value="no">No</option>
                   <option value="yes">Yes</option>
-                </select>
-
-                <div class="dropdown w-100 d-none">
-                  <button class="btn form-control d-flex align-items-center justify-content-between w-100" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div>No</div>
-                    <div><i class="bi bi-chevron-down"></i><i class="bi bi-chevron-up d-none"></i></div>
-                  </button>
-                  <ul style="width:100%;max-height:200px;overflow-y: auto;" class="dropdown-menu bg-dark p-3" aria-labelledby="dropdownMenuButton1">
-                    <li class="mb-2"><a class="w-100 d-block" href="javascript:void(0)" data-value="yes">Yes</a></li>
-                    <li class=""><a class="w-100 d-block" href="javascript:void(0)"  data-value="no">No</a></li>
-                  </ul>
-                  <input data-mandatory="false" value="no" type="hidden"  />
-                </div>
-
-                
+                </select>  
               </div>
             </div>
             <div class="col-md-6">
@@ -67,7 +53,7 @@
                <!--<input data-mandatory="false" type="text" class="form-control d-none" name="lookup_model" placeholder="Select a model...">-->
               
                 <div data-lookup_wrapper class="dropdown w-100">
-                  <input data-lookup="sys_model" autofocus data-lookup_search class="form-control rounded-0" id="lookup_sys_model" placeholder="Search..." data-dropdown_btn/>
+                  <input name="reference_model" data-lookup="sys_model" autofocus data-lookup_search class="form-control rounded-0" id="lookup_sys_model" placeholder="Search..." data-dropdown_btn/>
                   <!--<button data-lookup="sys_model" class="btn form-control d-flex align-items-center justify-content-between w-100" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <div>-Select-</div>
                     <div><i class="bi bi-search"></i></div>
@@ -85,14 +71,14 @@
               </div>
               <div data-form_group="title_field" class="mb-3">
                 <label for="name" class="form-label">Title Field</label>
-                <select class="form-select">
+                <select name="title_field" class="form-select">
                   <option selected value="no">No</option>
                   <option value="yes">Yes</option>
                 </select>
               </div>
               <div data-form_group="hidden_on_form" class="mb-3">
                 <label for="name" class="form-label">Hidden On Form</label>
-                <select class="form-select">
+                <select name="hidden_on_form" class="form-select">
                   <option selected value="no">No</option>
                   <option value="yes">Yes</option>
                 </select>
@@ -108,12 +94,12 @@
                   <div data-form_group class="col-6">
                     <div class="d-flex align-items-center">
                       <button type="button" class="btn grip_btn me-2"><i class="bi bi-grip-vertical"></i></button>
-                      <input data-mandatory="true" class="form-control" type="text" placeholder="Label">
+                      <input data-mandatory="false" class="form-control" type="text" placeholder="Label">
                     </div>
                   </div>
                   <div data-form_group class="col-6">
                     <div class="d-flex align-items-center">
-                      <input data-mandatory="true" class="form-control" type="text" placeholder="Value">
+                      <input data-mandatory="false" class="form-control" type="text" placeholder="Value">
                       <button data-action="remove_choice" class="btn-sm btn-danger ms-2"><i class="bi bi-trash"></i></button>
                     </div>
                   </div>
@@ -128,7 +114,7 @@
       </div>
       <div class="modal-footer d-flex align-items-center justify-content-between">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-        <button data-action="add_model" type="button" class="btn btn-primary">Confirm</button>
+        <button data-action="save_field" type="button" class="btn btn-primary">Confirm</button>
       </div>
     </div>
   </div>
@@ -178,16 +164,22 @@
 
     }
 
-    const addBaseBtn = document.querySelector("[data-action='add_model']");
-    addBaseBtn.onclick = async (evt) => {
+    const saveFieldBtn = document.querySelector("[data-action='save_field']");
+    saveFieldBtn.onclick = async (evt) => {
       evt.preventDefault();
       if (!form.canSubmit()) {
+        alert()
         return;
       }
 
-      let res = await new ModelUtil().createModel({
+      let res = await new ModelUtil().saveField("<%=model._id%>",{
+        label: form.getValue("[name='label']"),
         name: form.getValue("[name='name']"),
-        description: form.getValue("[name='description']")
+        type: form.getValue("[name='type']"),
+        mandatory: form.getValue("[name='mandatory']"),
+        hidden_on_form: form.getValue("[name='hidden_on_form']"),
+        reference_type: form.getValue("[name='reference_type']"),
+        reference_model: form.getValue("[name='reference_model']"),
       });
 
       if (Turbo && res.status === 200) {
@@ -197,8 +189,8 @@
       }
     }
 
-    const add_model_modal = document.getElementById('save_field_modal');
-    add_model_modal.addEventListener('hidden.bs.modal', function(event) {
+    const save_field_modal = document.getElementById('save_field_modal');
+    save_field_modal.addEventListener('hidden.bs.modal', function(event) {
       form.reset();
       resetHiddenFields();
     });
@@ -212,7 +204,7 @@
       });
     };
 
-    add_model_modal.querySelector('[data-action="add_choice"]').onclick = (evt) => {
+    save_field_modal.querySelector('[data-action="add_choice"]').onclick = (evt) => {
       evt.preventDefault();
       let x = document.querySelector(".choice_list_row");
 

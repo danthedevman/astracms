@@ -20,6 +20,22 @@ class ModelUtil {
         body: JSON.stringify(postData),
       });
     }
+
+    async saveField(model,options) {
+        if(!options) return;
+        const postData = options;
+  
+        const record_id = options.record_id || "new";
+    
+        return await fetch(`/${window._astracms.base_id}/models/${model}/field/${record_id}`, {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postData),
+        });
+      }
   }
   export default ModelUtil;
   

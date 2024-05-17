@@ -1,39 +1,41 @@
 <%if(typeof model !== "undefined"){%>
 <div class="d-flex align-items-center">
-    <button data-model_label="<%=model.label.toString()%>" data-action="delete_model" data-model_id="<%=model._id.toString()%>" class="btn btn-danger me-2">
-        Delete Model
-    </button>
-    <button data-bs-toggle="modal" data-bs-target="#save_model_modal" class="btn btn-primary">
-        Edit Details
-    </button>
+  <button data-model_label="<%=model.label.toString()%>" data-action="delete_model" data-model_id="<%=model._id.toString()%>" class="btn btn-danger me-2">
+    Delete Model
+  </button>
+  <button data-bs-toggle="modal" data-bs-target="#save_model_modal" class="btn btn-primary">
+    Edit Details
+  </button>
 </div>
 <script>
-     const deleteModelBtns = document.querySelectorAll('[data-action="delete_model"]');
-      deleteModelBtns.forEach((btn) => {
-        btn.onclick = async (evt) => {
-          evt.preventDefault();
-          btn.setAttribute("disabled",true);
-          const confirmDelete = confirm(`Are you sure you want to delete model ${btn.getAttribute("data-model_label")}?`);
-          if(!confirmDelete){
-            btn.removeAttribute("disabled");
-            return;
-          }
-          let model_id = btn.getAttribute("data-model_id");
-          let res = await fetch(`/${window._astracms.base_id}/models/${model_id}/delete`, {
-            method: "DELETE",
-            credentials: "same-origin",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-  
-          if (res.status === 200) {
-              if (Turbo) {
-                Turbo.visit(`/${window._astracms.base_id}/models`);
-              }
-            }
-            btn.removeAttribute("disabled");
+  (() => {
+    const deleteModelBtns = document.querySelectorAll('[data-action="delete_model"]');
+    deleteModelBtns.forEach((btn) => {
+      btn.onclick = async (evt) => {
+        evt.preventDefault();
+        btn.setAttribute("disabled", true);
+        const confirmDelete = confirm(`Are you sure you want to delete model ${btn.getAttribute("data-model_label")}?`);
+        if (!confirmDelete) {
+          btn.removeAttribute("disabled");
+          return;
         }
-      })
+        let model_id = btn.getAttribute("data-model_id");
+        let res = await fetch(`/${window._astracms.base_id}/models/${model_id}/delete`, {
+          method: "DELETE",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (res.status === 200) {
+          if (Turbo) {
+            Turbo.visit(`/${window._astracms.base_id}/models`);
+          }
+        }
+        btn.removeAttribute("disabled");
+      }
+    })
+  })()
 </script>
 <%}%>

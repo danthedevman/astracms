@@ -41,6 +41,12 @@ class FormUtil {
     }
   }
 
+  getFieldValueObject(name,value,display_value){
+    const answer = {};
+    answer[name] = {value:value,display_value:display_value};
+    return answer;
+  }
+
   nil(item) {
     return new ValidationUtil().nil(item);
   }
