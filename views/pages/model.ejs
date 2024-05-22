@@ -153,18 +153,22 @@
           let field = JSON.parse(btn.getAttribute("data-field_data"));
           let saveFieldModal = document.querySelector("#save_field_modal");
           let saveFieldForm = saveFieldModal.querySelector('[name="save_field_form"]');
-          for(let prop in field){
+          for (let prop in field) {
             let formField = saveFieldForm.querySelector(`[name='${prop}']`);
-            if(formField){
+            if (formField) {
               formField.value = field[prop];
+              let event = new Event("change");
+              formField.dispatchEvent(event);
             }
           }
 
           let fieldIdInput = saveFieldForm.querySelector('[name="field_id"]');
-          if(!fieldIdInput) return;
+          if (!fieldIdInput) return;
           fieldIdInput.value = `${field._id}`;
 
-          let bsSaveModal = new bootstrap.Modal(document.getElementById("save_field_modal"),{keyboard:false});
+          let bsSaveModal = new bootstrap.Modal(document.getElementById("save_field_modal"), {
+            keyboard: false
+          });
           bsSaveModal.show();
         } catch (error) {
           console.log(error);
