@@ -24,7 +24,7 @@ const getModel = async (req, res, next) => {
     .findOne({ _id: new ObjectId(req.params.id) });
 
 const fields =  await db.collection("sys_field").find({ sys_model: new ObjectId(req.params.id) }).toArray();
-console.log(fields)
+
   res.render("./pages/model", {
     title: `Model - ${model.name}`,
     layout: "./layouts/base",
@@ -93,9 +93,9 @@ const saveField = async (req,res,next) => {
   const saveData = req.body;
   saveData.sys_model = new ObjectId(req.params.id);
 
-  if (req.params.field_id && ObjectId.isValid(req.params.field_id)) {
+  if (saveData.field_id && ObjectId.isValid(saveData.field_id)) {
     field = await fieldCollection.findOneAndUpdate({
-      _id: new ObjectId(req.params.field_id),
+      _id: new ObjectId(saveData.field_id),
     },{ $set:saveData});
   } else {
     field = await fieldCollection.insertOne(saveData);
@@ -107,7 +107,18 @@ const saveField = async (req,res,next) => {
       .send({ record_id: model && model._id});
 };
 
-const deleteField = async () => {};
+const deleteField = async (req,res,next) => {
+  if (!req.params.base || !req.params.field_id || !ObjectId.isValid(req.params.field_id)) {
+    res.status(503).send();
+    return;
+  }
+
+  const db = await DBConnection.getDB(req.params.base);
+  await db.collection("sys_field").deleteOne({ _id: new ObjectId(req.params.field_id) });
+    res
+      .status(200)
+      .send();
+};
 
 
 function _getFieldData(data){

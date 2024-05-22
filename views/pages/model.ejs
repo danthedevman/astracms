@@ -1,7 +1,6 @@
-
 <%if(typeof model !== "undefined"){%>
 
-    <% 
+<% 
  const fieldDefinitions = [
   {
     label:"Label",
@@ -17,8 +16,17 @@
     type:"choice",
     choices:{
         single_line_text:"Single Line Text",
-        checkbox:"Checkbox"
+        checkbox:"Checkbox",
+        rich_text:"Rich Text",
+        reference:"Reference",
+        asset:"Asset"
     }
+  },
+  {
+    label:"Title Field",
+    name:"title_field",
+    type:"choice",
+    choices:{yes:"Yes",no:"No"}
   },
   {
     label:"Mandatory",
@@ -31,6 +39,17 @@
     name:"hidden_on_form",
     type:"choice",
     choices:{yes:"Yes",no:"No"}
+  },
+  {
+    label:"Reference Type",
+    name:"reference_type",
+    type:"choice",
+    choices:{single:"Single Record",multiple:"Multiple Records"}
+  },
+  {
+    label:"Select Reference",
+    name:"reference_model",
+    type:"reference",
   }
 ];
  %>
@@ -53,18 +72,46 @@
 <div class="row mb-3">
   <div class="col-12">
     <div class="card">
-      <div class="card-header">
+      <div class="card-header bg-transparent d-flex align-items-center">
         <div class="card-title">
           <%=field.label%>
+        </div>
+        <div class="ms-auto card_actions d-flex align-items-center">
+          <button data-action="delete_field" data-field_data="<%=JSON.stringify(field)%>" data-field_id="<%=field._id%>" class="btn btn-danger">Delete</button>
+          <button data-action="edit_field" data-field_data="<%=JSON.stringify(field)%>" class="ms-2 btn btn-primary">Edit</button>
         </div>
       </div>
       <div class="card-body">
         <div class="row">
-            <%fieldDefinitions.forEach((fd)=>{%>
-            <div class="col-md-3 mb-3">
-                    <span class="text-muted"><%=fd.label%>: </span><%=fd.choices ? fd.choices[field[fd.name]] : field[fd.name]%>
+          <%fieldDefinitions.forEach((fd)=>{%>
+          <%if(field.type === "reference"){%>
+          <%if(true){%>
+          <%if(field[fd.name]){%>
+          <div class="col-md-3 mb-3">
+            <div class="text-muted"><%=fd.label%>:</div>
+            <div><%=fd.choices ? fd.choices[field[fd.name]] : field[fd.name]%>
             </div>
-             <%})%>
+          </div>
+          <%}%>
+                <%}%>
+          <%}else if(field.type === "asset"){%>
+          <%if(fd.name !== "reference_model"){%>
+          <div class="col-md-3 mb-3">
+            <div class="text-muted"><%=fd.label%>:</div>
+            <div><%=fd.choices ? fd.choices[field[fd.name]] : field[fd.name]%>
+            </div>
+          </div>
+          <%}%>
+              <%}else{%>
+          <%if(fd.name !== "reference_model" && fd.name !== "reference_type"){%>
+          <div class="col-md-3 mb-3">
+            <div class="text-muted"><%=fd.label%>:</div>
+            <div><%=fd.choices ? fd.choices[field[fd.name]] : field[fd.name]%>
+            </div>
+          </div>
+          <%}%>
+            <%}%>
+          <%})%>
         </div>
       </div>
     </div>
@@ -90,3 +137,60 @@
     
 <%-include('../partials/base/modals/model.ejs')%>
 <%-include('../partials/base/modals/field.ejs')%>
+
+
+<script type="module">
+  import ModelUtil from "/scripts/utils/ModelUtil.js";
+  (() => {
+    const modelUtil = new ModelUtil();
+    const editFieldBtns = document.querySelectorAll("[data-action='edit_field']");
+    const deleteFieldBtns = document.querySelectorAll("[data-action='delete_field']");
+
+    editFieldBtns.forEach((btn) => {
+      btn.onclick = (evt) => {
+        evt.preventDefault();
+        try {
+          let field = JSON.parse(btn.getAttribute("data-field_data"));
+          let saveFieldModal = document.querySelector("#save_field_modal");
+          let saveFieldForm = saveFieldModal.querySelector('[name="save_field_form"]');
+          for(let prop in field){
+            let formField = saveFieldForm.querySelector(`[name='${prop}']`);
+            if(formField){
+              formField.value = field[prop];
+            }
+          }
+
+          let fieldIdInput = saveFieldForm.querySelector('[name="field_id"]');
+          if(!fieldIdInput) return;
+          fieldIdInput.value = `${field._id}`;
+
+          let bsSaveModal = new bootstrap.Modal(document.getElementById("save_field_modal"),{keyboard:false});
+          bsSaveModal.show();
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+
+    deleteFieldBtns.forEach((btn) => {
+      btn.onclick = async (evt) => {
+        evt.preventDefault();
+        try {
+          let field = JSON.parse(btn.getAttribute("data-field_data"));
+          let confirmDelete = confirm(`Are you sure you want to delete field: ${field.name}`);
+          if (!confirmDelete) return;
+          btn.disabled = true;
+          let field_id = btn.getAttribute("data-field_id");
+          let res = await modelUtil.deleteField("<%=model._id%>", {
+            record_id: `${field_id}`
+          });
+        } catch (error) {
+          console.log(error);
+        }
+
+        Turbo.visit(`/<%=locals.base._id%>/models/<%=model._id%>`);
+      }
+    });
+
+  })()
+</script>

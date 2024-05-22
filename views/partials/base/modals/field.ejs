@@ -53,7 +53,7 @@
                <!--<input data-mandatory="false" type="text" class="form-control d-none" name="lookup_model" placeholder="Select a model...">-->
               
                 <div data-lookup_wrapper class="dropdown w-100">
-                  <input name="reference_model" data-lookup="sys_model" autofocus data-lookup_search class="form-control rounded-0" id="lookup_sys_model" placeholder="Search..." data-dropdown_btn/>
+                  <input data-mandatory="false"  name="reference_model" data-lookup="sys_model" autofocus data-lookup_search class="form-control rounded-0" id="lookup_sys_model" placeholder="Search..." data-dropdown_btn/>
                   <!--<button data-lookup="sys_model" class="btn form-control d-flex align-items-center justify-content-between w-100" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <div>-Select-</div>
                     <div><i class="bi bi-search"></i></div>
@@ -65,7 +65,7 @@
                       </ul>
                     </li>
                   </ul>
-                  <input data-mandatory="false" value="" name="lookup_model" type="hidden"  />
+                  <input value="" name="lookup_model" type="hidden"  />
                 </div>
               
               </div>
@@ -110,6 +110,7 @@
               </div>
             </div>
           </div>
+          <input type="hidden" name="field_id" value=""/>
         </form>
       </div>
       <div class="modal-footer d-flex align-items-center justify-content-between">
@@ -135,6 +136,7 @@
 
 
     function triggerLookup(evt){
+
       clearTimeout(deferLookup);
          deferLookup = setTimeout(async ()=>{
          let res = await fetch(`/<%=locals.base._id%>/${this.getAttribute("data-lookup")}/search?sys_text_search=${encodeURI(this.value)}`);
@@ -168,7 +170,6 @@
     saveFieldBtn.onclick = async (evt) => {
       evt.preventDefault();
       if (!form.canSubmit()) {
-        alert()
         return;
       }
 
@@ -176,10 +177,12 @@
         label: form.getValue("[name='label']"),
         name: form.getValue("[name='name']"),
         type: form.getValue("[name='type']"),
+        title_field: form.getValue("[name='title_field']"),
         mandatory: form.getValue("[name='mandatory']"),
         hidden_on_form: form.getValue("[name='hidden_on_form']"),
         reference_type: form.getValue("[name='reference_type']"),
         reference_model: form.getValue("[name='reference_model']"),
+        field_id:form.getValue("[name='field_id']")
       });
 
       if (Turbo && res.status === 200) {
