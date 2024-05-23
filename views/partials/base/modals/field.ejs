@@ -72,8 +72,8 @@
               <div data-form_group="title_field" class="mb-3">
                 <label for="name" class="form-label">Title Field</label>
                 <select name="title_field" class="form-select">
-                  <option selected value="no">No</option>
-                  <option value="yes">Yes</option>
+                  <option <%if(typeof fields !== "undefined" && fields.length > 0){%>selected<%}%> value="no">No</option>
+                  <option <%if(typeof fields === "undefined" || fields.length === 0){%>selected<%}%> value="yes">Yes</option>
                 </select>
               </div>
               <div data-form_group="hidden_on_form" class="mb-3">
