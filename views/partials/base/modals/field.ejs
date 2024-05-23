@@ -162,7 +162,7 @@
 
          modelDropdownMenu.classList.add("show");
 
-         },600);
+         },300);
 
     }
 
@@ -248,11 +248,12 @@
     }
 
     function resetHiddenFields(){
-        document.querySelector("[data-choices_macro]").classList.add("d-none");
-        document.querySelector('[data-form_group="select_model"]').classList.add("d-none");
-        document.querySelector('[data-form_group="reference_type"]').classList.add("d-none");
-        document.querySelector('[data-form_group="select_model"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
-       // document.querySelector('[data-form_group="reference_type"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
+        form.getElement("[data-choices_macro]").classList.add("d-none");
+        form.getElement('[data-form_group="select_model"]').classList.add("d-none");
+        form.getElement('[data-form_group="reference_type"]').classList.add("d-none");
+        form.getElement('[data-form_group="select_model"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
+        form.getElement(`[name="field_id"]`).value="";
+        // document.querySelector('[data-form_group="reference_type"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
     }
 
     fieldType.onchange = (evt) => {
@@ -292,6 +293,17 @@
       macro.classList.add("d-none");
 
     }
+
+    let labelInput = form.getElement(`[name="label"]`);
+    let nameInput =  form.getElement(`[name="name"]`);
+    let recordIdInput = form.getElement(`[name="field_id"]`);
+    labelInput.oninput = (evt)=>{
+      if(recordIdInput.value){
+          return;
+      }
+
+      nameInput.value = String(labelInput.value).toLowerCase().replace(/\s/g,"_");
+    };
 
   })()
 </script>
