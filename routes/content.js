@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-const {getContent,getContentByModel} = require('../controllers/content');
+const {getContent,getContentByModel,getContentRecord,saveContent} = require('../controllers/content');
+const multer  = require('multer');
+const upload = multer();
 
 router.get('/', getContent);
 router.get('/:model', getContentByModel);
-router.post('/:model/new', getContent);
-router.put('/:model/:id/update', getContent);
-router.delete('/:model/:id/delete', getContent);
+router.get('/:model/new', getContentRecord);
+router.post('/:model/:id',upload.none(),saveContent);
+//router.delete('/:model/:id/delete', getContent);
 
 module.exports = router;

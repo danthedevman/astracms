@@ -19,7 +19,8 @@
         checkbox:"Checkbox",
         rich_text:"Rich Text",
         reference:"Reference",
-        asset:"Asset"
+        asset:"Asset",
+        multi_line_text:"Mult Line Text"
     }
   },
   {
@@ -88,7 +89,7 @@
           <%if(true){%>
           <%if(field[fd.name]){%>
           <div class="col-md-3 mb-3">
-            <div class="text-muted"><%=fd.label%>:</div>
+            <div class="text-primary"><%=fd.label%>:</div>
             <div><%=fd.choices ? fd.choices[field[fd.name]] : field[fd.name]%>
             </div>
           </div>
@@ -97,7 +98,7 @@
           <%}else if(field.type === "asset"){%>
           <%if(fd.name !== "reference_model"){%>
           <div class="col-md-3 mb-3">
-            <div class="text-muted"><%=fd.label%>:</div>
+            <div class="text-primary"><%=fd.label%>:</div>
             <div><%=fd.choices ? fd.choices[field[fd.name]] : field[fd.name]%>
             </div>
           </div>
@@ -105,7 +106,7 @@
               <%}else{%>
           <%if(fd.name !== "reference_model" && fd.name !== "reference_type"){%>
           <div class="col-md-3 mb-3">
-            <div class="text-muted"><%=fd.label%>:</div>
+            <div class="text-primary"><%=fd.label%>:</div>
             <div><%=fd.choices ? fd.choices[field[fd.name]] : field[fd.name]%>
             </div>
           </div>

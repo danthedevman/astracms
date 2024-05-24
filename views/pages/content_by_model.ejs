@@ -1,6 +1,6 @@
 <%-include('../partials/container_start.ejs')%>
 <div class="row mb-3">
-  <%-include('../partials/menus/content_pills.ejs')%>
+
 </div>
 
 <div class="row">
@@ -10,7 +10,7 @@
         <div class="card-title">
           <div class="d-flex align-items-center justify-content-between" style="height:32px;">
             <div class="d-flex align-items-center">
-              <div>Blogs</div>
+              <div><%=model.label%></div>
             </div>
             <div>
               <a class="d-none btn btn-primary">
@@ -22,33 +22,29 @@
       </div>
       <div class="card-body">
         <table class="table">
-            <thead>
-              <tr>
-                <th style="width:32px; vertical-align:middle;" scope="col">
-                    <input style="width:16px;" type="checkbox" class="form-check m-0" />
-                </th>
-                <th scope="col">
-                    <label class="field_title">Title</label>
-                </th>
-                <th scope="col">
-                    <label class="field_title">Title</label>
-                </th>
-                <th scope="col">
-                    <label class="field_title">Title</label>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">
-                    <input style="width:16px;" type="checkbox" class="form-check me-3 flex-shrink-0" />
-                </th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-            </tbody>
-          </table>
+          <thead>
+            <tr>
+              <th style="width:32px; vertical-align:middle;" scope="col">
+                <input style="width:16px;" type="checkbox" class="form-check m-0" />
+              </th>
+              <%fields.forEach((field)=>{%>
+              <th scope="col">
+                <label class="field_title"><%=field.label%></label>
+              </th>
+              <%})%>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">
+                <input style="width:16px;" type="checkbox" class="form-check me-3 flex-shrink-0" />
+              </th>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="card-body d-none" style="overflow-x:auto;padding-top:0;">
         <div class="row bg-white align-items-center flex-nowrap sticky-top" style="padding-top:12px;">

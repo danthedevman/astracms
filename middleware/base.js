@@ -17,7 +17,6 @@ const canAccessBase = async (req, res, next) => {
   }
 
   res.locals.base = base;
-
   if(base && (!req.path || req.path === "/")){
     res.redirect(`/${base._id}/dashboard`);
     return;

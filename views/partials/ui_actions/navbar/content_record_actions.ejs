@@ -1,0 +1,48 @@
+<div class="d-flex align-items-center">
+  <button data-action="save_content_record" class="btn btn-primary border-secondary d-flex align-items-center justify-content-between me-2 btn-lg" type="button">
+    <div><i class="bi bi-save me-2"></i>Save</div>
+  </button>
+
+  <button data-action="publish_content_record" class="btn btn-success d-flex align-items-center justify-content-between btn-lg" type="button">
+    <div><i class="bi bi-send me-2"></i>Publish</div>
+  </button>
+</div>
+
+
+<script type="module">
+  import FormUtil from "/scripts/utils/FormUtil.js";
+  import ModelUtil from "/scripts/utils/ModelUtil.js";
+  import ContentUtil from "/scripts/utils/ContentUtil.js";
+  (() => {
+    const formUtil = new FormUtil({
+      selector: "[name='content_record_form']"
+    }).init();
+
+    const saveRecordBtn = document.querySelector(`[data-action="save_content_record"]`);
+    saveRecordBtn.onclick = async (evt) => {
+      evt.preventDefault();
+      if (!formUtil.canSubmit()) {
+        return;
+      }
+
+      const form_data = new FormData(formUtil.form);
+      let res = await new ContentUtil().save({
+        form_data:form_data,
+        model_id:"<%=model._id%>",
+        record_id: "<%=typeof content_record !== 'undefined' ? content_record._id : null%>"
+      });
+
+      if (Turbo && res.status === 200) {
+        //let json = await res.json();
+        Turbo.visit(`${location.href}`);
+      }
+    };
+
+    const publishRecordBtn = document.querySelector(`[data-action="publish_content_record"]`);
+    publishRecordBtn.onclick = (evt) => {
+      evt.preventDefault();
+      alert('publish')
+    };
+
+  })();
+</script>

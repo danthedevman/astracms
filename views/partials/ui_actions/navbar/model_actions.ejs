@@ -1,9 +1,9 @@
 <%if(typeof model !== "undefined"){%>
 <div class="d-flex align-items-center">
-  <button data-model_label="<%=model.label.toString()%>" data-action="delete_model" data-model_id="<%=model._id.toString()%>" class="btn btn-danger me-2">
+  <button data-model_label="<%=model.label.toString()%>" data-action="delete_model" data-model_id="<%=model._id.toString()%>" class="btn btn-danger me-2 btn-lg">
     Delete Model
   </button>
-  <button data-bs-toggle="modal" data-bs-target="#save_model_modal" class="btn btn-primary">
+  <button data-bs-toggle="modal" data-bs-target="#save_model_modal" class="btn btn-primary btn-lg">
     Edit Details
   </button>
 </div>

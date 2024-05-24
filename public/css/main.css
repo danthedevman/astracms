@@ -1,3 +1,7 @@
+.text-primary {
+  color: #818cf8 !important;
+}
+
 html,
 body {
   margin: 0;
@@ -330,6 +334,29 @@ main {
 .grip_btn:hover {
   cursor: move;
   cursor: grab;
+}
+
+[name=content_record_form] label {
+  color: #818cf8;
+  font-size: 1.6rem;
+}
+[name=content_record_form] .form-control,
+[name=content_record_form] .form-select {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+[name=content_record_form] .form-control:focus,
+[name=content_record_form] .form-select:focus {
+  background: #fff;
+  color: #000;
+}
+[name=content_record_form] input:-webkit-autofill,
+[name=content_record_form] input:-webkit-autofill:hover,
+[name=content_record_form] input:-webkit-autofill:focus,
+[name=content_record_form] input:-webkit-autofill:active {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 /*# sourceMappingURL=main.css.map */

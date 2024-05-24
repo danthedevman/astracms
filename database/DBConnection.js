@@ -15,7 +15,7 @@ module.exports = {
         return;
     }
     connections[String(database).toLowerCase()] = db;
-    console.log("DB Created")
+    
     if (callback && typeof callback == "function") {
       callback();
     }
