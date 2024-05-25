@@ -5,7 +5,22 @@ const getContent = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
   const records = await db.collection("sys_content").find({}).toArray();
   const models = await db.collection("sys_model").find({}).toArray();
-  const fields = [{name:"_model",label:"Model"},{name:"_title",label:"Title"}]
+  const fields = [
+    { name: "_title", label: "Title" },
+  ];
+
+  /*const records = await db.collection("sys_content").aggregate([
+    { $match: {} },
+    {
+      $lookup: {
+        from: "sys_model",
+        let: { "model" : "$_model" },
+        pipeline: [{ $match: { $expr: { $eq: ["$_id", "$$model"] } } }],
+        as: "_model",
+      },
+    },
+    {$unwind: '$_model'},
+  ]).toArray();*/
 
   res.render("./pages/content", {
     title: "Content",
@@ -13,7 +28,7 @@ const getContent = async (req, res, next) => {
     path: "content",
     records: records,
     models: models,
-    fields:fields,
+    fields: fields,
     navbar_actions: [{ name: "add_content_all", order: 100 }],
     crumbs: [{ label: "Content" }],
   });
@@ -63,9 +78,22 @@ const getContentRecord = async (req, res, next) => {
     .toArray();
 
   let record;
-  if(req.params.id && ObjectId.isValid(req.params.id)){
-    record = await db.collection("sys_content")
-    .findOne({ _id: new ObjectId(req.params.id) }); 
+  if (req.params.id && ObjectId.isValid(req.params.id)) {
+    record = await db
+      .collection("sys_content")
+      .findOne({ _id: new ObjectId(req.params.id) });
+  }
+
+  if(record){
+    let referenceFields = fields.filter((f)=>{return f.type === "reference"});
+    for(const field of referenceFields){
+      if(!record[field.name] || !ObjectId.isValid(record[field.name])) continue;
+      let refVal = await db
+      .collection("sys_content")
+      .findOne({ _id: new ObjectId(record[field.name])/*, _model:new ObjectId(field.reference_model)*/ });
+      if(!refVal) continue;
+      record[field.name] = {value:refVal._id.toString(),display_value:refVal._title}
+    }
   }
 
   res.render("./pages/content_record", {
@@ -78,8 +106,8 @@ const getContentRecord = async (req, res, next) => {
     navbar_actions: [{ name: "content_record_actions", order: 100 }],
     crumbs: [
       { label: "Content", href: `content` },
-      { label: `${model.label}` , href: `content/${model._id}`},
-      {label:`${record && record._title || "New"}`}
+      { label: `${model.label}`, href: `content/${model._id}` },
+      { label: `${(record && record._title) || "New"}` },
     ],
   });
 };
@@ -97,8 +125,10 @@ const saveContent = async (req, res, next) => {
     .find({ _model: new ObjectId(req.params.model) })
     .toArray();
 
-  let titleField = fields.filter((f)=>{return f.title === "yes"})[0];
-  if(!titleField){
+  let titleField = fields.filter((f) => {
+    return f.title === "yes";
+  })[0];
+  if (!titleField) {
     titleField = fields[0];
   }
 
@@ -107,8 +137,8 @@ const saveContent = async (req, res, next) => {
     saveData[field.name] = req.body[field.name];
   }
 
-  saveData._title =  req.body[titleField.name];
-  saveData._model =  new ObjectId(req.params.model);
+  saveData._title = req.body[titleField.name];
+  saveData._model = new ObjectId(req.params.model);
   console.log(saveData);
 
   const contentCollection = await db.collection("sys_content");
@@ -125,13 +155,11 @@ const saveContent = async (req, res, next) => {
   }
 
   console.log(contentRecord);
-  res
-    .status(200)
-    .send({
-      record_id:
-        (contentRecord && contentRecord._id) ||
-        (contentRecord && contentRecord.insertedId),
-    });
+  res.status(200).send({
+    record_id:
+      (contentRecord && contentRecord._id) ||
+      (contentRecord && contentRecord.insertedId),
+  });
 };
 
 module.exports = {

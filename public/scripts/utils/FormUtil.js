@@ -8,6 +8,7 @@ class FormUtil {
 
   init() {
     this.enableMandatoryFields();
+    this.enableReferenceFields();
     return this;
   }
 
@@ -136,19 +137,17 @@ class FormUtil {
   }
 
   enableReferenceFields() {
-    const referenceFields = this.form.querySelector("[data-type='reference']");
+    const referenceFields = this.form.querySelectorAll("[data-lookup]");
 
     referenceFields.forEach((field) => {
       let deferLookup;
       let dropdown = field.closest(".dropdown").querySelector(".dropdown-menu");
 
-      field.onkeyup = () => {
+      field.onkeyup = (evt) => {
         clearTimeout(deferLookup);
         deferLookup = setTimeout(async () => {
           let res = await fetch(
-            `/<%=locals.base._id%>/${this.getAttribute(
-              "data-lookup"
-            )}/search?sys_text_search=${encodeURI(this.value)}`
+            `/${window._astracms.base_id}/sys_content/search?sys_text_search=${encodeURI(field.value)}&sys_model=${field.getAttribute("data-lookup")}`
           );
 
           if (res.status === 200) {
@@ -157,8 +156,8 @@ class FormUtil {
             let template = "";
             json.results.forEach((result) => {
               template += `<li class="list-group-item border-0 bg-dark p-0""><a class="d-block w-100" data-result data-value="${result._id.toString()}" data-display_value="${
-                result.label
-              }" href="javascript:void(0)">${result.label}</a></li>`;
+                result._title
+              }" href="javascript:void(0)">${result._title}</a></li>`;
             });
             const results = evt.target
               .closest(".dropdown")
@@ -172,8 +171,8 @@ class FormUtil {
                   e.preventDefault();
                   evt.target
                     .closest(".dropdown")
-                    .querySelector("[data-lookup]")
-                    .setAttribute("data-value", r.getAttribute("data-value"));
+                    .querySelector("[data-lookup_value")
+                    .setAttribute("value", r.getAttribute("data-value"));
                   evt.target
                     .closest(".dropdown")
                     .querySelector("[data-lookup]").value =

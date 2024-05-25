@@ -52,7 +52,7 @@
                 <label for="name" class="form-label">Select Model</label>
               
                 <div data-lookup_wrapper class="dropdown w-100">
-                  <input data-mandatory="false"  name="reference_model" data-lookup="sys_model" autofocus data-lookup_search class="form-control rounded-0" id="lookup_sys_model" placeholder="Search..." data-dropdown_btn/>
+                  <input data-mandatory="false"  name="reference_model" data-lookup="sys_model" autofocus data-lookup_search class="form-control rounded-0" data-reference="" id="lookup_sys_model" placeholder="Search..." data-dropdown_btn/>
                   <ul class="dropdown-menu bg-dark p-0 w-100" aria-labelledby="dropdownMenuButton1">
                     <li></li>
                     <li class="mb-2 p-3">
@@ -176,7 +176,7 @@
         mandatory: form.getValue("[name='mandatory']"),
         hidden_on_form: form.getValue("[name='hidden_on_form']"),
         reference_type: form.getValue("[name='reference_type']"),
-        reference_model: form.getValue("[name='reference_model']"),
+        reference_model: form.getElement("[name='reference_model']").getAttribute("data-value"),
         field_id:form.getValue("[name='field_id']")
       });
 

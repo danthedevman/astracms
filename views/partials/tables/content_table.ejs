@@ -18,9 +18,16 @@
         <input style="width:16px;" type="checkbox" class="form-check me-3 flex-shrink-0" />
       </th>
       <%fields.forEach((field)=>{%>
+      <%if(field.type === "reference"){%>
+      <td scope="col">
+        <%=record[field.name].display_value%>
+      </td>
+      <%}%>
+     <%if(!field.type || field.type === "single_line_text"){%>
       <td scope="col">
         <%=record[field.name]%>
       </td>
+      <%}%>  
       <%})%>
     </tr>
     <%})%>

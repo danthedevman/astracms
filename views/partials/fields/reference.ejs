@@ -1,7 +1,5 @@
 <div data-lookup_wrapper class="dropdown w-100">
-  <input data-lookup="<%=field.reference%>"  data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="text" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
-
-  <input data-mandatory="false" name="reference_model" data-lookup="sys_model" autofocus data-lookup_search class="form-control rounded-0 d-none" id="lookup_sys_model" placeholder="Search..." data-dropdown_btn />
+  <input data-lookup="<%=typeof collection !== 'undefined' ? collection : field.reference_model%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="text" value="<%=typeof record !== 'undefined' ? record[field.name].display_value : ''%>"   placeholder="Search..." data-dropdown_btn/>
 
   <ul class="dropdown-menu bg-dark p-0 w-100" aria-labelledby="dropdownMenuButton1">
     <li></li>
@@ -10,5 +8,5 @@
       </ul>
     </li>
   </ul>
-  <input value="" name="lookup_model" type="hidden" />
+  <input  data-type="<%=field.type%>" name="<%=field.name%>" data-lookup_value value="<%=typeof record !== 'undefined' ? record[field.name].value : ''%>" type="hidden" />
 </div>

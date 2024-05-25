@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const DBConnection = require("../database/DBConnection");
 const getSearch = async (req,res,next)=>{
     const db = await DBConnection.getDB(req.params.base);
@@ -6,11 +7,11 @@ const getSearch = async (req,res,next)=>{
     const searchCollection = await db.collection(`${modelId}`);
     
     //searchCollection.dropIndexes();
-    await searchCollection.createIndex({ name: "text", label: "text", title:"text" });
+    await searchCollection.createIndex({ _title: "text"});
     
     let agg = await searchCollection.aggregate([
    // {$match:{ $text: { $search: `\"${decodeURI(String(query.sys_text_search))}\"`}}}
-   {$match:{label:{'$regex' : `^${decodeURI(String(query.sys_text_search))}`, '$options' : 'i'}}}
+   {$match:{_model:req.query.sys_model ? new ObjectId(req.query.sys_model) : "" , _title:{'$regex' : `^${decodeURI(String(query.sys_text_search))}`, '$options' : 'i'}}}
     ]);
 
     let arr = await agg.toArray();
