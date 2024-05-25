@@ -48,16 +48,11 @@
                 <label for="name" class="form-label">Name (required)</label>
                 <input data-mandatory="true" type="text" class="form-control" name="name" placeholder="">
               </div>
-              <div data-form_group="select_model" class="mb-3 d-none">
+              <div data-form_group="reference" class="mb-3 d-none">
                 <label for="name" class="form-label">Select Model</label>
-               <!--<input data-mandatory="false" type="text" class="form-control d-none" name="lookup_model" placeholder="Select a model...">-->
               
                 <div data-lookup_wrapper class="dropdown w-100">
                   <input data-mandatory="false"  name="reference_model" data-lookup="sys_model" autofocus data-lookup_search class="form-control rounded-0" id="lookup_sys_model" placeholder="Search..." data-dropdown_btn/>
-                  <!--<button data-lookup="sys_model" class="btn form-control d-flex align-items-center justify-content-between w-100" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div>-Select-</div>
-                    <div><i class="bi bi-search"></i></div>
-                  </button>-->
                   <ul class="dropdown-menu bg-dark p-0 w-100" aria-labelledby="dropdownMenuButton1">
                     <li></li>
                     <li class="mb-2 p-3">
@@ -240,7 +235,7 @@
 
     const fieldType = document.getElementById("field_type");
     const choiceMacro = document.querySelector("[data-choices_macro]");
-    const select_model =  document.querySelector('[data-form_group="select_model"]');
+    const reference =  document.querySelector('[data-form_group="reference"]');
     const reference_type =  document.querySelector('[data-form_group="reference_type"]');
 
     if (fieldType.value === "choice") {
@@ -249,9 +244,9 @@
 
     function resetHiddenFields(){
         form.getElement("[data-choices_macro]").classList.add("d-none");
-        form.getElement('[data-form_group="select_model"]').classList.add("d-none");
+        form.getElement('[data-form_group="reference"]').classList.add("d-none");
         form.getElement('[data-form_group="reference_type"]').classList.add("d-none");
-        form.getElement('[data-form_group="select_model"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
+        form.getElement('[data-form_group="reference"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
         form.getElement(`[name="field_id"]`).value="";
         // document.querySelector('[data-form_group="reference_type"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
     }
@@ -263,10 +258,10 @@
       }
 
       if (fieldType.value === "reference") {
-        select_model.querySelector("[data-mandatory]").setAttribute("data-mandatory",true);
+        reference.querySelector("[data-mandatory]").setAttribute("data-mandatory",true);
         //reference_type.querySelector("[data-mandatory]").setAttribute("data-mandatory",true);
         //reference_type.setAttribute("data-mandatory",true);
-        document.querySelector('[data-form_group="select_model"]').classList.remove("d-none");
+        document.querySelector('[data-form_group="reference"]').classList.remove("d-none");
         document.querySelector('[data-form_group="reference_type"]').classList.remove("d-none");
       }
 

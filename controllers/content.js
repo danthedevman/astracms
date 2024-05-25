@@ -5,6 +5,7 @@ const getContent = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
   const records = await db.collection("sys_content").find({}).toArray();
   const models = await db.collection("sys_model").find({}).toArray();
+  const fields = [{name:"_model",label:"Model"},{name:"_title",label:"Title"}]
 
   res.render("./pages/content", {
     title: "Content",
@@ -12,6 +13,7 @@ const getContent = async (req, res, next) => {
     path: "content",
     records: records,
     models: models,
+    fields:fields,
     navbar_actions: [{ name: "add_content_all", order: 100 }],
     crumbs: [{ label: "Content" }],
   });
@@ -74,11 +76,10 @@ const getContentRecord = async (req, res, next) => {
     model: model,
     fields: fields,
     navbar_actions: [{ name: "content_record_actions", order: 100 }],
-    // navbar_actions: [{ name: "save", order: 100 }],
     crumbs: [
       { label: "Content", href: `content` },
       { label: `${model.label}` , href: `content/${model._id}`},
-      {label:`${record._title}`}
+      {label:`${record && record._title || "New"}`}
     ],
   });
 };

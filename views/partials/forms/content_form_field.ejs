@@ -1,33 +1,33 @@
 <%if(field.type === "single_line_text"){%>
-<input name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="text" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
+<input data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="text" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
 <%}%>
 
 <%if(field.type === "number"){%>
-<input name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="number" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
+<input data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="number" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
 <%}%>
 
 <%if(field.type === "checkbox"){%>
-<input name="<%=field.name%>" type="checkbox" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
+<input data-type="<%=field.type%>" name="<%=field.name%>" type="checkbox" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
 <%}%>
 
 <%if(field.type === "multi_line_text"){%>
-<textarea name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" rows="5" class="form-control"><%=typeof record!=='undefined' ? record[field.name] : ''%></textarea>
+<textarea data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" rows="5" class="form-control"><%=typeof record!=='undefined' ? record[field.name] : ''%></textarea>
 <%}%>
 
 <%if(field.type === "rich_text"){%>
-<input name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="text" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
+<input data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="text" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
 <%}%>
 
 <%if(field.type === "reference"){%>
-<input name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="text" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
+    <%-include(`../../partials/fields/reference.ejs`,{field:field})%>
 <%}%>
 
 <%if(field.type === "asset"){%>
-<input name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="text" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
+<input data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="text" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
 <%}%>
 
 <%if(field.type === "choice"){%>
-<select name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-select">
+<select data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-select">
     <option value="" selected>Yes</option>
     <option value="yes">Yes</option>
     <option value="no">No</option>
@@ -35,7 +35,7 @@
 <%}%>
 
 <%if(field.type === "yes_no"){%>
-<select name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-select">
+<select data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%field.mandatory === "yes" ? 'true':'false'%>" class="form-select">
   <option value="" selected>Yes</option>
   <option value="yes">Yes</option>
   <option value="no">No</option>
