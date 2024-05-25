@@ -86,6 +86,7 @@ a {
 .btn-primary {
     background: $primaryColor;
     border-color: $primaryColor  !important;
+    outline:none;
 }
 
 .field_title {
@@ -434,4 +435,12 @@ main {
         border-color: rgba(255, 255, 255, .10);
     }
 
+}
+
+[data-clickable_row]{
+    cursor: pointer;
+
+    &:hover{
+        background:rgba(255,255,255,.10);
+    }
 }

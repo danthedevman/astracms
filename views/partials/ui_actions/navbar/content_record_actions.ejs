@@ -26,15 +26,15 @@
       }
 
       const form_data = new FormData(formUtil.form);
-      let res = await new ContentUtil().save({
+      let res = await new ContentUtil().saveRecord({
         form_data:form_data,
         model_id:"<%=model._id%>",
-        record_id: "<%=typeof content_record !== 'undefined' ? content_record._id : null%>"
+        record_id: "<%=typeof record !== 'undefined' ? record._id : null%>"
       });
 
       if (Turbo && res.status === 200) {
-        //let json = await res.json();
-        Turbo.visit(`${location.href}`);
+        let json = await res.json();
+        Turbo.visit(`/<%=locals.base._id%>/content/<%=model._id%>/${json.record_id}`);
       }
     };
 

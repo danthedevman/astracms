@@ -1,7 +1,7 @@
 class ContentUtil {
     constructor() {}
   
-    async save(options) {
+    async saveRecord(options) {
       if(!options) return;
       const postData = options.form_data;
       const model_id = options.model_id;
@@ -14,7 +14,7 @@ class ContentUtil {
       });
     }
 
-      async deleteField(model,options) {
+      async deleteRecord(model,options) {
         if(!options) return;  
         const record_id = options.record_id || "new";
     

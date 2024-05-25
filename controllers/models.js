@@ -23,7 +23,7 @@ const getModel = async (req, res, next) => {
     .collection("sys_model")
     .findOne({ _id: new ObjectId(req.params.id) });
 
-const fields =  await db.collection("sys_field").find({ sys_model: new ObjectId(req.params.id) }).toArray();
+const fields =  await db.collection("sys_field").find({ _model: new ObjectId(req.params.id) }).toArray();
 
   res.render("./pages/model", {
     title: `Model - ${model.name}`,
@@ -69,8 +69,9 @@ const saveModel = async (req, res, next) => {
 
 const deleteModel = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
+  await db.collection("sys_field").deleteMany({ _model: new ObjectId(req.params.id) });
   await db
-    .collection("sys_model")
+    .collection("_model")
     .deleteOne({ _id: new ObjectId(req.params.id) });
   res.status(200).send();
 };
@@ -91,7 +92,7 @@ const saveField = async (req,res,next) => {
 
   const fieldCollection = await db.collection("sys_field");
   const saveData = req.body;
-  saveData.sys_model = new ObjectId(req.params.id);
+  saveData._model = new ObjectId(req.params.id);
 
   if (saveData.field_id && ObjectId.isValid(saveData.field_id)) {
     field = await fieldCollection.findOneAndUpdate({

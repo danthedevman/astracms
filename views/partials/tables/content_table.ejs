@@ -1,0 +1,39 @@
+<table class="table table-responsive" style="table-layout:fixed;">
+    <thead>
+      <tr>
+        <th style="width:32px; vertical-align:middle;" scope="col">
+          <input style="width:16px;" type="checkbox" class="form-check m-0" />
+        </th>
+        <th scope="col">
+          <label class="field_title">Model</label>
+        </th>
+        <th scope="col">
+          <label class="field_title">Title</label>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <%records.forEach((record)=>{%>
+      <tr data-clickable_row data-table_row_record_id="<%=record._id%>" data-table_row_model_id="<%=record._model%>">
+        <th scope="row">
+          <input style="width:16px;" type="checkbox" class="form-check me-3 flex-shrink-0" />
+        </th>
+        <td><%=record._model%></td>
+        <td><%=record._title%></td>
+      </tr>
+      <%})%>
+    </tbody>
+  </table>
+  <script>
+    (() => {
+      const recordRows = document.querySelectorAll(`[data-table_row_record_id]`);
+      recordRows.forEach((row)=>{
+          row.onclick = ()=>{
+              let model = row.getAttribute("data-table_row_model_id");
+              let record = row.getAttribute("data-table_row_record_id");
+              location.href = `/<%=locals.base._id%>/content/${model}/${record}`;
+          };
+      });
+  
+    })();
+  </script>

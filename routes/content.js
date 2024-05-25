@@ -4,9 +4,11 @@ const {getContent,getContentByModel,getContentRecord,saveContent} = require('../
 const multer  = require('multer');
 const upload = multer();
 
+//consolidate these two routes when done
 router.get('/', getContent);
 router.get('/:model', getContentByModel);
-router.get('/:model/new', getContentRecord);
+
+router.get('/:model/:id', getContentRecord);
 router.post('/:model/:id',upload.none(),saveContent);
 //router.delete('/:model/:id/delete', getContent);
 

@@ -27,6 +27,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-primary {
   background: #4338ca;
+  border-color: #4338ca !important;
+  outline: none;
 }
 
 .base_card {

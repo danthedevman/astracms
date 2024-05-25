@@ -74,6 +74,7 @@ a {
 .btn-primary {
   background: #4338ca;
   border-color: #4338ca !important;
+  outline: none;
 }
 
 .field_title {
@@ -357,6 +358,13 @@ main {
 [name=content_record_form] input:-webkit-autofill:active {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-clickable_row] {
+  cursor: pointer;
+}
+[data-clickable_row]:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /*# sourceMappingURL=main.css.map */

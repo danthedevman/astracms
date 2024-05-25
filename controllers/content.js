@@ -3,14 +3,14 @@ const DBConnection = require("../database/DBConnection");
 
 const getContent = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
-  const contentRecords = await db.collection("sys_content").find({}).toArray();
+  const records = await db.collection("sys_content").find({}).toArray();
   const models = await db.collection("sys_model").find({}).toArray();
 
   res.render("./pages/content", {
     title: "Content",
     layout: "./layouts/base",
     path: "content",
-    contentRecords: contentRecords,
+    records: records,
     models: models,
     navbar_actions: [{ name: "add_content_all", order: 100 }],
     crumbs: [{ label: "Content" }],
@@ -19,9 +19,9 @@ const getContent = async (req, res, next) => {
 
 const getContentByModel = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
-  const contentRecords = await db
+  const records = await db
     .collection("sys_content")
-    .find({ model: req.params.model })
+    .find({ _model: new ObjectId(req.params.model) })
     .toArray();
 
   const model = await db
@@ -30,15 +30,15 @@ const getContentByModel = async (req, res, next) => {
 
   const fields = await db
     .collection("sys_field")
-    .find({ sys_model: new ObjectId(req.params.model) })
+    .find({ _model: new ObjectId(req.params.model) })
     .toArray();
 
   res.render("./pages/content_by_model", {
     title: "Content",
     layout: "./layouts/base",
-    contentRecords: contentRecords,
-    model:model,
-    fields:fields,
+    records: records,
+    model: model,
+    fields: fields,
     path: "content",
     navbar_actions: [{ name: "add_content", order: 100 }],
     crumbs: [
@@ -57,21 +57,28 @@ const getContentRecord = async (req, res, next) => {
 
   const fields = await db
     .collection("sys_field")
-    .find({ sys_model: new ObjectId(req.params.model) })
+    .find({ _model: new ObjectId(req.params.model) })
     .toArray();
+
+  let record;
+  if(req.params.id && ObjectId.isValid(req.params.id)){
+    record = await db.collection("sys_content")
+    .findOne({ _id: new ObjectId(req.params.id) }); 
+  }
 
   res.render("./pages/content_record", {
     title: "Content",
     layout: "./layouts/base",
     path: "content",
-    record:undefined,
+    record: record,
     model: model,
-    fields:fields,
+    fields: fields,
     navbar_actions: [{ name: "content_record_actions", order: 100 }],
-   // navbar_actions: [{ name: "save", order: 100 }],
+    // navbar_actions: [{ name: "save", order: 100 }],
     crumbs: [
       { label: "Content", href: `content` },
-      { label: `${model.label}` },
+      { label: `${model.label}` , href: `content/${model._id}`},
+      {label:`${record._title}`}
     ],
   });
 };
@@ -81,44 +88,54 @@ const saveContent = async (req, res, next) => {
     res.status(503).send();
     return;
   }
-  console.log("saving")
-  console.log(req.body);
-  console.log(req.body.title);
 
-  return res
-  .status(200)
-  .send();
-
-  let model;
   const db = await DBConnection.getDB(req.params.base);
-  const contentCollection = await db.collection("sys_content");
-  const saveData = {
-    label: req.body.label,
-    name: req.body.name,
-    sys_created_by: new ObjectId(req.user._id),
-    description: req.body.description,
-    sys_created: new Date(),
-  };
 
-  if (req.params.id && ObjectId.isValid(req.params.id)) {
-    model = await modelCollection.findOneAndUpdate({
-      _id: new ObjectId(req.params.id),
-    },{ $set:saveData});
-  } else {
-    model = await modelCollection.insertOne(saveData);
+  const fields = await db
+    .collection("sys_field")
+    .find({ _model: new ObjectId(req.params.model) })
+    .toArray();
+
+  let titleField = fields.filter((f)=>{return f.title === "yes"})[0];
+  if(!titleField){
+    titleField = fields[0];
   }
 
-  console.log(model)
-  if (model)
-    res
-      .status(200)
-      .send({ record_id: model && model._id || model && model.insertedId});
-};
+  const saveData = {};
+  for (let field of fields) {
+    saveData[field.name] = req.body[field.name];
+  }
 
+  saveData._title =  req.body[titleField.name];
+  saveData._model =  new ObjectId(req.params.model);
+  console.log(saveData);
+
+  const contentCollection = await db.collection("sys_content");
+
+  if (req.params.id && ObjectId.isValid(req.params.id)) {
+    contentRecord = await contentCollection.findOneAndUpdate(
+      {
+        _id: new ObjectId(req.params.id),
+      },
+      { $set: saveData }
+    );
+  } else {
+    contentRecord = await contentCollection.insertOne(saveData);
+  }
+
+  console.log(contentRecord);
+  res
+    .status(200)
+    .send({
+      record_id:
+        (contentRecord && contentRecord._id) ||
+        (contentRecord && contentRecord.insertedId),
+    });
+};
 
 module.exports = {
   getContent,
   getContentByModel,
   getContentRecord,
-  saveContent
+  saveContent,
 };
