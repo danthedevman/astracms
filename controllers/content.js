@@ -9,6 +9,12 @@ const getContent = async (req, res, next) => {
     { name: "_title", label: "Title" },
   ];
 
+  for(const rec of records){
+    if(!rec._title){
+      rec._title = '-No title found-';
+    }
+  }
+
   /*const records = await db.collection("sys_content").aggregate([
     { $match: {} },
     {
@@ -107,7 +113,7 @@ const getContentRecord = async (req, res, next) => {
     crumbs: [
       { label: "Content", href: `content` },
       { label: `${model.label}`, href: `content/${model._id}` },
-      { label: `${(record && record._title) || "New"}` },
+      { label: `${(record && (record._title ? record._title : 'No title found')) || "New"}` },
     ],
   });
 };

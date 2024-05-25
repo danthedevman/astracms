@@ -152,7 +152,6 @@ class FormUtil {
 
           if (res.status === 200) {
             let json = await res.json();
-            console.log(json);
             let template = "";
             json.results.forEach((result) => {
               template += `<li class="list-group-item border-0 bg-dark p-0""><a class="d-block w-100" data-result data-value="${result._id.toString()}" data-display_value="${

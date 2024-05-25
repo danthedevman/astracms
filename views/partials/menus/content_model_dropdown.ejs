@@ -1,0 +1,18 @@
+<div style="padding:0;" class="dropdown_select_wrapper">
+    <div class="dropdown w-100 ">
+      <button class="btn btn-light border-secondary d-flex align-items-center justify-content-between w-100" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <div><%=typeof model !== "undefined" ? model.label : "All"%></div>
+        <div><i class="bi bi-chevron-down"></i><i class="bi bi-chevron-up d-none"></i></div>
+      </button>
+      <ul style="width:100%;height:200px;overflow-y: auto;" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li class="dropdown-item">
+            <a class="d-block" href="/<%=locals.base._id%>/content/">All</a>
+        </li>
+        <%models.forEach((model)=>{%>
+          <li class="dropdown-item">
+              <a class="d-block" href="/<%=locals.base._id%>/content/<%=model._id%>"><%=model.label%></a>
+          </li>
+      <%})%>
+      </ul>
+    </div>
+  </div>

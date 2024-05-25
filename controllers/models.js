@@ -15,7 +15,7 @@ const getModels = async (req, res, next) => {
 };
 
 const getModel = async (req, res, next) => {
-  if(!ObjectId.isValid(req.params.id)){
+  if (!ObjectId.isValid(req.params.id)) {
     return res.redirect(`/${req.params.base}/models`);
   }
   const db = await DBConnection.getDB(req.params.base);
@@ -23,13 +23,16 @@ const getModel = async (req, res, next) => {
     .collection("sys_model")
     .findOne({ _id: new ObjectId(req.params.id) });
 
-const fields =  await db.collection("sys_field").find({ _model: new ObjectId(req.params.id) }).toArray();
+  const fields = await db
+    .collection("sys_field")
+    .find({ _model: new ObjectId(req.params.id) })
+    .toArray();
 
   res.render("./pages/model", {
     title: `Model - ${model.name}`,
     layout: "./layouts/base",
     model: model,
-    fields:fields,
+    fields: fields,
     path: "models",
     navbar_actions: [{ name: "model_actions" }],
     crumbs: [{ label: "Models", href: `models` }, { label: `${model.label}` }],
@@ -53,39 +56,49 @@ const saveModel = async (req, res, next) => {
   };
 
   if (req.params.id && ObjectId.isValid(req.params.id)) {
-    model = await modelCollection.findOneAndUpdate({
-      _id: new ObjectId(req.params.id),
-    },{ $set:saveData});
+    model = await modelCollection.findOneAndUpdate(
+      {
+        _id: new ObjectId(req.params.id),
+      },
+      { $set: saveData }
+    );
   } else {
     model = await modelCollection.insertOne(saveData);
   }
 
-  console.log(model)
+  console.log(model);
   if (model)
     res
       .status(200)
-      .send({ record_id: model && model._id || model && model.insertedId});
+      .send({ record_id: (model && model._id) || (model && model.insertedId) });
 };
 
 const deleteModel = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
-  await db.collection("sys_field").deleteMany({ _model: new ObjectId(req.params.id) });
   await db
-    .collection("_model")
-    .deleteOne({ _id: new ObjectId(req.params.id) });
+    .collection("sys_field")
+    .deleteMany({ _model: new ObjectId(req.params.id) });
+  await db.collection("_model").deleteOne({ _id: new ObjectId(req.params.id) });
   res.status(200).send();
 };
 
-const saveField = async (req,res,next) => {
-  if (!req.body || !req.params.base || !req.params.id || !ObjectId.isValid(req.params.id)) {
+const saveField = async (req, res, next) => {
+  if (
+    !req.body ||
+    !req.params.base ||
+    !req.params.id ||
+    !ObjectId.isValid(req.params.id)
+  ) {
     res.status(503).send();
     return;
   }
   let field;
   const db = await DBConnection.getDB(req.params.base);
   const modelCollection = await db.collection("sys_model");
-  const model = await modelCollection.findOne({_id:new ObjectId(req.params.id)});
-  if(!model){
+  const model = await modelCollection.findOne({
+    _id: new ObjectId(req.params.id),
+  });
+  if (!model) {
     return res.status(404).send({});
   }
 
@@ -94,34 +107,37 @@ const saveField = async (req,res,next) => {
   saveData._model = new ObjectId(req.params.id);
 
   if (saveData.field_id && ObjectId.isValid(saveData.field_id)) {
-    field = await fieldCollection.findOneAndUpdate({
-      _id: new ObjectId(saveData.field_id),
-    },{ $set:saveData});
+    field = await fieldCollection.findOneAndUpdate(
+      {
+        _id: new ObjectId(saveData.field_id),
+      },
+      { $set: saveData }
+    );
   } else {
     field = await fieldCollection.insertOne(saveData);
   }
 
-  if (field)
-    res
-      .status(200)
-      .send({ record_id: model && model._id});
+  if (field) res.status(200).send({ record_id: model && model._id });
 };
 
-const deleteField = async (req,res,next) => {
-  if (!req.params.base || !req.params.field_id || !ObjectId.isValid(req.params.field_id)) {
+const deleteField = async (req, res, next) => {
+  if (
+    !req.params.base ||
+    !req.params.field_id ||
+    !ObjectId.isValid(req.params.field_id)
+  ) {
     res.status(503).send();
     return;
   }
 
   const db = await DBConnection.getDB(req.params.base);
-  await db.collection("sys_field").deleteOne({ _id: new ObjectId(req.params.field_id) });
-    res
-      .status(200)
-      .send();
+  await db
+    .collection("sys_field")
+    .deleteOne({ _id: new ObjectId(req.params.field_id) });
+  res.status(200).send();
 };
 
-
-function _getFieldData(data){
+function _getFieldData(data) {
   let answer = {};
   answer.label = data.label;
   answer.name = data.name;
