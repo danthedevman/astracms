@@ -3,8 +3,22 @@ const DBConnection = require("../database/DBConnection");
 
 const getContent = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
-  const records = await db.collection("sys_content").find({}).toArray();
-  const models = await db.collection("sys_model").find({}).toArray();
+  const queryObj = {};
+  let model;
+
+  if(req.params.model && ObjectId.isValid(req.params.model)){
+    queryObj._model = new ObjectId(req.params.model);
+    model = await db
+    .collection("sys_model")
+    .findOne({ _id: new ObjectId(req.params.model) });
+  }
+
+  const records = await db
+  .collection("sys_content")
+  .find(queryObj)
+  .toArray();
+  
+
   const fields = [
     { name: "_title", label: "Title" },
   ];
@@ -15,60 +29,26 @@ const getContent = async (req, res, next) => {
     }
   }
 
-  /*const records = await db.collection("sys_content").aggregate([
-    { $match: {} },
-    {
-      $lookup: {
-        from: "sys_model",
-        let: { "model" : "$_model" },
-        pipeline: [{ $match: { $expr: { $eq: ["$_id", "$$model"] } } }],
-        as: "_model",
-      },
-    },
-    {$unwind: '$_model'},
-  ]).toArray();*/
-
-  res.render("./pages/content", {
+  let renderObj = {
     title: "Content",
     layout: "./layouts/base",
     path: "content",
-    records: records,
-    models: models,
-    fields: fields,
-    navbar_actions: [{ name: "add_content_all", order: 100 }],
-    crumbs: [{ label: "Content" }],
-  });
-};
-
-const getContentByModel = async (req, res, next) => {
-  const db = await DBConnection.getDB(req.params.base);
-  const records = await db
-    .collection("sys_content")
-    .find({ _model: new ObjectId(req.params.model) })
-    .toArray();
-
-  const model = await db
-    .collection("sys_model")
-    .findOne({ _id: new ObjectId(req.params.model) });
-
-  const fields = await db
-    .collection("sys_field")
-    .find({ _model: new ObjectId(req.params.model) })
-    .toArray();
-
-  res.render("./pages/content_by_model", {
-    title: "Content",
-    layout: "./layouts/base",
     records: records,
     model: model,
     fields: fields,
-    path: "content",
-    navbar_actions: [{ name: "add_content", order: 100 }],
-    crumbs: [
+    navbar_actions: [{ name: "add_content_all", order: 100 }],
+    crumbs: [{ label: "Content" }],
+  };
+
+  if(req.params.model){
+    renderObj.navbar_actions= [{ name: "add_content", order: 100 }];
+    renderObj.crumbs = [
       { label: "Content", href: `content` },
       { label: `${model.label}` },
-    ],
-  });
+    ];
+  }
+
+  res.render("./pages/content", renderObj);
 };
 
 const getContentRecord = async (req, res, next) => {
@@ -170,7 +150,6 @@ const saveContent = async (req, res, next) => {
 
 module.exports = {
   getContent,
-  getContentByModel,
   getContentRecord,
   saveContent,
 };
