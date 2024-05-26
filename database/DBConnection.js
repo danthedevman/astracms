@@ -14,8 +14,9 @@ module.exports = {
         }
         return;
     }
-    connections[String(database).toLowerCase()] = db;
     
+    connections[String(database).toLowerCase()] = db;
+
     if (callback && typeof callback == "function") {
       callback();
     }

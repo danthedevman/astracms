@@ -1,5 +1,6 @@
 const ObjectId = require("mongodb").ObjectId;
 const DBConnection = require("../database/DBConnection");
+const DBHelper = require("../database/DBHelper");
 
 const getContent = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
@@ -19,9 +20,15 @@ const getContent = async (req, res, next) => {
   .toArray();
   
 
-  const fields = [
+  let fields = [
     { name: "_title", label: "Title" },
   ];
+  if(model){
+    fields = await db
+    .collection("sys_field")
+    .find({ _model: new ObjectId(model._id) })
+    .toArray();;
+  }
 
   for(const rec of records){
     if(!rec._title){
@@ -104,12 +111,8 @@ const saveContent = async (req, res, next) => {
     return;
   }
 
-  const db = await DBConnection.getDB(req.params.base);
-
-  const fields = await db
-    .collection("sys_field")
-    .find({ _model: new ObjectId(req.params.model) })
-    .toArray();
+  const dbHelper = new DBHelper({db:req.params.base});
+  const fields = await dbHelper.query("sys_field",{ _model: new ObjectId(req.params.model) })
 
   let titleField = fields.filter((f) => {
     return f.title === "yes";
@@ -125,26 +128,17 @@ const saveContent = async (req, res, next) => {
 
   saveData._title = req.body[titleField.name];
   saveData._model = new ObjectId(req.params.model);
-  console.log(saveData);
 
-  const contentCollection = await db.collection("sys_content");
-
+  let contentQuery;
   if (req.params.id && ObjectId.isValid(req.params.id)) {
-    contentRecord = await contentCollection.findOneAndUpdate(
-      {
-        _id: new ObjectId(req.params.id),
-      },
-      { $set: saveData }
-    );
-  } else {
-    contentRecord = await contentCollection.insertOne(saveData);
+    contentQuery = {
+      _id: new ObjectId(req.params.id),
+    };
   }
 
-  console.log(contentRecord);
+  const contentRecord = await dbHelper.save("sys_content",contentQuery,saveData);
   res.status(200).send({
-    record_id:
-      (contentRecord && contentRecord._id) ||
-      (contentRecord && contentRecord.insertedId),
+    record_id:contentRecord
   });
 };
 

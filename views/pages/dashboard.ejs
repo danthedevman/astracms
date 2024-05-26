@@ -22,9 +22,9 @@ var demo_data = {
 %>
 
 <%-include('../partials/container_start.ejs')%>
-<div class="row d-none">
-  <%demo_data.counts.forEach(card => {%>
-    <div class="col-12 col-md-6 col-lg-3">
+<div class="row">
+  <%dashboard.counts.forEach(card => {%>
+    <div class="col-12 col-md-6 col-lg-4">
       <div class="dashboard_count_card mb-3">
         <div class="label">
           <%=card.label%>
