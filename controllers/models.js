@@ -1,5 +1,6 @@
 const ObjectId = require("mongodb").ObjectId;
 const DBConnection = require("../database/DBConnection");
+const DBHelper = require("../database/DBHelper");
 
 const getModels = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
@@ -18,6 +19,7 @@ const getModel = async (req, res, next) => {
   if (!ObjectId.isValid(req.params.id)) {
     return res.redirect(`/${req.params.base}/models`);
   }
+  const dbHelper = new DBHelper({ db: req.params.base });
   const db = await DBConnection.getDB(req.params.base);
   const model = await db
     .collection("sys_model")
@@ -27,6 +29,24 @@ const getModel = async (req, res, next) => {
     .collection("sys_field")
     .find({ _model: new ObjectId(req.params.id) })
     .toArray();
+
+  let referenceFields = fields.filter((f) => {
+    return f.type === "reference";
+  });
+
+  for (const field of fields) {
+    console.log(field);
+    if (field.type === "reference") {
+      let refVal = await dbHelper.get("sys_model", {
+        _id: new ObjectId(field.reference_model),
+      });
+      if (!refVal) continue;
+      field.reference_model = {
+        value: refVal._id.toString(),
+        display_value: refVal._title,
+      };
+    }
+  }
 
   res.render("./pages/model", {
     title: `Model - ${model.name}`,
@@ -53,6 +73,7 @@ const saveModel = async (req, res, next) => {
     sys_created_by: new ObjectId(req.user._id),
     description: req.body.description,
     sys_created: new Date(),
+    _title: req.body.label,
   };
 
   if (req.params.id && ObjectId.isValid(req.params.id)) {

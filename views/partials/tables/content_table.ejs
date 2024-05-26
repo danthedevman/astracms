@@ -13,7 +13,7 @@
   </thead>
   <tbody>
     <%records.forEach((record)=>{%>
-    <tr data-clickable_row data-table_row_record_id="<%=record._id%>" data-table_row_model_id="<%=record._model%>">
+    <tr data-clickable_row data-table_row_record_id="<%=record._id%>" data-table_row_model_id="<%=record._model && record._model.value ? record._model.value : record._model && ! record._model.value ? record._model : ''%>">
       <th scope="row">
         <input style="width:16px;" type="checkbox" class="form-check me-3 flex-shrink-0" />
       </th>
@@ -40,6 +40,7 @@
       row.onclick = () => {
         let model = row.getAttribute("data-table_row_model_id");
         let record = row.getAttribute("data-table_row_record_id");
+        if(!model || !record) return;
         location.href = `/<%=locals.base._id%>/content/${model}/${record}`;
       };
     });

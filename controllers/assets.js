@@ -26,6 +26,7 @@ const uploadAsset = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
   await db.createCollection("sys_asset");
   let asset = await db.collection("sys_asset").insertOne({
+    _title:file.originalname,
     name: file.originalname,
     sys_created_by: new ObjectId(req.user._id),
     sys_created: new Date(),

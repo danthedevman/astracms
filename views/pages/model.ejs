@@ -74,11 +74,12 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header bg-transparent d-flex align-items-center">
-        <div class="card-title">
-          <%=field.label%>
+        <div class="card-title d-flex align-items-center">
+          <%=field.label%><%if(field.title_field === "yes"){%><span class="ms-2 badge bg-secondary">Title Field</span><%}%>
         </div>
         <div class="ms-auto card_actions d-flex align-items-center">
-          <button data-action="delete_field" data-field_data="<%=JSON.stringify(field)%>" data-field_id="<%=field._id%>" class="btn btn-danger">Delete</button>
+          <button data-action="delete_field" data-field_data="<%=JSON.stringify(field)%>"
+          data-field_id="<%=field._id%>" class="btn btn-danger">Delete</button>
           <button data-action="edit_field" data-field_data="<%=JSON.stringify(field)%>" class="ms-2 btn btn-primary">Edit</button>
         </div>
       </div>
@@ -86,15 +87,19 @@
         <div class="row">
           <%fieldDefinitions.forEach((fd)=>{%>
           <%if(field.type === "reference"){%>
-          <%if(true){%>
-          <%if(field[fd.name]){%>
+          <%if(fd.name !== "reference_model"){%>
           <div class="col-md-3 mb-3">
             <div class="text-primary"><%=fd.label%>:</div>
             <div><%=fd.choices ? fd.choices[field[fd.name]] : field[fd.name]%>
             </div>
           </div>
+          <%}else{%>
+          <div class="col-md-3 mb-3">
+            <div class="text-primary"><%=fd.label%>:</div>
+            <div><%=field[fd.name].display_value%>
+            </div>
+          </div>
           <%}%>
-                <%}%>
           <%}else if(field.type === "asset"){%>
           <%if(fd.name !== "reference_model"){%>
           <div class="col-md-3 mb-3">
@@ -158,6 +163,9 @@
             let formField = saveFieldForm.querySelector(`[name='${prop}']`);
             if (formField) {
               formField.value = field[prop];
+              if(prop === "reference_model" && field[prop]){
+                formField.closest("[data-lookup_wrapper]").querySelector(`[data-lookup='sys_model']`).value = field[prop].display_value;
+              }
               let event = new Event("change");
               formField.dispatchEvent(event);
             }

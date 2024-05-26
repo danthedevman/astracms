@@ -50,18 +50,7 @@
               </div>
               <div data-form_group="reference" class="mb-3 d-none">
                 <label for="name" class="form-label">Select Model</label>
-              
-                <div data-lookup_wrapper class="dropdown w-100">
-                  <input data-mandatory="false"  name="reference_model" data-lookup="sys_model" autofocus data-lookup_search class="form-control rounded-0" data-reference="" id="lookup_sys_model" placeholder="Search..." data-dropdown_btn/>
-                  <ul class="dropdown-menu bg-dark p-0 w-100" aria-labelledby="dropdownMenuButton1">
-                    <li></li>
-                    <li class="mb-2 p-3">
-                      <ul data-lookup_results class="list-group bg-dark p-0" style="width:100%;max-height:200px;overflow-y: auto;">
-                      </ul>
-                    </li>
-                  </ul>
-                  <input value="" name="lookup_model" type="hidden"  />
-                </div>
+                  <%-include(`../../../partials/fields/reference.ejs`,{field:{type:"reference",name:"reference_model",reference_model:"sys_model"}})%>
               
               </div>
               <div data-form_group="title_field" class="mb-3">
@@ -125,42 +114,6 @@
       selector: "[name='save_field_form']"
     }).init();
 
-    const modelDropdownMenu = document.querySelector("#lookup_sys_model").closest(".dropdown").querySelector(".dropdown-menu")
-
-    document.getElementById("lookup_sys_model").onkeyup = triggerLookup;
-
-
-    function triggerLookup(evt){
-
-      clearTimeout(deferLookup);
-         deferLookup = setTimeout(async ()=>{
-         let res = await fetch(`/<%=locals.base._id%>/${this.getAttribute("data-lookup")}/search?sys_text_search=${encodeURI(this.value)}`);
-
-         if(res.status === 200){
-          let json = await res.json();
-          console.log(json);
-          let template = "";
-          json.results.forEach((result)=>{
-            template+=`<li class="list-group-item border-0 bg-dark p-0""><a class="d-block w-100" data-result data-value="${result._id.toString()}" data-display_value="${result.label}" href="javascript:void(0)">${result.label}</a></li>`
-          })
-          const results = evt.target.closest(".dropdown").querySelector("[data-lookup_results]");
-          results.innerHTML = template;
-          evt.target.closest(".dropdown").querySelectorAll("[data-result]").forEach((r)=>{
-            r.onclick = (e)=>{
-              e.preventDefault();
-              evt.target.closest(".dropdown").querySelector("[data-lookup]").setAttribute("data-value",r.getAttribute("data-value"))
-              evt.target.closest(".dropdown").querySelector("[data-lookup]").value = r.getAttribute("data-display_value");
-         modelDropdownMenu.classList.remove("show");
-            };
-          });
-         }
-
-         modelDropdownMenu.classList.add("show");
-
-         },300);
-
-    }
-
     const saveFieldBtn = document.querySelector("[data-action='save_field']");
     saveFieldBtn.onclick = async (evt) => {
       evt.preventDefault();
@@ -176,7 +129,7 @@
         mandatory: form.getValue("[name='mandatory']"),
         hidden_on_form: form.getValue("[name='hidden_on_form']"),
         reference_type: form.getValue("[name='reference_type']"),
-        reference_model: form.getElement("[name='reference_model']").getAttribute("data-value"),
+        reference_model: form.getValue("[name='reference_model']"),
         field_id:form.getValue("[name='field_id']")
       });
 

@@ -1,38 +1,49 @@
 const ObjectId = require("mongodb").ObjectId;
+const e = require("express");
 const DBConnection = require("../database/DBConnection");
 const DBHelper = require("../database/DBHelper");
 
 const getContent = async (req, res, next) => {
-  const db = await DBConnection.getDB(req.params.base);
+  const dbHelper = new DBHelper({ db: req.params.base, request: req });
   const queryObj = {};
   let model;
 
-  if(req.params.model && ObjectId.isValid(req.params.model)){
+  if (req.params.model && ObjectId.isValid(req.params.model)) {
     queryObj._model = new ObjectId(req.params.model);
-    model = await db
-    .collection("sys_model")
-    .findOne({ _id: new ObjectId(req.params.model) });
+    model = await dbHelper.get("sys_model", {
+      _id: new ObjectId(req.params.model),
+    });
   }
 
-  const records = await db
-  .collection("sys_content")
-  .find(queryObj)
-  .toArray();
-  
-
-  let fields = [
-    { name: "_title", label: "Title" },
-  ];
-  if(model){
-    fields = await db
-    .collection("sys_field")
-    .find({ _model: new ObjectId(model._id) })
-    .toArray();;
+  const records = await dbHelper.query("sys_content", queryObj);
+  let fields = [{ name: "_title", label: "Title" },{ name: "_model", label: "Model", type:"reference" }];
+  if (model) {
+    fields = await dbHelper.query("sys_field", {
+      _model: new ObjectId(model._id),
+    });
   }
 
-  for(const rec of records){
-    if(!rec._title){
-      rec._title = '-No title found-';
+  let referenceFields = fields.filter((f) => {
+    return f.type === "reference";
+  });
+
+  for (const record of records) {
+    if (!record._title) {
+      record._title = "-No title found-";
+    }
+
+    for (const field of referenceFields) {
+      if (!record[field.name] || !ObjectId.isValid(record[field.name]))
+        continue;
+      let refCollection = model ? "sys_content" : "sys_model";
+      let refVal = await dbHelper.get(refCollection, {
+        _id: new ObjectId(record[field.name]),
+      });
+      if (!refVal) continue;
+      record[field.name] = {
+        value: refVal._id.toString(),
+        display_value: refVal._title,
+      };
     }
   }
 
@@ -47,8 +58,8 @@ const getContent = async (req, res, next) => {
     crumbs: [{ label: "Content" }],
   };
 
-  if(req.params.model){
-    renderObj.navbar_actions= [{ name: "add_content", order: 100 }];
+  if (req.params.model) {
+    renderObj.navbar_actions = [{ name: "add_content", order: 100 }];
     renderObj.crumbs = [
       { label: "Content", href: `content` },
       { label: `${model.label}` },
@@ -59,34 +70,61 @@ const getContent = async (req, res, next) => {
 };
 
 const getContentRecord = async (req, res, next) => {
-  const db = await DBConnection.getDB(req.params.base);
+  const dbHelper = new DBHelper({ db: req.params.base });
 
-  const model = await db
-    .collection("sys_model")
-    .findOne({ _id: new ObjectId(req.params.model) });
+  const model = await dbHelper.get("sys_model", {
+    _id: new ObjectId(req.params.model),
+  });
 
-  const fields = await db
-    .collection("sys_field")
-    .find({ _model: new ObjectId(req.params.model) })
-    .toArray();
+  const fields = await dbHelper.query("sys_field", {
+    _model: new ObjectId(req.params.model),
+  });
 
   let record;
   if (req.params.id && ObjectId.isValid(req.params.id)) {
-    record = await db
-      .collection("sys_content")
-      .findOne({ _id: new ObjectId(req.params.id) });
+    record = await dbHelper.get("sys_content", {
+      _id: new ObjectId(req.params.id),
+    });
   }
 
-  if(record){
-    let referenceFields = fields.filter((f)=>{return f.type === "reference"});
-    for(const field of referenceFields){
-      if(!record[field.name] || !ObjectId.isValid(record[field.name])) continue;
-      let refVal = await db
-      .collection("sys_content")
-      .findOne({ _id: new ObjectId(record[field.name])/*, _model:new ObjectId(field.reference_model)*/ });
-      if(!refVal) continue;
-      record[field.name] = {value:refVal._id.toString(),display_value:refVal._title}
+  if (record) {
+    let referenceFields = fields.filter((f) => {
+      return f.type === "reference";
+    });
+
+    for (const field of referenceFields) {
+      if (!record[field.name] || !ObjectId.isValid(record[field.name]))
+        continue;
+      let refVal = await dbHelper.get("sys_content", {
+        _id: new ObjectId(record[field.name]),
+      });
+      if (!refVal) continue;
+      record[field.name] = {
+        value: refVal._id.toString(),
+        display_value: refVal._title,
+      };
     }
+
+    for (const field of fields) {
+      if(field.type !== "asset") continue;
+      field.reference_model = "sys_asset";
+      if (!record[field.name] || !ObjectId.isValid(record[field.name]))
+        continue;
+      let refVal = await dbHelper.get("sys_asset", {
+        _id: new ObjectId(record[field.name]),
+      });
+      if (!refVal) continue;
+      record[field.name] = {
+        value: refVal._id.toString(),
+        display_value: refVal._title,
+      };
+    }
+
+  }else{
+    for (const field of fields) {
+      if(field.type !== "asset") continue;
+      field.reference_model = "sys_asset";
+     }
   }
 
   res.render("./pages/content_record", {
@@ -100,7 +138,12 @@ const getContentRecord = async (req, res, next) => {
     crumbs: [
       { label: "Content", href: `content` },
       { label: `${model.label}`, href: `content/${model._id}` },
-      { label: `${(record && (record._title ? record._title : 'No title found')) || "New"}` },
+      {
+        label: `${
+          (record && (record._title ? record._title : "No title found")) ||
+          "New"
+        }`,
+      },
     ],
   });
 };
@@ -111,8 +154,10 @@ const saveContent = async (req, res, next) => {
     return;
   }
 
-  const dbHelper = new DBHelper({db:req.params.base});
-  const fields = await dbHelper.query("sys_field",{ _model: new ObjectId(req.params.model) })
+  const dbHelper = new DBHelper({ db: req.params.base, request: req });
+  const fields = await dbHelper.query("sys_field", {
+    _model: new ObjectId(req.params.model),
+  });
 
   let titleField = fields.filter((f) => {
     return f.title === "yes";
@@ -136,9 +181,13 @@ const saveContent = async (req, res, next) => {
     };
   }
 
-  const contentRecord = await dbHelper.save("sys_content",contentQuery,saveData);
+  const contentRecord = await dbHelper.save(
+    "sys_content",
+    contentQuery,
+    saveData
+  );
   res.status(200).send({
-    record_id:contentRecord
+    record_id: contentRecord,
   });
 };
 

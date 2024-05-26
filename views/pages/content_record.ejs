@@ -1,9 +1,66 @@
 <%-include('../partials/container_start.ejs')%>
 <div class="row">
-    <div class="col-12">
-       <div>
-        <%-include('../partials/forms/content_form.ejs')%>
-       </div>
+  <div class="col-md-<%=typeof record !== "undefined" ? '9' : '12'%>">
+    <div>
+      <%-include('../partials/forms/content_form.ejs')%>
     </div>
+  </div>
+  <%if(typeof record !== "undefined"){%>
+  <div class="col-md-3">
+    <div class="mb-2">
+      <div class="card content_record_info_card">
+        <div class="card-header">
+          <div class="card-title">
+            Details
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mb-1">
+            <label>Status:</label>
+            <div>Draft (Unpublished)</div>
+            <div class="d-none">Draft (Published)</div>
+            <div class="d-none">Published</div>
+            <div class="d-none">Archived</div>
+          </div>
+          <hr class="my-2" />
+          <div class="mb-1">
+            <label>API Id:</label>
+            <div>1234567</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb-2">
+      <div class="card content_record_info_card">
+        <div class="card-header">
+          <div class="card-title">
+            Meta
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mb-1">
+            <label>Created On:</label>
+            <div><%=record._created_on%></div>
+          </div>
+          <hr class="my-2" />
+          <div class="mb-1">
+            <label>Created by:</label>
+            <div><%=record._created_by%></div>
+          </div>
+          <hr class="my-2" />
+          <div class="mb-1">
+            <label>Updated on:</label>
+            <div><%=record._updated_on%></div>
+          </div>
+          <hr class="my-2" />
+          <div class="mb-1">
+            <label>Updated by:</label>
+            <div><%=record._updated_by%></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%}%>
 </div>
 <%-include('../partials/container_end.ejs')%>

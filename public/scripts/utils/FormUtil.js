@@ -146,12 +146,7 @@ class FormUtil {
       field.onkeyup = (evt) => {
         clearTimeout(deferLookup);
         deferLookup = setTimeout(async () => {
-          let res = await fetch(
-            `/${window._astracms.base_id}/sys_content/search?sys_text_search=${encodeURI(field.value)}&sys_model=${field.getAttribute("data-lookup")}`
-          );
-
-          if (res.status === 200) {
-            let json = await res.json();
+           let json = await this.searchReference(field);
             let template = "";
             json.results.forEach((result) => {
               template += `<li class="list-group-item border-0 bg-dark p-0""><a class="d-block w-100" data-result data-value="${result._id.toString()}" data-display_value="${
@@ -179,12 +174,22 @@ class FormUtil {
                   dropdown.classList.remove("show");
                 };
               });
-          }
+          
 
           dropdown.classList.add("show");
         }, 300);
       };
     });
+  }
+
+  async searchReference(field){
+    let res = await fetch(
+      `/${window._astracms.base_id}/${field.getAttribute("data-lookup")}/search?sys_text_search=${encodeURI(field.value)}`
+    );
+
+    if (res.status === 200) {
+      return await res.json();
+    }
   }
 }
 
