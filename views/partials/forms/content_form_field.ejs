@@ -28,16 +28,14 @@
 
 <%if(field.type === "choice"){%>
 <select data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%=field.mandatory === "yes" ? 'true':'false'%>" class="form-select">
-    <option value="" selected>Yes</option>
-    <option value="yes">Yes</option>
-    <option value="no">No</option>
+    <option value="yes" <%if(typeof record !== 'undefined' && record[field.name] === "yes"){%>selected<%}%>>Yes</option>
+    <option value="no" <%if(typeof record !== 'undefined' && record[field.name] === "no"){%>selected<%}%>>No</option>
 </select>
 <%}%>
 
 <%if(field.type === "yes_no"){%>
 <select data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%=field.mandatory === "yes" ? 'true':'false'%>" class="form-select">
-  <option value="" selected>Yes</option>
-  <option value="yes">Yes</option>
-  <option value="no">No</option>
+    <option value="yes" <%if(typeof record !== 'undefined' && record[field.name] === "yes"){%>selected<%}%>>Yes</option>
+    <option value="no" <%if(typeof record !== 'undefined' && record[field.name] === "no"){%>selected<%}%>>No</option>
 </select>
 <%}%>
