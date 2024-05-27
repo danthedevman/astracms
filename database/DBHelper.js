@@ -31,7 +31,6 @@ class DBHelper {
     return answer;
   }
 
-
   async query(collection, query, options) {
     const db = await DBConnection.getDB(this.DB);
     const answer = await db.collection(collection).find(query).toArray();
@@ -42,6 +41,29 @@ class DBHelper {
   async get(collection, query) {
     const db = await DBConnection.getDB(this.DB);
     const answer = await db.collection(collection).findOne(query);
+    if (
+      ObjectId.isValid(answer._created_by) &&
+      ObjectId.isValid(answer._updated_by)
+    ) {
+      let created_by = await new DBHelper({ db: process.env.MAIN_DB }).get(
+        "sys_user",
+        {
+          _id: new ObjectId(answer._created_by),
+        }
+      );
+
+      answer._created_by = created_by.name;
+
+      let updated_by = await new DBHelper({ db: process.env.MAIN_DB }).get(
+        "sys_user",
+        {
+          _id: new ObjectId(answer._updated_by),
+        }
+      );
+
+      answer._updated_by = updated_by.name;
+    }
+
     return answer;
   }
 

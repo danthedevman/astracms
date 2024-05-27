@@ -1,12 +1,12 @@
 <%-include('../partials/container_start.ejs')%>
 <div class="row">
-  <div class="col-md-<%=typeof record !== "undefined" ? '9' : '12'%>">
+  <div class="col-md-<%=typeof record !== "undefined" ? '8' : '12'%>">
     <div>
       <%-include('../partials/forms/content_form.ejs')%>
     </div>
   </div>
   <%if(typeof record !== "undefined"){%>
-  <div class="col-md-3">
+  <div class="col-md-4">
     <div class="mb-2">
       <div class="card content_record_info_card">
         <div class="card-header">
@@ -25,7 +25,9 @@
           <hr class="my-2" />
           <div class="mb-1">
             <label>API Id:</label>
-            <div>1234567</div>
+            <div class="bg-secondary rounded py-1 px-2 d-flex align-items-center justify-content-between">
+                <span><%=record._id%></span><span><i class="bi bi-clipboard"></i></span>
+            </div>
           </div>
         </div>
       </div>

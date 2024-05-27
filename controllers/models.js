@@ -30,12 +30,7 @@ const getModel = async (req, res, next) => {
     .find({ _model: new ObjectId(req.params.id) })
     .toArray();
 
-  let referenceFields = fields.filter((f) => {
-    return f.type === "reference";
-  });
-
   for (const field of fields) {
-    console.log(field);
     if (field.type === "reference") {
       let refVal = await dbHelper.get("sys_model", {
         _id: new ObjectId(field.reference_model),
@@ -99,7 +94,12 @@ const deleteModel = async (req, res, next) => {
   await db
     .collection("sys_field")
     .deleteMany({ _model: new ObjectId(req.params.id) });
-  await db.collection("_model").deleteOne({ _id: new ObjectId(req.params.id) });
+  await db
+    .collection("sys_content")
+    .deleteMany({ _model: new ObjectId(req.params.id) });
+  await db
+    .collection("sys_model")
+    .deleteOne({ _id: new ObjectId(req.params.id) });
   res.status(200).send();
 };
 
@@ -157,12 +157,6 @@ const deleteField = async (req, res, next) => {
     .deleteOne({ _id: new ObjectId(req.params.field_id) });
   res.status(200).send();
 };
-
-function _getFieldData(data) {
-  let answer = {};
-  answer.label = data.label;
-  answer.name = data.name;
-}
 
 module.exports = {
   getModels,

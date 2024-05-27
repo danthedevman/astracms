@@ -88,6 +88,7 @@ const getContentRecord = async (req, res, next) => {
   }
 
   if (record) {
+
     let referenceFields = fields.filter((f) => {
       return f.type === "reference";
     });
