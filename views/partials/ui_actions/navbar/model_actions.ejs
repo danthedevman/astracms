@@ -3,9 +3,18 @@
   <button data-model_label="<%=model.label.toString()%>" data-action="delete_model" data-model_id="<%=model._id.toString()%>" class="btn btn-danger me-2">
     Delete Model
   </button>
-  <button data-bs-toggle="modal" data-bs-target="#save_model_modal" class="btn btn-primary">
+  <button data-bs-toggle="modal" data-bs-target="#save_model_modal" class="btn btn-primary me-2">
     Edit Details
   </button>
+  <div class="dropdown">
+    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-three-dots-vertical"></i>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+      <li><a class="dropdown-item" href="/<%=locals.base._id%>/content/<%=model._id%>"><i class="bi bi-list me-2"></i>View Content</a></li>
+      <li><a class="dropdown-item" href="/<%=locals.base._id%>/content/<%=model._id%>/new"><i class="bi bi-plus me-2"></i>Add Content</a></li>
+    </ul>
+  </div>
 </div>
 <script>
   (() => {

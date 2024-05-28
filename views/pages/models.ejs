@@ -21,16 +21,19 @@
 <div class="row">
   <%models.forEach((model)=>{%>
   <div class="col-md-6 mb-3">
-    <div class="card shadow" style="height:180px;">
+    <div class="card shadow">
       <div class="card-header d-flex align-items-center justify-content-between">
         <div class="card-title">
           <%=model.label%>
         </div>
       </div>
-      <div class="card-body">
+      <div class="card-body" style="height:100px;">
         <div>
           <label class="text-muted">Description</label>
-          <div><%=model.description || model.label%></div>
+          <div style="overflow:hidden;text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;"><%=model.description || model.label%></div>
         </div>
       </div>
       <div class="card-footer">

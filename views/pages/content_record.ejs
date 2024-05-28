@@ -17,7 +17,8 @@
         <div class="card-body">
           <div class="mb-1">
             <label>Status:</label>
-            <div>Draft (Unpublished)</div>
+            <div><%=record._status === "published" ? record._published_changes ? "Published" : "Draft (Unpublished Changes)" : "Draft"%></div>
+            <div class="d-none">Draft (Unpublished)</div>
             <div class="d-none">Draft (Published)</div>
             <div class="d-none">Published</div>
             <div class="d-none">Archived</div>

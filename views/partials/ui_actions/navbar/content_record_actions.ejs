@@ -2,9 +2,18 @@
   <button data-action="save_content_record" class="btn btn-primary border-secondary d-flex align-items-center justify-content-between me-2" type="button">
     <div><i class="bi bi-save me-2"></i>Save</div>
   </button>
-  <button data-action="publish_content_record" class="btn btn-success d-flex align-items-center justify-content-between" type="button">
+  <button data-action="publish_content_record" class="btn btn-success d-flex align-items-center justify-content-between me-2" type="button">
     <div><i class="bi bi-send me-2"></i>Publish</div>
   </button>
+  <div class="dropdown">
+    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-three-dots-vertical"></i>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+      <li><a class="dropdown-item" href="#"><i class="bi bi-archive me-2"></i>Archive</a></li>
+      <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
+    </ul>
+  </div>
 </div>
 
 
@@ -38,9 +47,23 @@
     };
 
     const publishRecordBtn = document.querySelector(`[data-action="publish_content_record"]`);
-    publishRecordBtn.onclick = (evt) => {
-      evt.preventDefault();
-      alert('publish')
+    publishRecordBtn.onclick = async (evt) => {
+        evt.preventDefault();
+      if (!formUtil.canSubmit()) {
+        return;
+      }
+
+      const form_data = new FormData(formUtil.form);
+      let res = await new ContentUtil().publishRecord({
+        form_data:form_data,
+        model_id:"<%=model._id%>",
+        record_id: "<%=typeof record !== 'undefined' ? record._id : null%>"
+      });
+
+      if (Turbo && res.status === 200) {
+        let json = await res.json();
+        Turbo.visit(`/<%=locals.base._id%>/content/<%=model._id%>/${json.record_id}`);
+      }
     };
 
   })();

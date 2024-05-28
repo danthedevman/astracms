@@ -16,7 +16,10 @@ const getContent = async (req, res, next) => {
   }
 
   const records = await dbHelper.query("sys_content", queryObj);
-  let fields = [{ name: "_title", label: "Title" },{ name: "_model", label: "Model", type:"reference" }];
+  let fields = [
+    { name: "_title", label: "Title" },
+    { name: "_model", label: "Model", type: "reference" },
+  ];
   if (model) {
     fields = await dbHelper.query("sys_field", {
       _model: new ObjectId(model._id),
@@ -32,7 +35,43 @@ const getContent = async (req, res, next) => {
       record._title = "-No title found-";
     }
 
-    for (const field of referenceFields) {
+    for (const field of fields) {
+
+      if(field.type === "yes_no" && field.title_field === "yes"){
+        record[field.name] = String(record[field.name])[0].toUpperCase() + String(record[field.name]).slice(1);
+        ;
+      }
+
+      if (field.type === "reference") {
+        if (!record[field.name] || !ObjectId.isValid(record[field.name]))
+          continue;
+          let refCollection = model ? "sys_content" : "sys_model";
+          let refVal = await dbHelper.get(refCollection, {
+            _id: new ObjectId(record[field.name]),
+          });
+        if (!refVal) continue;
+        record[field.name] = {
+          value: refVal._id.toString(),
+          display_value: refVal._title,
+        };
+      }
+
+      if (field.type === "asset") {
+        field.reference_model = "sys_asset";
+        if (!record[field.name] || !ObjectId.isValid(record[field.name]))
+          continue;
+        let refVal = await dbHelper.get("sys_asset", {
+          _id: new ObjectId(record[field.name]),
+        });
+        if (!refVal) continue;
+        record[field.name] = {
+          value: refVal._id.toString(),
+          display_value: refVal._title,
+        };
+      }
+    }
+
+    /*for (const field of referenceFields) {
       if (!record[field.name] || !ObjectId.isValid(record[field.name]))
         continue;
       let refCollection = model ? "sys_content" : "sys_model";
@@ -44,7 +83,7 @@ const getContent = async (req, res, next) => {
         value: refVal._id.toString(),
         display_value: refVal._title,
       };
-    }
+    }*/
   }
 
   let renderObj = {
@@ -88,44 +127,40 @@ const getContentRecord = async (req, res, next) => {
   }
 
   if (record) {
-
-    let referenceFields = fields.filter((f) => {
-      return f.type === "reference";
-    });
-
-    for (const field of referenceFields) {
-      if (!record[field.name] || !ObjectId.isValid(record[field.name]))
-        continue;
-      let refVal = await dbHelper.get("sys_content", {
-        _id: new ObjectId(record[field.name]),
-      });
-      if (!refVal) continue;
-      record[field.name] = {
-        value: refVal._id.toString(),
-        display_value: refVal._title,
-      };
-    }
-
     for (const field of fields) {
-      if(field.type !== "asset") continue;
-      field.reference_model = "sys_asset";
-      if (!record[field.name] || !ObjectId.isValid(record[field.name]))
-        continue;
-      let refVal = await dbHelper.get("sys_asset", {
-        _id: new ObjectId(record[field.name]),
-      });
-      if (!refVal) continue;
-      record[field.name] = {
-        value: refVal._id.toString(),
-        display_value: refVal._title,
-      };
-    }
 
-  }else{
+      if (field.type === "reference") {
+        if (!record[field.name] || !ObjectId.isValid(record[field.name]))
+          continue;
+        let refVal = await dbHelper.get("sys_content", {
+          _id: new ObjectId(record[field.name]),
+        });
+        if (!refVal) continue;
+        record[field.name] = {
+          value: refVal._id.toString(),
+          display_value: refVal._title,
+        };
+      }
+
+      if (field.type === "asset") {
+        field.reference_model = "sys_asset";
+        if (!record[field.name] || !ObjectId.isValid(record[field.name]))
+          continue;
+        let refVal = await dbHelper.get("sys_asset", {
+          _id: new ObjectId(record[field.name]),
+        });
+        if (!refVal) continue;
+        record[field.name] = {
+          value: refVal._id.toString(),
+          display_value: refVal._title,
+        };
+      }
+    }
+  } else {
     for (const field of fields) {
-      if(field.type !== "asset") continue;
+      if (field.type !== "asset") continue;
       field.reference_model = "sys_asset";
-     }
+    }
   }
 
   res.render("./pages/content_record", {
@@ -161,7 +196,7 @@ const saveContent = async (req, res, next) => {
   });
 
   let titleField = fields.filter((f) => {
-    return f.title === "yes";
+    return f.title_field === "yes";
   })[0];
   if (!titleField) {
     titleField = fields[0];
@@ -173,13 +208,28 @@ const saveContent = async (req, res, next) => {
   }
 
   saveData._title = req.body[titleField.name];
+
+  if(titleField.type === "yes_no"){
+    saveData._title = String(req.body[titleField.name])[0].toUpperCase() + String(req.body[titleField.name]).slice(1);
+  }
+
   saveData._model = new ObjectId(req.params.model);
 
   let contentQuery;
-  if (req.params.id && ObjectId.isValid(req.params.id)) {
+  let isValidRecord = req.params.id && ObjectId.isValid(req.params.id);
+  if (isValidRecord) {
     contentQuery = {
       _id: new ObjectId(req.params.id),
     };
+  }
+
+  if(req.body._status === "published"){
+    saveData._status = "published";
+    saveData._published_changes = true;
+  }
+
+  if(!req.body._status){
+    saveData._published_changes = false;
   }
 
   const contentRecord = await dbHelper.save(
@@ -187,10 +237,16 @@ const saveContent = async (req, res, next) => {
     contentQuery,
     saveData
   );
+
   res.status(200).send({
     record_id: contentRecord,
   });
 };
+
+function _prepRecordRead(record){
+  
+
+}
 
 module.exports = {
   getContent,
