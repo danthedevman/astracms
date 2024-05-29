@@ -27,14 +27,11 @@
           body: formData,
         }).then((res) => {
           if (res.status === 200) {
-            if (Turbo) {
-              Turbo.visit(`${document.location.pathname}${document.location.search}`);
-            }
+            window.location.reload()
           }
           uploadAssetBtn.removeAttribute("disabled");
         });
       };
     }
-
   })();
 </script>

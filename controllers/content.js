@@ -109,14 +109,10 @@ const getContent = async (req, res, next) => {
 };
 
 const getContentRecord = async (req, res, next) => {
-  const dbHelper = new DBHelper({ db: req.params.base });
+  const dbHelper = new DBHelper({ db: req.params.base, request:req });
 
   const model = await dbHelper.get("sys_model", {
     _id: new ObjectId(req.params.model),
-  });
-
-  const fields = await dbHelper.query("sys_field", {
-    _model: new ObjectId(req.params.model),
   });
 
   let record;
@@ -126,50 +122,12 @@ const getContentRecord = async (req, res, next) => {
     });
   }
 
-  if (record) {
-    for (const field of fields) {
-
-      if (field.type === "reference") {
-        if (!record[field.name] || !ObjectId.isValid(record[field.name]))
-          continue;
-        let refVal = await dbHelper.get("sys_content", {
-          _id: new ObjectId(record[field.name]),
-        });
-        if (!refVal) continue;
-        record[field.name] = {
-          value: refVal._id.toString(),
-          display_value: refVal._title,
-        };
-      }
-
-      if (field.type === "asset") {
-        field.reference_model = "sys_asset";
-        if (!record[field.name] || !ObjectId.isValid(record[field.name]))
-          continue;
-        let refVal = await dbHelper.get("sys_asset", {
-          _id: new ObjectId(record[field.name]),
-        });
-        if (!refVal) continue;
-        record[field.name] = {
-          value: refVal._id.toString(),
-          display_value: refVal._title,
-        };
-      }
-    }
-  } else {
-    for (const field of fields) {
-      if (field.type !== "asset") continue;
-      field.reference_model = "sys_asset";
-    }
-  }
-
   res.render("./pages/content_record", {
     title: "Content",
     layout: "./layouts/base",
     path: "content",
     record: record,
     model: model,
-    fields: fields,
     navbar_actions: [{ name: "content_record_actions", order: 100 }],
     crumbs: [
       { label: "Content", href: `content` },

@@ -23,7 +23,7 @@
 <%}%>
 
 <%if(field.type === "asset"){%>
-    <%-include(`../../partials/fields/reference.ejs`,{field:field})%>
+    <%-include(`../../partials/fields/reference.ejs`,{field:field,collection:"sys_asset"})%>
 <%}%>
 
 <%if(field.type === "choice"){%>

@@ -82,7 +82,6 @@ const saveModel = async (req, res, next) => {
     model = await modelCollection.insertOne(saveData);
   }
 
-  console.log(model);
   if (model)
     res
       .status(200)
@@ -136,6 +135,17 @@ const saveField = async (req, res, next) => {
     );
   } else {
     field = await fieldCollection.insertOne(saveData);
+  }
+  
+  if(saveData.title_field === "yes"){
+    await fieldCollection.updateMany(
+      {
+        _id:{$ne:(field.insertedId || field._id)},
+        title_field: "yes",
+        _model:new ObjectId(req.params.id)
+      },
+      { $set: {title_field:"no"} }
+    );
   }
 
   if (field) res.status(200).send({ record_id: model && model._id });

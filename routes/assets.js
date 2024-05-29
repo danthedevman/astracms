@@ -5,6 +5,7 @@ const {multerFunction} = require('../middleware/asset');
 
 router.get('/', getAssets);
 router.post('/upload',multerFunction(), uploadAsset);
+router.post('/upload/:asset_id',multerFunction(), uploadAsset);
 router.delete('/:id/delete', deleteAsset);
 
 module.exports = router;
