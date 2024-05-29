@@ -42,7 +42,7 @@ class DBHelper {
     const db = await DBConnection.getDB(this.DB);
     const mainDB = await DBConnection.getDB(process.env.MAIN_DB);
     const record = await db.collection(collection).findOne(query);
-    if (
+    if (record && 
       ObjectId.isValid(record._created_by) &&
       ObjectId.isValid(record._updated_by)
     ) {
@@ -65,6 +65,7 @@ class DBHelper {
       });
 
       for (const field of fields) {
+
         if (field.type === "reference") {
           if (!record[field.name] || !ObjectId.isValid(record[field.name]))
             continue;
@@ -94,6 +95,9 @@ class DBHelper {
             value: refVal._id.toString(),
             display_value: refVal._title,
           };
+          if(field.title_field === "yes"){
+            record._title = record[field.name].display_value;
+          }
         }
       }
 

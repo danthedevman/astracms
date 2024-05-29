@@ -93,3 +93,17 @@ h1,h2,h3,h4,h5,h6{
         color: $secondaryColor  !important;
     }
 }
+
+.tier_card{
+    background: rgba(255,255,255,.10);
+    color:#fff;
+    border:2px solid transparent;
+
+    &.selected{
+        border:2px solid $secondaryColor;
+    }
+}
+
+.bi-x{
+    font-size:1.6rem !important;
+}

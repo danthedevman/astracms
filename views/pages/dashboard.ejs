@@ -37,12 +37,25 @@ var demo_data = {
   <%});%>
 </div>
 <div class="row">
-  <div class="col-md-8">
-    <div class="card">
+  <div class="col-md-8 mb-sm-3 mb-md-0">
+    <div class="card activity_card">
       <div class="card-header">
         <div class="card-title">
-          Recent Activity
+          <i class="bi bi-activity me-2"></i>Recent Activity
         </div>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush p-0 bg-transparent">
+          <li class="list-group-item bg-transparent text-white px-0 d-flex align-items-center">
+            <span><i class="bi bi-chevron-right me-1"></i></span>Blog record created by John Smith.
+          </li>
+          <li class="list-group-item bg-transparent text-white px-0 d-flex align-items-center">
+            <span><i class="bi bi-chevron-right me-1"></i></span> Model deleted created by Jane Smith.
+          </li>
+          <li class="list-group-item bg-transparent text-white px-0 d-flex align-items-center">
+            <span><i class="bi bi-chevron-right me-1"></i></span>Asset created by Jack Smith.
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -50,9 +63,43 @@ var demo_data = {
   <div class="col-md-4">
     <div class="card">
       <div class="card-header">
-        <div class="card-title">
-          Resources
+        <div class="card-title d-flex align-items-center">
+          <i class="bi bi-question-circle me-2"></i>Resources
         </div>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush p-0 bg-transparent">
+          <li class="list-group-item bg-transparent text-white px-0">
+           <a class="d-flex align-items-center justify-content-between text-white" href="">
+            <span>Starter Guide</span>
+            <span><i class="bi bi-chevron-right"></i></span>
+           </a>
+          </li>
+          <li class="list-group-item bg-transparent text-white px-0">
+            <a class="d-flex align-items-center justify-content-between text-white" href="">
+             <span>AstraQuery Docs</span>
+             <span><i class="bi bi-chevron-right"></i></span>
+            </a>
+           </li>
+           <li class="list-group-item bg-transparent text-white px-0">
+            <a class="d-flex align-items-center justify-content-between text-white" href="">
+             <span>Defining Models</span>
+             <span><i class="bi bi-chevron-right"></i></span>
+            </a>
+           </li>
+           <li class="list-group-item bg-transparent text-white px-0">
+            <a class="d-flex align-items-center justify-content-between text-white" href="">
+             <span>Plans and Limits</span>
+             <span><i class="bi bi-chevron-right"></i></span>
+            </a>
+           </li>
+           <li class="list-group-item bg-transparent text-white px-0">
+            <a class="d-flex align-items-center justify-content-between text-white" href="">
+             <span>Contact Support</span>
+             <span><i class="bi bi-chevron-right"></i></span>
+            </a>
+           </li>
+        </ul>
       </div>
     </div>
 

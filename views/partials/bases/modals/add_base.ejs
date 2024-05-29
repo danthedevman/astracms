@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add Base</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x"></i></button>
       </div>
       <div class="modal-body">
         <form name="add_base_form">
@@ -14,6 +14,29 @@
           <div data-form_group class="mb-3">
             <label for="base_description" class="form-label">Description (optional)</label>
             <textarea class="form-control" name="description"></textarea>
+          </div>
+          <div>
+            <label>Tier</label>
+            <div class="card tier_card selected mb-2">
+              <div class="card-body">
+                Explorer (Free)
+              </div>
+            </div>
+            <div class="card tier_card mb-2">
+              <div class="card-body">
+                Astronomer ($5 USD a Month)
+              </div>
+            </div>
+            <div class="card tier_card mb-2">
+              <div class="card-body">
+                Astronaut ($10 USD a Month)
+              </div>
+            </div>
+            <div class="card tier_card mb-2">
+              <div class="card-body">
+                Enterprise ($250 USD a Month + overages)
+              </div>
+            </div>
           </div>
         </form>
       </div>

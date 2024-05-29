@@ -163,7 +163,7 @@
           for (let prop in field) {
             let formField = saveFieldForm.querySelector(`[name='${prop}']`);
             if (formField) {
-              if(prop === "reference_model" && field[prop]){
+              if(prop === "reference_model" && field[prop] && field[prop].display_value){
                 formField.closest("[data-lookup_wrapper]").querySelector(`[data-lookup='sys_model']`).value = field[prop].display_value;
                 formField.value = field[prop].value;
               }else{

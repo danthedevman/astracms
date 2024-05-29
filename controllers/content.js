@@ -20,6 +20,7 @@ const getContent = async (req, res, next) => {
     { name: "_title", label: "Title" },
     { name: "_model", label: "Model", type: "reference" },
   ];
+  
   if (model) {
     fields = await dbHelper.query("sys_field", {
       _model: new ObjectId(model._id),
@@ -116,9 +117,15 @@ const getContentRecord = async (req, res, next) => {
   });
 
   let record;
+  let fields;
   if (req.params.id && ObjectId.isValid(req.params.id)) {
     record = await dbHelper.get("sys_content", {
       _id: new ObjectId(req.params.id),
+    });
+    fields = record._fields || [];
+  }else{
+     fields = await dbHelper.query("sys_field", {
+      _model: new ObjectId(req.params.model),
     });
   }
 
@@ -127,6 +134,7 @@ const getContentRecord = async (req, res, next) => {
     layout: "./layouts/base",
     path: "content",
     record: record,
+    fields:fields,
     model: model,
     navbar_actions: [{ name: "content_record_actions", order: 100 }],
     crumbs: [

@@ -10,11 +10,11 @@ const getDashboard = async (req, res, next) => {
       counts: [
         {
           label: "Total Models",
-          count: 10,
+          count: "10/20",
         },
         {
           label: "Total Content Records",
-          count: 100,
+          count: "100/1000",
         },
         {
           label: "Asset Storage Usage",
@@ -22,7 +22,7 @@ const getDashboard = async (req, res, next) => {
         },
         {
           label: "API Calls this Month",
-          count: "200 calls",
+          count: "100/1000",
         },
         {
           label: "Content Updated Today",

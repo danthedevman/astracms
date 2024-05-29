@@ -101,6 +101,17 @@ a {
   padding: 6px 12px;
 }
 
+[data-lookup_wrapper] li {
+  background: none;
+}
+[data-lookup_wrapper] li:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+[data-lookup_wrapper] a {
+  color: #fff !important;
+  background: none !important;
+}
+
 .modal .modal-content {
   left: 125px;
   background: #0f172a;
@@ -116,6 +127,10 @@ a {
 .modal .modal-content .form-select {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.1);
+}
+.modal .modal-content .form-control:focus,
+.modal .modal-content .form-select:focus {
+  color: #fff;
 }
 .modal .modal-content input:-webkit-autofill,
 .modal .modal-content input:-webkit-autofill:hover,
@@ -182,6 +197,14 @@ table td {
 .dropdown_select_wrapper {
   padding: 0 10px;
   margin-bottom: 10px;
+}
+.dropdown_select_wrapper .dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.3);
+  color: #818cf8;
+}
+.dropdown_select_wrapper .dropdown-item:hover a {
+  background: none !important;
+  color: #fff;
 }
 .dropdown_select_wrapper .dropdown .btn:focus {
   box-shadow: none;
@@ -349,25 +372,27 @@ main {
   cursor: grab;
 }
 
-[name=content_record_form] label {
+label {
   color: #818cf8;
-  font-size: 1.6rem;
+  font-size: 1rem;
 }
-[name=content_record_form] .form-control,
-[name=content_record_form] .form-select {
+
+.form-control,
+.form-select {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.1);
   color: #fff;
 }
-[name=content_record_form] .form-control:focus,
-[name=content_record_form] .form-select:focus {
+.form-control:focus,
+.form-select:focus {
   background: #fff;
   color: #000;
 }
-[name=content_record_form] input:-webkit-autofill,
-[name=content_record_form] input:-webkit-autofill:hover,
-[name=content_record_form] input:-webkit-autofill:focus,
-[name=content_record_form] input:-webkit-autofill:active {
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.1);
 }
@@ -392,10 +417,18 @@ thead th {
 
 .content_record_info_card label {
   color: #60a5fa;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 .content_record_info_card * {
-  font-size: 1.2rem;
+  font-size: 1rem;
+}
+
+.activity_card .bi-chevron-right {
+  color: #818cf8;
+}
+
+.bi-x {
+  font-size: 1.6rem !important;
 }
 
 /*# sourceMappingURL=main.css.map */

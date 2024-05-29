@@ -16,18 +16,20 @@
           <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Billing</button>
         </li>
       </ul>
-      <div class="tab-content" id="myTabContent">
+      <div class="tab-content mt-3" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
           <form class="mb-3">
-            <div>
+            <div class="mb-3 col-md-6" data-form_group>
               <label>Base Name</label>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" value="<%=locals.base.name%>" />
             </div>
-            <div>
+            <div  class="mb-3">
               <label>Base Description</label>
-              <textarea class="form-control"></textarea>
+              <textarea class="form-control"><%=locals.base.description%></textarea>
             </div>
+            <button type="button" class="btn btn-primary" data-action="save_base_details" disabled>Save</button>
           </form>
+          <hr style="background:rgba(255,255,255,.90);"/>
           <div class="card danger_zone_wrapper bg-outline-danger">
             <div class="card-body">
 

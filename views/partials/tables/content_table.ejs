@@ -18,16 +18,15 @@
         <input style="width:16px;" type="checkbox" class="form-check me-3 flex-shrink-0" />
       </th>
       <%fields.forEach((field)=>{%>
-      <%if(field.type === "reference"){%>
+      <%if(field.type === "reference" || field.type === "asset"){%>
       <td scope="col">
         <%=record[field.name].display_value%>
       </td>
-      <%}%>
-     <%if(!field.type || field.type !== "reference"){%>
+      <%}else{%>
       <td scope="col">
         <%=record[field.name]%>
-      </td>
-      <%}%>  
+      </td> 
+      <%}%>
       <%})%>
     </tr>
     <%})%>
@@ -41,7 +40,7 @@
         let model = row.getAttribute("data-table_row_model_id");
         let record = row.getAttribute("data-table_row_record_id");
         if(!model || !record) return;
-        location.href = `/<%=locals.base._id%>/content/${model}/${record}`;
+        Turbo.visit(`/<%=locals.base._id%>/content/${model}/${record}`);
       };
     });
 

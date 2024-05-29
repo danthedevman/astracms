@@ -1,6 +1,6 @@
-<%if(typeof record !== "undefined" && record._fields && record._fields.length > 0){%>
+<%if(typeof fields !== "undefined" && fields.length > 0){%>
 <form name="content_record_form">
-  <%record._fields.forEach((field)=>{%>
+  <%fields.forEach((field)=>{%>
   <div data-form_group class="mb-3">
     <label><%=field.label%><small class="ms-1 text-secondary">(<%=field.mandatory === "yes" ? 'required':'optional'%></span>)</small></label>
     <%-include(`../../partials/forms/content_form_field.ejs`,{field:field})%>

@@ -113,6 +113,19 @@ a {
     padding: 6px 12px;
 }
 
+[data-lookup_wrapper]{
+    li{
+        background: none;
+        &:hover{
+            background: rgba(255,255,255,.10);
+        }
+    }
+    a{
+        color:#fff !important;
+        background: none !important;
+    }
+}
+
 .modal {
     .modal-content {
         left: calc($sidemenuWidth / 2);
@@ -131,6 +144,10 @@ a {
         .form-select {
             background: rgba(255, 255, 255, .10);
             border-color: rgba(255, 255, 255, .10);
+
+            &:focus{
+                color:#fff;
+            }
         }
 
 
@@ -213,6 +230,17 @@ table {
 .dropdown_select_wrapper {
     padding: 0 10px;
     margin-bottom: 10px;
+
+    .dropdown-item{
+        &:hover{
+            background:rgba(255,255,255,.30);
+            color:$secondaryColor;
+            a{
+            background:none !important;
+            color:#fff;
+            }
+        }
+    }
 
     .dropdown {
 
@@ -417,13 +445,13 @@ main {
     }
 }
 
-[name='content_record_form'] {
+//[name='content_record_form'] {
     // background: rgba(255, 255, 255, .05);
     // padding:1rem;
 
     label {
         color: $secondaryColor;
-        font-size: 1.6rem;
+        font-size: 1rem;
     }
 
     .form-control,
@@ -447,7 +475,7 @@ main {
         border-color: rgba(255, 255, 255, .10);
     }
 
-}
+//}
 
 [data-clickable_row]{
     cursor: pointer;
@@ -471,9 +499,19 @@ thead th{
 .content_record_info_card{
     label{
         color:#60a5fa;
-        font-size:1.2rem;
+        font-size:1rem;
     }
     *{
-    font-size:1.2rem;
+    font-size:1rem;
     }
+}
+
+.activity_card{
+    .bi-chevron-right{
+        color: $secondaryColor;
+    }
+}
+
+.bi-x{
+    font-size:1.6rem !important;
 }

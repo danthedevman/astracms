@@ -73,4 +73,17 @@ h1, h2, h3, h4, h5, h6 {
   color: #818cf8 !important;
 }
 
+.tier_card {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 2px solid transparent;
+}
+.tier_card.selected {
+  border: 2px solid #818cf8;
+}
+
+.bi-x {
+  font-size: 1.6rem !important;
+}
+
 /*# sourceMappingURL=bases.css.map */
