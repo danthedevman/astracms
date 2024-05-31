@@ -1,0 +1,112 @@
+<div <%if(typeof options !== "undefined"  && options.id){%>id="<%=options.id%>" <%}%> data-kv_component_wrapper>
+  <div class="form_group">
+    <label class="form-label"><%=typeof options !== "undefined" && options.title%></label>
+  <div data-kv_row_wrapper class="kv_row_wrapper">
+    <div data-order="100" data-kv_row class="kv_row mb-2 row">
+      <div data-form_group class="col-6">
+        <div class="d-flex align-items-center">
+          <button type="button" class="btn grip_btn me-2"><i class="bi bi-grip-vertical"></i></button>
+          <input data-kv_input name="key" data-mandatory="false" class="form-control" type="text" placeholder="<%=typeof options !== "undefined" && options.key_placeholder%>">
+        </div>
+      </div>
+      <div data-form_group class="col-6">
+        <div class="d-flex align-items-center">
+          <input data-kv_input name="value" data-mandatory="false" class="form-control" type="text" placeholder="<%=typeof options !== "undefined" && options.value_placeholder%>">
+          <button data-action="remove_row" class="btn-sm btn-danger ms-2"><i class="bi bi-trash"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="kv_add_row_btn_wrapper mt-3">
+    <button type="button" data-action="add_row" class="btn btn-primary w-100"><%=typeof options !== "undefined" && options.add_btn_label || "Add Row"%></button>
+  </div>
+</div>
+<input type="hidden" name="<%=typeof options !== "undefined" && options.kv_values_name || "kv_values"%>" value="" />
+</div>
+
+<script>
+  (() => {
+    const kvComponentWrapper = document.querySelector("[data-kv_component_wrapper]");
+
+    kvComponentWrapper.querySelector('[data-action="remove_row"]').onclick = (evt) => {
+      evt.preventDefault();
+      evt.currentTarget.closest(".kv_row").querySelectorAll("[data-kv_input]").forEach(element => {
+        element.value = "";
+        let change = new Event("change");
+        element.dispatchEvent(change);
+      });
+      setKVInputsOnChange();
+    };
+
+    kvComponentWrapper.querySelector('[data-action="add_row"]').onclick = (evt) => {
+      evt.preventDefault();
+      let row = document.querySelector(".kv_row");
+      let clonedRow = row.cloneNode(true);
+
+      clonedRow.querySelectorAll("input").forEach(element => {
+        element.value = "";
+      });
+
+      clonedRow.querySelector('[data-action="remove_row"]').onclick = (evt) => {
+        clonedRow.remove();
+      };
+
+      clonedRow.querySelector('[data-action="remove_row"]').classList.remove("d-none");
+      if (typeof Sortable !== "undefined") {
+        new Sortable(kvComponentWrapper.querySelector(`[data-kv_row_wrapper]`), {
+          animation: 150,
+          ghostClass: 'sortable-ghost',
+          onEnd: function(evt) {
+            let sortableRows = Array.from(evt.target.children);
+            sortableRows.forEach((sr, i) => {
+              sr.setAttribute("data-order", (i + 1) * 100);
+            });
+            setKVInputValue();
+          }
+        });
+      }
+
+      row.parentNode.appendChild(clonedRow);
+      setKVInputsOnChange();
+    }
+
+    setKVInputsOnChange();
+    function setKVInputsOnChange() {
+      let kvInputs = kvComponentWrapper.querySelectorAll(`[data-kv_input]`);
+      kvInputs.forEach((input) => {
+        input.onchange = (evt) => {
+          setKVInputValue();
+        }
+      })
+    }
+
+    function setKVInputValue() {
+      let answer = [];
+      let rows = kvComponentWrapper.querySelectorAll("[data-kv_row]");
+      rows.forEach((row) => {
+        if(row.querySelector(`[name="key"]`).value){
+        let obj = {};
+        obj[row.querySelector(`[name="key"]`).value] = row.querySelector(`[name="value"]`).value;
+        obj.order = row.getAttribute("data-order");
+        answer.push(obj);
+        }
+      });
+
+      if(answer.length === 0){
+        answer = "";
+      }
+
+      try {
+        let valueInput = kvComponentWrapper.querySelector(`[name='<%=typeof options !== "undefined" && options.kv_values_name || "kv_values"%>']`);
+        if(answer){
+            valueInput.value = JSON.stringify(answer);
+        }else{
+            valueInput.value = "";
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+  })()
+</script>

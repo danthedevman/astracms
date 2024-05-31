@@ -22,6 +22,14 @@ var demo_data = {
 %>
 
 <%-include('../partials/container_start.ejs')%>
+<div class="row mb-2">
+  <div class="col-12">
+   <div class="d-flex align-items-center justify-content-between">
+    <h1 class="welcome_text text-white">Welcome Daniel</h1>
+    <button class="btn btn-primary rounded text-white"><i class="bi bi-arrow-counterclockwise"></i></button>
+  </div>
+  </div>
+</div>
 <div class="row">
   <%dashboard.counts.forEach(card => {%>
     <div class="col-12 col-md-6 col-lg-4">

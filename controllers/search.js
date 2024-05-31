@@ -4,32 +4,41 @@ const getSearch = async (req, res, next) => {
   const db = await DBConnection.getDB(req.params.base);
   const query = req.query;
   let modelId = req.params.model;
-  if(ObjectId.isValid(modelId)){
+  if (ObjectId.isValid(modelId)) {
     modelId = "sys_content";
   }
   const searchCollection = await db.collection(`${modelId}`);
   //searchCollection.dropIndexes();
   await searchCollection.createIndex({ _title: "text" });
 
-  let queryObj = {
-    _title: {
-      $regex: `^${decodeURI(String(query.sys_text_search))}`,
-      $options: "i",
-    },
-  };
+  let queryObj;
+  if (query.sys_text_search) {
+    console.log("text search found")
+    queryObj = {
+      _title: {
+        $regex: `^${decodeURI(String(query.sys_text_search))}`,
+        $options: "i",
+      },
+    };
 
-  if(modelId === "sys_content"){
-    queryObj._model = new ObjectId(req.params.model);
+    if (modelId === "sys_content") {
+      queryObj._model = new ObjectId(req.params.model);
+    }
   }
 
-  let agg = await searchCollection.aggregate([
-    { $match: queryObj },
-  ]);
+  let results;
+  let limit = 10;
+  if (queryObj) {
+    results = await searchCollection.aggregate([
+      { $match: queryObj},{$limit: limit },
+    ]);
+  } else {
+    results = await searchCollection.find({}).limit(limit);
+  }
 
-  let arr = await agg.toArray();
+  results = await results.toArray();
 
-  console.log(arr);
-  res.status(200).send({ results: arr });
+  res.status(200).send({ results: results });
 };
 
 module.exports = {

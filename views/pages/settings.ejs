@@ -23,28 +23,43 @@
               <label>Base Name</label>
               <input type="text" class="form-control" value="<%=locals.base.name%>" />
             </div>
-            <div  class="mb-3">
+            <div class="mb-3">
               <label>Base Description</label>
               <textarea class="form-control"><%=locals.base.description%></textarea>
             </div>
             <button type="button" class="btn btn-primary" data-action="save_base_details" disabled>Save</button>
           </form>
-          <hr style="background:rgba(255,255,255,.90);"/>
+          <hr style="background:rgba(255,255,255,.90);" />
           <div class="card danger_zone_wrapper bg-outline-danger">
+            <div class="card-header">
+              <div class="card-title">
+                Danger Zone
+              </div>
+            </div>
             <div class="card-body">
-
+              <div class="h3 text-secondary">Delete Workspace</div>
+              <div class="mb-3">Deleting a workspace cannot be reverted and all content will be deleted.</div>
+              <div><button class="btn btn-danger"><i class="bi bi-trash me-1"></i>Delete Workspace</button></div>
             </div>
           </div>
         </div>
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
           <form class="mb-3">
-            <div>
-              <label>API Key</label>
-              <input type="text" class="form-control" />
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label>API Key</label>
+                <input type="text" class="form-control" />
+              </div>
+              <div class="col-md-6">
+                <label>Development Key</label>
+                <input type="text" class="form-control" />
+              </div>
             </div>
-            <div>
-  
+            <div class="row">
+              <div class="col-12">
+                <label>Allowed IPs</label>
+              </div>
             </div>
           </form>
 

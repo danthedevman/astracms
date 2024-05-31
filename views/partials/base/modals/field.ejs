@@ -51,7 +51,6 @@
               <div data-form_group="reference" class="mb-3 d-none">
                 <label for="name" class="form-label">Select Model</label>
                   <%-include(`../../../partials/fields/reference.ejs`,{field:{type:"reference",name:"reference_model",reference_model:"sys_model"}})%>
-              
               </div>
               <div data-form_group="title_field" class="mb-3">
                 <label for="name" class="form-label">Title Field</label>
@@ -72,8 +71,8 @@
           <!--row 2-->
           <div data-choices_macro class="row d-none">
             <div class="form_group">
-              <label class="form-label">Choices</label>
-              <div id="choice_list" class="choice_list_wrapper">
+              <%-include(`../../../partials/fields/key_value.ejs`,{options:{title:"Choices",key_placeholder:"Label",value_placeholder:"Value",id:"choice_list"}})%>
+              <!--<div id="choice_list" class="choice_list_wrapper">
                 <div data-order="100" class="choice_list_row mb-2 row">
                   <div data-form_group class="col-6">
                     <div class="d-flex align-items-center">
@@ -91,7 +90,7 @@
               </div>
               <div class="choice_add_btn_wrapper mt-3">
                 <button data-action="add_choice" class="btn btn-primary w-100">Add Choice</button>
-              </div>
+              </div>-->
             </div>
           </div>
           <input type="hidden" name="field_id" value=""/>
@@ -147,6 +146,7 @@
     });
 
     const choiceList = document.getElementById("choice_list");
+   /* const choiceList = document.getElementById("choice_list");
 
     choiceList.querySelector('[data-action="remove_choice"]').onclick = (evt) => {
       evt.preventDefault();
@@ -184,7 +184,7 @@
 
       x.parentNode.appendChild(y);
       form.init();
-    }
+    }*/
 
     const fieldType = document.getElementById("field_type");
     const choiceMacro = document.querySelector("[data-choices_macro]");
