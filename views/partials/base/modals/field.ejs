@@ -72,25 +72,6 @@
           <div data-choices_macro class="row d-none">
             <div class="form_group">
               <%-include(`../../../partials/fields/key_value.ejs`,{options:{title:"Choices",key_placeholder:"Label",value_placeholder:"Value",id:"choice_list"}})%>
-              <!--<div id="choice_list" class="choice_list_wrapper">
-                <div data-order="100" class="choice_list_row mb-2 row">
-                  <div data-form_group class="col-6">
-                    <div class="d-flex align-items-center">
-                      <button type="button" class="btn grip_btn me-2"><i class="bi bi-grip-vertical"></i></button>
-                      <input data-choice_label data-mandatory="false" class="form-control" type="text" placeholder="Label">
-                    </div>
-                  </div>
-                  <div data-form_group class="col-6">
-                    <div class="d-flex align-items-center">
-                      <input data-choice_value data-mandatory="false" class="form-control" type="text" placeholder="Value">
-                      <button data-action="remove_choice" class="btn-sm btn-danger ms-2"><i class="bi bi-trash"></i></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="choice_add_btn_wrapper mt-3">
-                <button data-action="add_choice" class="btn btn-primary w-100">Add Choice</button>
-              </div>-->
             </div>
           </div>
           <input type="hidden" name="field_id" value=""/>
@@ -113,12 +94,33 @@
       selector: "[name='save_field_form']"
     }).init();
 
+    const save_field_modal = document.getElementById('save_field_modal');
+    const fieldType = document.getElementById("field_type");
+    const choiceMacro = document.querySelector("[data-choices_macro]");
+    const reference =  document.querySelector('[data-form_group="reference"]');
+    const reference_type =  document.querySelector('[data-form_group="reference_type"]');
+
     const saveFieldBtn = document.querySelector("[data-action='save_field']");
     saveFieldBtn.onclick = async (evt) => {
       evt.preventDefault();
+      let canSubmit = true;
+      if(fieldType.value === "choice"){
+        save_field_modal.querySelectorAll(`[data-kv_input]`).forEach((input)=>{
+          if(!input.value){
+            canSubmit = false;
+            input.setAttribute("data-mandatory",true);
+          }
+        })
+        if(!canSubmit){
+          form.init();
+        }
+      }
+
       if (!form.canSubmit()) {
         return;
       }
+
+      if(!canSubmit) return;
 
       let res = await new ModelUtil().saveField("<%=model._id%>",{
         label: form.getValue("[name='label']"),
@@ -134,12 +136,10 @@
 
       if (Turbo && res.status === 200) {
         let json = await res.json();
-        console.log(json);
         Turbo.visit(`/<%=locals.base._id%>/models/${json.record_id}`);
       }
     }
 
-    const save_field_modal = document.getElementById('save_field_modal');
     save_field_modal.addEventListener('hidden.bs.modal', function(event) {
       form.reset();
       resetHiddenFields();
@@ -185,11 +185,6 @@
       x.parentNode.appendChild(y);
       form.init();
     }*/
-
-    const fieldType = document.getElementById("field_type");
-    const choiceMacro = document.querySelector("[data-choices_macro]");
-    const reference =  document.querySelector('[data-form_group="reference"]');
-    const reference_type =  document.querySelector('[data-form_group="reference_type"]');
 
     if (fieldType.value === "choice") {
       choiceMacro.classList.remove("d-none");
