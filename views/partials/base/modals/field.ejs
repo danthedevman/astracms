@@ -40,7 +40,7 @@
                 <select name="mandatory" class="form-select">
                   <option selected value="no">No</option>
                   <option value="yes">Yes</option>
-                </select>  
+                </select>
               </div>
             </div>
             <div class="col-md-6">
@@ -50,7 +50,7 @@
               </div>
               <div data-form_group="reference" class="mb-3 d-none">
                 <label for="name" class="form-label">Select Model</label>
-                  <%-include(`../../../partials/fields/reference.ejs`,{field:{type:"reference",name:"reference_model",reference_model:"sys_model"}})%>
+                <%-include(`../../../partials/fields/reference.ejs`,{field:{type:"reference",name:"reference_model",reference_model:"sys_model"}})%>
               </div>
               <div data-form_group="title_field" class="mb-3">
                 <label for="name" class="form-label">Title Field</label>
@@ -70,11 +70,11 @@
           </div>
           <!--row 2-->
           <div data-choices_macro class="row d-none">
-            <div class="form_group">
-              <%-include(`../../../partials/fields/key_value.ejs`,{options:{title:"Choices",key_placeholder:"Label",value_placeholder:"Value",id:"choice_list"}})%>
-            </div>
+          <div id="choice_list">
+            <%-include(`../../../partials/fields/key_value.ejs`,{options:{title:"Choices",key_placeholder:"Label",value_placeholder:"Value",id:"choice_list",kv_values_name:"choice_list_values"}})%>
           </div>
-          <input type="hidden" name="field_id" value=""/>
+          </div>
+          <input type="hidden" name="field_id" value="" />
         </form>
       </div>
       <div class="modal-footer d-flex align-items-center justify-content-between">
@@ -95,23 +95,23 @@
     }).init();
 
     const save_field_modal = document.getElementById('save_field_modal');
-    const fieldType = document.getElementById("field_type");
-    const choiceMacro = document.querySelector("[data-choices_macro]");
-    const reference =  document.querySelector('[data-form_group="reference"]');
-    const reference_type =  document.querySelector('[data-form_group="reference_type"]');
+    const fieldType = save_field_modal.querySelector("#field_type");
+    const choiceMacro = save_field_modal.querySelector("[data-choices_macro]");
+    const reference = save_field_modal.querySelector('[data-form_group="reference"]');
+    const reference_type = save_field_modal.querySelector('[data-form_group="reference_type"]');
 
-    const saveFieldBtn = document.querySelector("[data-action='save_field']");
+    const saveFieldBtn = save_field_modal.querySelector("[data-action='save_field']");
     saveFieldBtn.onclick = async (evt) => {
       evt.preventDefault();
       let canSubmit = true;
-      if(fieldType.value === "choice"){
-        save_field_modal.querySelectorAll(`[data-kv_input]`).forEach((input)=>{
-          if(!input.value){
+      if (fieldType.value === "choice") {
+        save_field_modal.querySelectorAll(`[data-kv_input]`).forEach((input) => {
+          if (!input.value) {
             canSubmit = false;
-            input.setAttribute("data-mandatory",true);
+            input.setAttribute("data-mandatory", true);
           }
         })
-        if(!canSubmit){
+        if (!canSubmit) {
           form.init();
         }
       }
@@ -120,9 +120,9 @@
         return;
       }
 
-      if(!canSubmit) return;
+      if (!canSubmit) return;
 
-      let res = await new ModelUtil().saveField("<%=model._id%>",{
+      let res = await new ModelUtil().saveField("<%=model._id%>", {
         label: form.getValue("[name='label']"),
         name: form.getValue("[name='name']"),
         type: form.getValue("[name='type']"),
@@ -131,7 +131,8 @@
         hidden_on_form: form.getValue("[name='hidden_on_form']"),
         reference_type: form.getValue("[name='reference_type']"),
         reference_model: form.getValue("[name='reference_model']"),
-        field_id:form.getValue("[name='field_id']")
+        field_id: form.getValue("[name='field_id']"),
+        choices: form.getValue("[name='choice_list_values']")
       });
 
       if (Turbo && res.status === 200) {
@@ -145,77 +146,39 @@
       resetHiddenFields();
     });
 
-    const choiceList = document.getElementById("choice_list");
-   /* const choiceList = document.getElementById("choice_list");
-
-    choiceList.querySelector('[data-action="remove_choice"]').onclick = (evt) => {
-      evt.preventDefault();
-      evt.currentTarget.closest(".choice_list_row").querySelectorAll("input").forEach(element => {
-        element.value = "";
-      });
-    };
-
-    save_field_modal.querySelector('[data-action="add_choice"]').onclick = (evt) => {
-      evt.preventDefault();
-      let x = document.querySelector(".choice_list_row");
-
-      let y = x.cloneNode(true);
-
-      y.querySelectorAll("input").forEach(element => {
-        element.value = "";
-      });
-
-      y.querySelector('[data-action="remove_choice"]').onclick = (evt) => {
-        y.remove();
-      };
-
-      y.querySelector('[data-action="remove_choice"]').classList.remove("d-none");
-      new Sortable(document.getElementById("choice_list"), {
-        animation: 150,
-        ghostClass: 'sortable-ghost',
-        onEnd: function(evt) {
-          let choiceArr = Array.from(evt.target.children);
-          choiceArr.forEach((choice, i) => {
-            choice.setAttribute("data-order", (i + 1) * 100);
-          });
-
-        }
-      });
-
-      x.parentNode.appendChild(y);
-      form.init();
-    }*/
+    const choiceList = save_field_modal.querySelector("#choice_list");
 
     if (fieldType.value === "choice") {
       choiceMacro.classList.remove("d-none");
     }
 
-    function resetHiddenFields(){
-        form.getElement("[data-choices_macro]").classList.add("d-none");
-        form.getElement('[data-form_group="reference"]').classList.add("d-none");
-        form.getElement('[data-form_group="reference_type"]').classList.add("d-none");
-        form.getElement('[data-form_group="reference"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
-        form.getElement(`[name="field_id"]`).value="";
-        // document.querySelector('[data-form_group="reference_type"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
+    function resetHiddenFields() {
+      form.getElement("[data-choices_macro]").classList.add("d-none");
+      form.getElement('[data-form_group="reference"]').classList.add("d-none");
+      form.getElement('[data-form_group="reference_type"]').classList.add("d-none");
+      form.getElement('[data-form_group="reference"]').querySelector("[data-mandatory]").setAttribute("data-mandatory", false);
+      form.getElement(`[name="field_id"]`).value = "";
+      resetChoicesMacro();
+      // document.querySelector('[data-form_group="reference_type"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
     }
 
     fieldType.onchange = (evt) => {
-        resetHiddenFields()
+      resetHiddenFields()
       if (fieldType.value === "choice") {
         choiceMacro.classList.remove("d-none");
       }
 
       if (fieldType.value === "reference") {
-        reference.querySelector("[data-mandatory]").setAttribute("data-mandatory",true);
+        reference.querySelector("[data-mandatory]").setAttribute("data-mandatory", true);
         //reference_type.querySelector("[data-mandatory]").setAttribute("data-mandatory",true);
         //reference_type.setAttribute("data-mandatory",true);
-        document.querySelector('[data-form_group="reference"]').classList.remove("d-none");
-        document.querySelector('[data-form_group="reference_type"]').classList.remove("d-none");
+        save_field_modal.querySelector('[data-form_group="reference"]').classList.remove("d-none");
+        save_field_modal.querySelector('[data-form_group="reference_type"]').classList.remove("d-none");
       }
 
       if (fieldType.value === "asset") {
-        reference_type.querySelector("[data-mandatory]").setAttribute("data-mandatory",true);
-        document.querySelector('[data-form_group="reference_type"]').classList.remove("d-none");
+        reference_type.querySelector("[data-mandatory]").setAttribute("data-mandatory", true);
+        save_field_modal.querySelector('[data-form_group="reference_type"]').classList.remove("d-none");
       }
 
       form.init();
@@ -223,14 +186,15 @@
     };
 
     function resetChoicesMacro() {
-      let macro = document.querySelector("[data-choices_macro]");
+      let macro = save_field_modal.querySelector("[data-choices_macro]");
       let choiceList = macro.querySelector("#choice_list");
       while (choiceList.children.length > 1) {
         choiceList.removeChild(choiceList.lastChild);
       }
 
-      choiceList.querySelectorAll("input").forEach(element => {
-        element.value = "";
+      save_field_modal.querySelectorAll(`[data-kv_input]`).forEach((input) => {
+        input.setAttribute("data-mandatory", false);
+        input.value = "";
       });
 
       macro.classList.add("d-none");
@@ -238,14 +202,14 @@
     }
 
     let labelInput = form.getElement(`[name="label"]`);
-    let nameInput =  form.getElement(`[name="name"]`);
+    let nameInput = form.getElement(`[name="name"]`);
     let recordIdInput = form.getElement(`[name="field_id"]`);
-    labelInput.oninput = (evt)=>{
-      if(recordIdInput.value){
-          return;
+    labelInput.oninput = (evt) => {
+      if (recordIdInput.value) {
+        return;
       }
 
-      nameInput.value = String(labelInput.value).toLowerCase().replace(/\s/g,"_");
+      nameInput.value = String(labelInput.value).toLowerCase().replace(/\s/g, "_");
     };
 
   })()

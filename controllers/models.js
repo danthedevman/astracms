@@ -124,6 +124,7 @@ const saveField = async (req, res, next) => {
 
   const fieldCollection = await db.collection("sys_field");
   const saveData = req.body;
+  //add logic to set req.body for predefined allowed fields
   saveData._model = new ObjectId(req.params.id);
 
   if (saveData.field_id && ObjectId.isValid(saveData.field_id)) {

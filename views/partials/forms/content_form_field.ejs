@@ -19,23 +19,34 @@
 <%}%>
 
 <%if(field.type === "reference"){%>
-    <%-include(`../../partials/fields/reference.ejs`,{field:field})%>
+<%-include(`../../partials/fields/reference.ejs`,{field:field})%>
 <%}%>
 
 <%if(field.type === "asset"){%>
-    <%-include(`../../partials/fields/reference.ejs`,{field:field,collection:"sys_asset"})%>
+<%-include(`../../partials/fields/reference.ejs`,{field:field,collection:"sys_asset"})%>
 <%}%>
 
 <%if(field.type === "choice"){%>
 <select data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%=field.mandatory === "yes" ? 'true':'false'%>" class="form-select">
-    <option value="yes" <%if(typeof record !== 'undefined' && record[field.name] === "yes"){%>selected<%}%>>Yes</option>
-    <option value="no" <%if(typeof record !== 'undefined' && record[field.name] === "no"){%>selected<%}%>>No</option>
+  <%if(typeof record === "undefined" || !record[field.name]){%>
+  <option selected value="">-Select-</option>
+  <%}%>
+  <%if(typeof field.choices !== "undefined"){
+    try{
+        var choices = JSON.parse(field.choices);
+    }catch(error){
+        console.log(error);
+    }
+   }
+   %>
+  <%if(typeof choices !== "undefined"){%>
+  <%choices.forEach((choice)=>{%>
+  <option value="<%=choice.value%>" <%if(typeof record !== 'undefined' && (record[field.name] === choice.value)){%>selected<%}%>><%=choice.key%></option>
+    <%})%>
+    <%}%>
 </select>
-<%}%>
-
-<%if(field.type === "yes_no"){%>
-<select data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%=field.mandatory === "yes" ? 'true':'false'%>" class="form-select">
-    <option value="yes" <%if(typeof record !== 'undefined' && record[field.name] === "yes"){%>selected<%}%>>Yes</option>
+<%}%> <%if(field.type === "yes_no"){%> <select data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%=field.mandatory === "yes" ? 'true':'false'%>" class="form-select">
+      <option value="yes" <%if(typeof record !== 'undefined' && record[field.name] === "yes"){%>selected<%}%>>Yes</option>
     <option value="no" <%if(typeof record !== 'undefined' && record[field.name] === "no"){%>selected<%}%>>No</option>
 </select>
 <%}%>
