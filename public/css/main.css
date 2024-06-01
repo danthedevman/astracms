@@ -100,6 +100,16 @@ a {
   overflow: hidden;
 }
 
+.records_table th {
+  white-space: nowrap;
+}
+.records_table th:nth-child(n+2) {
+  min-width: 200px;
+}
+.records_table td {
+  padding: 0.5rem 0.5rem;
+}
+
 .field_value,
 .field_title {
   padding: 6px 12px;
@@ -202,12 +212,11 @@ table td {
   padding: 0 10px;
   margin-bottom: 10px;
 }
-.dropdown_select_wrapper .dropdown-item:hover {
+.dropdown_select_wrapper li:hover {
   background: rgba(255, 255, 255, 0.3);
   color: #818cf8;
 }
-.dropdown_select_wrapper .dropdown-item:hover a {
-  background: none !important;
+.dropdown_select_wrapper li:hover a.dropdown-item {
   color: #fff;
 }
 .dropdown_select_wrapper .dropdown .btn:focus {
@@ -254,7 +263,6 @@ main {
   margin-left: 250px;
   overflow-x: hidden;
   min-height: calc(100vh - 80px - 24px);
-  padding-bottom: 80px;
 }
 
 .card-title {
@@ -433,6 +441,14 @@ thead th {
 
 .bi-x {
   font-size: 1.6rem !important;
+}
+
+.records_table_overflow {
+  min-width: 500px;
+  overflow-x: auto;
+  min-height: calc(100vh - 160px);
+  scrollbar-color: #818cf8 #000;
+  scrollbar-width: thin;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -123,6 +123,7 @@ const saveField = async (req, res, next) => {
   }
 
   const fieldCollection = await db.collection("sys_field");
+  const title_field = fieldCollection.findOne({_model:model._id,title_field:"yes"});
   const saveData = req.body;
   //add logic to set req.body for predefined allowed fields
   saveData._model = new ObjectId(req.params.id);
@@ -138,7 +139,7 @@ const saveField = async (req, res, next) => {
     field = await fieldCollection.insertOne(saveData);
   }
   
-  if(saveData.title_field === "yes"){
+  if(saveData.title_field === "yes" && (title_field && title_field.name !== saveData.name)){
     await fieldCollection.updateMany(
       {
         _id:{$ne:(field.insertedId || field._id)},
@@ -147,6 +148,12 @@ const saveField = async (req, res, next) => {
       },
       { $set: {title_field:"no"} }
     );
+
+   const contentCollection = await db.collection("sys_content").find({_model:model._id}).toArray();
+  
+   for(let content of contentCollection){
+     await db.collection("sys_content").findOneAndUpdate({_id:content._id},{$set:{_title:content[saveData.name]}});
+   }
   }
 
   if (field) res.status(200).send({ record_id: model && model._id });

@@ -27,12 +27,13 @@ a {
     color: $secondaryColor  !important;
 }
 
-.bg-secondary{
-    background: $primaryColor !important;
+.bg-secondary {
+    background: $primaryColor  !important;
 }
 
-.text-secondary{
-    color:$secondaryColor !important;;
+.text-secondary {
+    color: $secondaryColor  !important;
+    ;
 }
 
 .btn-close {
@@ -94,15 +95,15 @@ a {
 .btn-primary {
     background: $primaryColor;
     border-color: $primaryColor  !important;
-    outline:none;
+    outline: none;
 }
 
 .field_title {
-    background: #312e81;//#c7d2fe;
+    background: #312e81; //#c7d2fe;
     border-radius: 6px;
     width: 100%;
     font-weight: bold;
-    color:#fff;
+    color: #fff;
 }
 
 .field_value {
@@ -112,20 +113,36 @@ a {
     overflow: hidden;
 }
 
+.records_table {
+    th {
+        white-space: nowrap;
+
+        &:nth-child(n+2) {
+            min-width: 200px;
+        }
+    }
+
+    td {
+        padding: 0.5rem 0.5rem;
+    }
+}
+
 .field_value,
 .field_title {
     padding: 6px 12px;
 }
 
-[data-lookup_wrapper]{
-    li{
+[data-lookup_wrapper] {
+    li {
         background: none;
-        &:hover{
-            background: rgba(255,255,255,.10);
+
+        &:hover {
+            background: rgba(255, 255, 255, .10);
         }
     }
-    a{
-        color:#fff !important;
+
+    a {
+        color: #fff !important;
         background: none !important;
     }
 }
@@ -149,8 +166,8 @@ a {
             background: rgba(255, 255, 255, .10);
             border-color: rgba(255, 255, 255, .10);
 
-            &:focus{
-                color:#fff;
+            &:focus {
+                color: #fff;
             }
         }
 
@@ -235,13 +252,15 @@ table {
     padding: 0 10px;
     margin-bottom: 10px;
 
-    .dropdown-item{
-        &:hover{
-            background:rgba(255,255,255,.30);
-            color:$secondaryColor;
-            a{
-            background:none !important;
-            color:#fff;
+        li {
+        
+        &:hover {
+            background: rgba(255, 255, 255, .30);
+            color: $secondaryColor;
+
+            a.dropdown-item {
+                //background: none !important;
+                color: #fff;
             }
         }
     }
@@ -304,7 +323,7 @@ main {
     margin-left: calc($sidemenuWidth);
     overflow-x: hidden;
     min-height: calc(100vh - $navbarHeight - 24px);
-    padding-bottom:$navbarHeight;
+    //padding-bottom: $navbarHeight;
 }
 
 .card-title {
@@ -335,14 +354,14 @@ main {
 
 .dashboard_count_card {
     height: 100px;
-    border: thin solid rgba(2552,255,255,.10);
-    border-left:6px solid $secondaryColor;
+    border: thin solid rgba(2552, 255, 255, .10);
+    border-left: 6px solid $secondaryColor;
     border-radius: 6px;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    background:rgba(255,255,255,.05);
+    background: rgba(255, 255, 255, .05);
     //padding:8px 16px;
 
     .label {
@@ -356,7 +375,7 @@ main {
         align-items: center;
         justify-content: center;
         font-size: 34px;
-        color:$secondaryColor;
+        color: $secondaryColor;
     }
 
     .label,
@@ -450,72 +469,81 @@ main {
 }
 
 //[name='content_record_form'] {
-    // background: rgba(255, 255, 255, .05);
-    // padding:1rem;
+// background: rgba(255, 255, 255, .05);
+// padding:1rem;
 
-    label {
-        color: $secondaryColor;
-        font-size: 1rem;
+label {
+    color: $secondaryColor;
+    font-size: 1rem;
+}
+
+.form-control,
+.form-select {
+    background: rgba(255, 255, 255, .10);
+    border-color: rgba(255, 255, 255, .10);
+    color: #fff;
+
+    &:focus {
+        background: #fff;
+        color: #000;
     }
-
-    .form-control,
-    .form-select {
-        background: rgba(255, 255, 255, .10);
-        border-color: rgba(255, 255, 255, .10);
-        color:#fff;
-
-        &:focus{
-            background: #fff;
-            color:#000;
-        }
-    }
+}
 
 
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus,
-    input:-webkit-autofill:active {
-        background: rgba(255, 255, 255, .10);
-        border-color: rgba(255, 255, 255, .10);
-    }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    background: rgba(255, 255, 255, .10);
+    border-color: rgba(255, 255, 255, .10);
+}
 
 //}
 
-[data-clickable_row]{
+[data-clickable_row] {
     cursor: pointer;
 
-    &:hover{
-        background:rgba(255,255,255,.10);
+    &:hover {
+        background: rgba(255, 255, 255, .10);
     }
 }
 
 .table>:not(caption)>*>* {
-    border-color: rgba(255,255,255,.10);
+    border-color: rgba(255, 255, 255, .10);
     border-bottom-width: thin;
     box-shadow: none;
 }
 
-thead th{
-    border-color: rgba(255,255,255,.10) !important;
+thead th {
+    border-color: rgba(255, 255, 255, .10) !important;
     border-bottom-width: 1px;
 }
 
-.content_record_info_card{
-    label{
-        color:#60a5fa;
-        font-size:1rem;
+.content_record_info_card {
+    label {
+        color: #60a5fa;
+        font-size: 1rem;
     }
-    *{
-    font-size:1rem;
+
+    * {
+        font-size: 1rem;
     }
 }
 
-.activity_card{
-    .bi-chevron-right{
+.activity_card {
+    .bi-chevron-right {
         color: $secondaryColor;
     }
 }
 
-.bi-x{
-    font-size:1.6rem !important;
+.bi-x {
+    font-size: 1.6rem !important;
+}
+
+.records_table_overflow{
+    min-width:500px;
+    overflow-x:auto;
+    min-height: calc(100vh - ($navbarHeight * 2));
+    scrollbar-color: #818cf8 #000;
+    scrollbar-width: thin;
 }
