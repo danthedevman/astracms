@@ -1,0 +1,38 @@
+<%-include('../../partials/container_start.ejs')%>
+<div class="row mb-3">
+    <div class="col-12">
+        <%-include("./settings_tab_links.ejs")%>
+    </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div>
+      <form class="mb-3">
+        <div class="mb-3 col-md-6" data-form_group>
+          <label>Base Name</label>
+          <input type="text" class="form-control" value="<%=locals.base.name%>" />
+        </div>
+        <div class="mb-3">
+          <label>Base Description</label>
+          <textarea class="form-control"><%=locals.base.description%></textarea>
+        </div>
+        <button type="button" class="btn btn-primary" data-action="save_base_details" disabled>Save</button>
+      </form>
+      <hr style="background:rgba(255,255,255,.90);" />
+      <div class="card danger_zone_wrapper bg-outline-danger">
+        <div class="card-header d-none">
+          <div class="card-title">
+            Danger Zone
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="h3 text-danger">Delete Workspace</div>
+          <div class="mb-3">Deleting a workspace cannot be reverted and all content will be deleted.</div>
+          <div><button class="btn btn-danger"><i class="bi bi-trash me-1"></i>Delete Workspace</button></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<%-include('../../partials/container_end.ejs')%>

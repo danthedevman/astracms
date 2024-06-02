@@ -37,6 +37,10 @@ a {
   color: #818cf8 !important;
 }
 
+.text-danger {
+  color: #fda4af !important;
+}
+
 .btn-close {
   color: #fff !important;
 }

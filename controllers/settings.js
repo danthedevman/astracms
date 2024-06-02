@@ -1,7 +1,7 @@
 const getSettings = (req,res,next)=>{
     
-    res.render("./pages/settings", {
-        title: "Settings",
+    res.render("./pages/settings/general", {
+        title: "General Settings",
         layout: "./layouts/base",
         path:"settings"
       });
