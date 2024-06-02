@@ -15,7 +15,7 @@
 <%}%>
 
 <%if(field.type === "rich_text"){%>
-<textarea id="<%=field.name%>" class="wyswyg" name="<%=field.name%>"><%=typeof record!=='undefined' ? record[field.name] : ''%></textarea>
+<textarea id="<%=field.name%>" class="wyswyg d-none" name="<%=field.name%>"><%=typeof record!=='undefined' ? record[field.name] : ''%></textarea>
 <%}%>
 
 <%if(field.type === "reference"){%>

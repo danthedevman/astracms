@@ -143,81 +143,82 @@ class FormUtil {
     referenceFields.forEach((field) => {
       let deferLookup;
       let dropdown = field.closest(".dropdown").querySelector(".dropdown-menu");
-      let showOnFocus = true
-      field.onfocus = async (evt)=>{
-        if(showOnFocus){
+      let showOnFocus = true;
+      field.onfocus = async (evt) => {
+        if (showOnFocus) {
           let json = await this.searchReference(field);
-            let template = "";
-            json.results.forEach((result) => {
-              template += `<li class="list-group-item border-0 bg-dark p-0""><a class="d-block w-100" data-result data-value="${result._id.toString()}" data-display_value="${
-                result._title
-              }" href="javascript:void(0)">${result._title}</a></li>`;
-            });
-            const results = evt.target
-              .closest(".dropdown")
-              .querySelector("[data-lookup_results]");
-            results.innerHTML = template;
-            evt.target
-              .closest(".dropdown")
-              .querySelectorAll("[data-result]")
-              .forEach((r) => {
-                r.onclick = (e) => {
-                  e.preventDefault();
-                  evt.target
-                    .closest(".dropdown")
-                    .querySelector("[data-lookup_value")
-                    .setAttribute("value", r.getAttribute("data-value"));
-                  evt.target
-                    .closest(".dropdown")
-                    .querySelector("[data-lookup]").value =
-                    r.getAttribute("data-display_value");
-                  evt.target
+          let template = "";
+          json.results.forEach((result) => {
+            template += `<li class="list-group-item border-0 bg-dark p-0""><a class="d-block w-100" data-result data-value="${result._id.toString()}" data-display_value="${
+              result._title
+            }" href="javascript:void(0)">${result._title}</a></li>`;
+          });
+          const results = evt.target
+            .closest(".dropdown")
+            .querySelector("[data-lookup_results]");
+          results.innerHTML = template;
+          evt.target
+            .closest(".dropdown")
+            .querySelectorAll("[data-result]")
+            .forEach((r) => {
+              r.onclick = (e) => {
+                e.preventDefault();
+                evt.target
                   .closest(".dropdown")
-                  .querySelector("[data-lookup]").dispatchEvent(new Event('change'));
-                  dropdown.classList.remove("show");
-                };
-              });
-          
+                  .querySelector("[data-lookup_value")
+                  .setAttribute("value", r.getAttribute("data-value"));
+                evt.target
+                  .closest(".dropdown")
+                  .querySelector("[data-lookup]").value =
+                  r.getAttribute("data-display_value");
+                evt.target
+                  .closest(".dropdown")
+                  .querySelector("[data-lookup]")
+                  .dispatchEvent(new Event("change"));
+                dropdown.classList.remove("show");
+              };
+            });
+
           dropdown.classList.add("show");
         }
         showOnFocus = false;
-      }
+      };
 
       field.onkeyup = (evt) => {
         clearTimeout(deferLookup);
         deferLookup = setTimeout(async () => {
-           let json = await this.searchReference(field);
-            let template = "";
-            json.results.forEach((result) => {
-              template += `<li class="list-group-item border-0 bg-dark p-0""><a class="d-block w-100" data-result data-value="${result._id.toString()}" data-display_value="${
-                result._title
-              }" href="javascript:void(0)">${result._title}</a></li>`;
+          let json = await this.searchReference(field);
+          let template = "";
+          json.results.forEach((result) => {
+            template += `<li class="list-group-item border-0 bg-dark p-0""><a class="d-block w-100" data-result data-value="${result._id.toString()}" data-display_value="${
+              result._title
+            }" href="javascript:void(0)">${result._title}</a></li>`;
+          });
+          const results = evt.target
+            .closest(".dropdown")
+            .querySelector("[data-lookup_results]");
+          results.innerHTML = template;
+          evt.target
+            .closest(".dropdown")
+            .querySelectorAll("[data-result]")
+            .forEach((r) => {
+              r.onclick = (e) => {
+                e.preventDefault();
+                evt.target
+                  .closest(".dropdown")
+                  .querySelector("[data-lookup_value")
+                  .setAttribute("value", r.getAttribute("data-value"));
+                evt.target
+                  .closest(".dropdown")
+                  .querySelector("[data-lookup]").value =
+                  r.getAttribute("data-display_value");
+                evt.target
+                  .closest(".dropdown")
+                  .querySelector("[data-lookup]")
+                  .dispatchEvent(new Event("change"));
+                dropdown.classList.remove("show");
+              };
             });
-            const results = evt.target
-              .closest(".dropdown")
-              .querySelector("[data-lookup_results]");
-            results.innerHTML = template;
-            evt.target
-              .closest(".dropdown")
-              .querySelectorAll("[data-result]")
-              .forEach((r) => {
-                r.onclick = (e) => {
-                  e.preventDefault();
-                  evt.target
-                    .closest(".dropdown")
-                    .querySelector("[data-lookup_value")
-                    .setAttribute("value", r.getAttribute("data-value"));
-                  evt.target
-                    .closest(".dropdown")
-                    .querySelector("[data-lookup]").value =
-                    r.getAttribute("data-display_value");
-                    evt.target
-                    .closest(".dropdown")
-                    .querySelector("[data-lookup]").dispatchEvent(new Event('change'));
-                  dropdown.classList.remove("show");
-                };
-              });
-          
 
           dropdown.classList.add("show");
         }, 300);
@@ -225,21 +226,28 @@ class FormUtil {
     });
   }
 
-  enableWYSWYSGEditors(){
+  enableWYSWYSGEditors() {
     if (typeof tinymce === "undefined") return;
     tinymce.remove();
     tinymce.init({
-      selector: '.wyswyg',
+      selector: ".wyswyg",
       promotion: false,
       branding: false,
       skin: "oxide-dark",
-      content_css: "dark"
+      content_css: "dark",
+      setup: (editor) => {
+        editor.on("init", function (e) {
+          //document.querySelector(`#${e.target.id}`).classList.remove("d-none");
+        });
+      },
     });
   }
 
-  async searchReference(field){
+  async searchReference(field) {
     let res = await fetch(
-      `/${window._astracms.base_id}/${field.getAttribute("data-lookup")}/search?sys_text_search=${encodeURI(field.value)}`
+      `/${window._astracms.base_id}/${field.getAttribute(
+        "data-lookup"
+      )}/search?sys_text_search=${encodeURI(field.value)}`
     );
 
     if (res.status === 200) {
