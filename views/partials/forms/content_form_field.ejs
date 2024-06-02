@@ -7,7 +7,7 @@
 <%}%>
 
 <%if(field.type === "checkbox"){%>
-<input data-type="<%=field.type%>" name="<%=field.name%>" type="checkbox" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
+<input class="form-check" style="width:16px;height:16px;" data-type="<%=field.type%>" name="<%=field.name%>" type="checkbox" <%if(typeof record !== 'undefined' && String(record[field.name]) === "true"){%>checked<%}%> />
 <%}%>
 
 <%if(field.type === "multi_line_text"){%>

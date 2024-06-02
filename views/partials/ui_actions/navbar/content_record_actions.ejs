@@ -35,10 +35,14 @@
 
       const form_data = new FormData(formUtil.form);
       const wyswygFields = document.querySelectorAll(".wyswyg");
-      wyswygFields.forEach(function(field){
+      wyswygFields.forEach((field)=>{
         form_data.set(field.getAttribute("name"),tinymce.get(`${field.getAttribute("name")}`).getContent());
       });
 
+      const checkboxes = document.querySelectorAll("[type='checkbox']");
+      checkboxes.forEach((field)=>{
+        form_data.set(field.getAttribute("name"),field.checked);
+      });
 
       let res = await new ContentUtil().saveRecord({
         form_data: form_data,
