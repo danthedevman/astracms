@@ -9,4 +9,12 @@
       ele.classList.remove("show");
     });
   };
+
+  tinymce.init({
+    selector: '.wyswyg',
+    promotion: false,
+    branding: false,
+    skin: "oxide-dark",
+    content_css: "dark"
+  });
 })();

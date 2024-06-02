@@ -39,6 +39,7 @@ app.use(auth(config));
 
 app.use(expressLayouts);
 app.set("layout", "./layouts/bases");
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 

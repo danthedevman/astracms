@@ -2,6 +2,11 @@ const ObjectId = require("mongodb").ObjectId;
 const e = require("express");
 const DBConnection = require("../database/DBConnection");
 const DBHelper = require("../database/DBHelper");
+const contentRecordStatusMap = {
+    draft:"Draft",
+    unpublished:"Unpublished",
+    published:"Published"
+};
 
 const getContent = async (req, res, next) => {
   const dbHelper = new DBHelper({ db: req.params.base, request: req });
@@ -19,7 +24,16 @@ const getContent = async (req, res, next) => {
   let fields = [
     { name: "_title", label: "Title" },
     { name: "_model", label: "Model", type: "reference" },
+    { name:"_status", label:"Status", type:"single_line_text"}
   ];
+
+  for(let rec of records){
+    if(rec._status){
+    rec._status = contentRecordStatusMap[rec._status]; 
+    }else{
+    rec._status = contentRecordStatusMap["draft"];
+    }
+  }
   
   if (model) {
     fields = await dbHelper.query("sys_field", {
@@ -96,6 +110,7 @@ const getContent = async (req, res, next) => {
     fields: fields,
     navbar_actions: [{ name: "add_content_all", order: 100 }],
     crumbs: [{ label: "Content" }],
+    contentRecordStatusMap:contentRecordStatusMap
   };
 
   if (req.params.model) {
@@ -150,7 +165,7 @@ const getContentRecord = async (req, res, next) => {
   });
 };
 
-const saveContent = async (req, res, next) => {
+const saveContentRecord = async (req, res, next) => {
   if (!req.body || !req.params.base) {
     res.status(503).send();
     return;
@@ -194,6 +209,10 @@ const saveContent = async (req, res, next) => {
     saveData._published_changes = true;
   }
 
+  if(req.body._status === "unpublished"){
+    saveData._status = "unpublished";
+  }
+
   if(!req.body._status){
     saveData._published_changes = false;
   }
@@ -209,6 +228,23 @@ const saveContent = async (req, res, next) => {
   });
 };
 
+const deleteContentRecord = async (req, res, next) => {
+  if (
+    !req.params.base ||
+    !req.params.id ||
+    !ObjectId.isValid(req.params.id)
+  ) {
+    res.status(503).send();
+    return;
+  }
+
+  const db = await DBConnection.getDB(req.params.base);
+  await db
+    .collection("sys_content")
+    .deleteOne({ _id: new ObjectId(req.params.id) });
+  res.status(200).send();
+};
+
 function _prepRecordRead(record){
   
 
@@ -217,5 +253,6 @@ function _prepRecordRead(record){
 module.exports = {
   getContent,
   getContentRecord,
-  saveContent,
+  saveContentRecord,
+  deleteContentRecord
 };

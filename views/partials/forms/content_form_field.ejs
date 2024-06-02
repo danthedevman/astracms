@@ -15,7 +15,7 @@
 <%}%>
 
 <%if(field.type === "rich_text"){%>
-<input data-type="<%=field.type%>" name="<%=field.name%>" data-mandatory="<%=field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="text" value="<%=typeof record !== 'undefined' ? record[field.name] : ''%>" />
+<textarea id="<%=field.name%>" class="wyswyg" name="<%=field.name%>"><%=typeof record!=='undefined' ? record[field.name] : ''%></textarea>
 <%}%>
 
 <%if(field.type === "reference"){%>

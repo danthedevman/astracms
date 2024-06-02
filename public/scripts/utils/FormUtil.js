@@ -9,6 +9,7 @@ class FormUtil {
   init() {
     this.enableMandatoryFields();
     this.enableReferenceFields();
+    this.enableWYSWYSGEditors();
     return this;
   }
 
@@ -221,6 +222,18 @@ class FormUtil {
           dropdown.classList.add("show");
         }, 300);
       };
+    });
+  }
+
+  enableWYSWYSGEditors(){
+    if (typeof tinymce === "undefined") return;
+    tinymce.remove();
+    tinymce.init({
+      selector: '.wyswyg',
+      promotion: false,
+      branding: false,
+      skin: "oxide-dark",
+      content_css: "dark"
     });
   }
 

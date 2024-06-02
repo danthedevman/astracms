@@ -121,6 +121,7 @@
       }
 
       if (!canSubmit) return;
+      saveFieldBtn.setAttribute("disabled",true);
       let res = await new ModelUtil().saveField("<%=model._id%>", {
         label: form.getValue("[name='label']"),
         name: form.getValue("[name='name']"),

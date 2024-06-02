@@ -2,6 +2,24 @@
   <div class="form_group">
     <label class="form-label"><%=typeof options !== "undefined" && options.title%></label>
     <div data-kv_row_wrapper id="<%=typeof options !== "undefined" && options.id ? options.id : ''%>" class="kv_row_wrapper">
+      <%if(typeof options !== "undefined" && options.key_values){%>
+      <%options.key_values.forEach((kv)=>{%>
+      <div data-order="<%=kv.order%>" data-kv_row class="kv_row mb-2 row">
+        <div data-form_group class="col-6">
+          <div class="d-flex align-items-center">
+            <button type="button" class="btn grip_btn me-2"><i class="bi bi-grip-vertical"></i></button>
+            <input data-kv_input name="key" data-mandatory="false" class="form-control" type="text" placeholder="<%=typeof options !== "undefined" && options.key_placeholder%>" value="<%=kv.key%>">
+          </div>
+        </div>
+        <div data-form_group class="col-6">
+          <div class="d-flex align-items-center">
+            <input data-kv_input name="value" data-mandatory="false" class="form-control" type="text" placeholder="<%=typeof options !== "undefined" && options.value_placeholder%>" value="<%=kv.value%>">
+            <button data-action="remove_row" class="btn-sm btn-danger ms-2"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>
+      </div>
+      <%});%>
+      <%}else{%>
       <div data-order="100" data-kv_row class="kv_row mb-2 row">
         <div data-form_group class="col-6">
           <div class="d-flex align-items-center">
@@ -16,6 +34,7 @@
           </div>
         </div>
       </div>
+      <%}%>
     </div>
     <div class="kv_add_row_btn_wrapper mt-3">
       <button type="button" data-action="add_row" class="btn btn-primary w-100"><%=typeof options !== "undefined" && options.add_btn_label || "Add Row"%></button>

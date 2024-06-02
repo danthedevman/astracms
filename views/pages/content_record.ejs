@@ -17,7 +17,14 @@
         <div class="card-body">
           <div class="mb-1">
             <label>Status:</label>
-            <div><%=record._status === "published" ? record._published_changes ? "Published" : "Draft (Unpublished Changes)" : "Draft"%></div>
+            <% 
+            let statusMap = {
+              draft:"Draft",
+              unpublished:"Unpublished",
+              published:"Published"
+            };
+            %>
+            <div><%=record._status === "published" ? record._published_changes ? "Published" : "Draft (Unpublished Changes)" : statusMap[record._status] || "Draft"%></div>
             <div class="d-none">Draft (Unpublished)</div>
             <div class="d-none">Draft (Published)</div>
             <div class="d-none">Published</div>
