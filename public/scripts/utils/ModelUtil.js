@@ -24,10 +24,9 @@ class ModelUtil {
     async saveField(model,options) {
         if(!options) return;
         const postData = options;
-  
-        const record_id = options.record_id || "new";
+        const field_id = options.field_id || "new";
     
-        return await fetch(`/${window._astracms.base_id}/models/${model}/fields/${record_id}`, {
+        return await fetch(`/${window._astracms.base_id}/models/${model}/fields/${field_id}`, {
           method: "POST",
           credentials: "same-origin",
           headers: {

@@ -170,6 +170,9 @@ class FormUtil {
                     .closest(".dropdown")
                     .querySelector("[data-lookup]").value =
                     r.getAttribute("data-display_value");
+                  evt.target
+                  .closest(".dropdown")
+                  .querySelector("[data-lookup]").dispatchEvent(new Event('change'));
                   dropdown.classList.remove("show");
                 };
               });
@@ -207,6 +210,9 @@ class FormUtil {
                     .closest(".dropdown")
                     .querySelector("[data-lookup]").value =
                     r.getAttribute("data-display_value");
+                    evt.target
+                    .closest(".dropdown")
+                    .querySelector("[data-lookup]").dispatchEvent(new Event('change'));
                   dropdown.classList.remove("show");
                 };
               });

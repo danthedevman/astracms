@@ -31,6 +31,17 @@ a {
     background: $primaryColor  !important;
 }
 
+.bg-danger,.btn-danger{
+    border-color:#9f1239 !important;
+    background:#9f1239 !important;
+}
+    
+    
+.btn-success{
+        border-color:#10b981 !important;
+        background:#10b981 !important;
+}
+
 .text-secondary {
     color: $secondaryColor  !important;
     ;
@@ -546,4 +557,14 @@ thead th {
     min-height: calc(100vh - ($navbarHeight * 2));
     scrollbar-color: #818cf8 #000;
     scrollbar-width: thin;
+}
+
+.collapsing {
+    transition: none !important;
+}
+
+[data-bs-toggle="collapse"]{
+    &:hover{
+        cursor: pointer;
+    }
 }

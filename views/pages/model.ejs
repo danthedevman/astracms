@@ -75,17 +75,17 @@
 <div class="row mb-3">
   <div class="col-12">
     <div class="card">
-      <div class="card-header bg-transparent d-flex align-items-center">
-        <div class="card-title d-flex align-items-center">
+      <div class="card-header p-0 bg-transparent d-flex align-items-center">
+        <div data-bs-toggle="collapse" data-bs-target="#_<%=field._id%>" class="p-3 card-title d-flex align-items-center w-100">
           <%=field.label%><%if(field.title_field === "yes"){%><span class="ms-2 badge bg-secondary">Title Field</span><%}%>
         </div>
-        <div class="ms-auto card_actions d-flex align-items-center">
+        <div class="p-3 ms-auto card_actions d-flex align-items-center">
           <button data-action="delete_field" data-field_data="<%=JSON.stringify(field)%>"
           data-field_id="<%=field._id%>" class="btn btn-danger">Delete</button>
           <button data-action="edit_field" data-field_data="<%=JSON.stringify(field)%>" class="ms-2 btn btn-primary">Edit</button>
         </div>
       </div>
-      <div class="card-body">
+      <div class="card-body collapse" id="_<%=field._id%>">
         <div class="row">
           <%fieldDefinitions.forEach((fd)=>{%>
           <%if(field.type === "reference"){%>
@@ -156,6 +156,7 @@
 
     editFieldBtns.forEach((btn) => {
       btn.onclick = (evt) => {
+        evt.stopPropagation();
         evt.preventDefault();
         try {
           let field = JSON.parse(btn.getAttribute("data-field_data"));

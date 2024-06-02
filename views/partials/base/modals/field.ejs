@@ -121,7 +121,6 @@
       }
 
       if (!canSubmit) return;
-
       let res = await new ModelUtil().saveField("<%=model._id%>", {
         label: form.getValue("[name='label']"),
         name: form.getValue("[name='name']"),
@@ -142,8 +141,10 @@
     }
 
     save_field_modal.addEventListener('hidden.bs.modal', function(event) {
+      let field_id = form.getValue("[name='field_id']");
       form.reset();
       resetHiddenFields();
+      form.getElement("[name='field_id']").value = field_id;
     });
 
     const choiceList = save_field_modal.querySelector("#choice_list");
@@ -157,7 +158,6 @@
       form.getElement('[data-form_group="reference"]').classList.add("d-none");
       form.getElement('[data-form_group="reference_type"]').classList.add("d-none");
       form.getElement('[data-form_group="reference"]').querySelector("[data-mandatory]").setAttribute("data-mandatory", false);
-      form.getElement(`[name="field_id"]`).value = "";
       resetChoicesMacro();
       // document.querySelector('[data-form_group="reference_type"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
     }
