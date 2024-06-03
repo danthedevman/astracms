@@ -50,6 +50,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/register', registerRouter);
+
 //require auth for all routes below
 app.use(isLoggedIn);
 app.use(localMiddleware);

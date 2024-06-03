@@ -1,0 +1,77 @@
+<%-include('../../partials/container_start.ejs')%>
+<div class="row mb-3">
+  <div class="col-12">
+    <%-include("./settings_tab_links.ejs")%>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div>
+      <form name="base_details_form" class="mb-3">
+        <div class="row">
+          <div class="mb-3 col-md-6" data-form_group>
+            <label>Production API Key<small class="ms-1 text-secondary">(required)</small></label>
+            <input data-mandatory="true" name="base_name" type="text" class="form-control" value="" />
+          </div>
+          <div class="mb-3 col-md-6" data-form_group>
+            <label>Development API Key<small class="ms-1 text-secondary">(required)</small></label>
+            <input data-mandatory="true" name="base_name" type="text" class="form-control" value="" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12">
+            <%-include(`../../partials/fields/key_value.ejs`,{options:{title:"Allowed IP Addresses",key_placeholder:"IP",value_placeholder:"Description",id:"ip_address_list",kv_values_name:"ip_list_values"}})%>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary" data-action="save_base_details">Save</button>
+      </form>
+    </div>
+  </div>
+</div>
+<%-include('../../partials/container_end.ejs')%>
+<script type="module">
+  import FormUtil from "/scripts/utils/FormUtil.js";
+  (() => {
+    const saveBaseDetailsBtn = document.querySelector(`[data-action='save_base_details']`);
+    saveBaseDetailsBtn.onclick = async (evt) => {
+      evt.preventDefault();
+      const formUtil = new FormUtil({
+        selector: "[name='base_details_form']"
+      }).init();
+
+      if (!formUtil.canSubmit()) {
+        return;
+      }
+
+      const form_data = new FormData(formUtil.form);
+
+      const res = await fetch(`/${window._astracms.base_id}/settings/general/save_base_details`, {
+        method: "POST",
+        credentials: "same-origin",
+        body: form_data,
+      });
+
+      if (Turbo && res.status === 200) {
+        Turbo.visit(`/<%=locals.base._id%>/settings/general`);
+        return;
+      }
+
+    };
+
+    const deleteBaseBtn = document.querySelector(`[data-action='delete_base']`);
+    deleteBaseBtn.onclick = async (evt) => {
+      evt.preventDefault();
+      let confirmDelete = confirm("Once you delete this base all content will be deleted and any reference to this base via API queries made from your applications will no longer work. All users currently associated with this base will no longer be able to access. Are you sure you wish to continue?");
+      if (!confirmDelete) return;
+      const res = await fetch(`/${window._astracms.base_id}/settings/general/delete_base`, {
+        method: "DELETE",
+        credentials: "same-origin"
+      });
+
+      Turbo.visit("/");
+
+    };
+
+
+  })();
+</script>

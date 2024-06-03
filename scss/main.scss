@@ -5,7 +5,7 @@ $primaryColor: #4338ca;
 $secondaryColor: #818cf8;
 $navbarBG: #020617;
 $bodyBG: #0f172a;
-$fieldBG:rgba(255, 255, 255, .05);
+$fieldBG:#222f3e;//rgba(255, 255, 255, .05);
 
 html,
 body {
@@ -178,8 +178,8 @@ a {
 
         .form-control,
         .form-select {
-            background: rgba(255, 255, 255, .10);
-            border-color: rgba(255, 255, 255, .10);
+            background: $fieldBG;
+            border-color: $fieldBG;
 
             &:focus {
                 color: #fff;
@@ -494,8 +494,8 @@ label {
 
 .form-control,
 .form-select {
-    background: rgba(255, 255, 255, .10);
-    border-color: rgba(255, 255, 255, .10);
+    background:$fieldBG;
+    border-color: $fieldBG;
     color: #fff;
 
     &:focus {

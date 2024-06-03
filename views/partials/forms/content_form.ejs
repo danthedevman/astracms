@@ -2,7 +2,7 @@
 <form name="content_record_form">
   <%fields.forEach((field)=>{%>
   <div data-form_group class="mb-3">
-    <label><%=field.label%><small class="ms-1 text-secondary">(<%=field.mandatory === "yes" ? 'required':'optional'%></span>)</small></label>
+    <label><%=field.label%><small class="ms-1 text-secondary">(<%=field.mandatory === "yes" ? 'required':'optional'%>)</small></label>
     <%-include(`../../partials/forms/content_form_field.ejs`,{field:field})%>
   </div>
   <%});%>

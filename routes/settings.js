@@ -1,12 +1,20 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-const {getSettings} = require('../controllers/settings');
+const {getGeneralSettings,getDeveloperSettings,saveBaseDetails,deleteBase} = require('../controllers/settings');
+const multer  = require('multer');
+const upload = multer();
 
-router.get('/', getSettings);
-router.get('/general', getSettings);
-router.get('/developer', getSettings);
-router.get('/users', getSettings);
-router.get('/users/:id', getSettings);
-router.get('/billing', getSettings);
+router.get('/', (req,res,next)=>{
+    res.redirect(`/${res.locals.base._id}/settings/general`);
+});
+router.get('/general', getGeneralSettings);
+router.get('/developer', getDeveloperSettings);
+router.get('/users', getGeneralSettings);
+router.get('/users/:id', getGeneralSettings);
+router.get('/billing', getGeneralSettings);
+
+router.post('/general/save_base_details',upload.none(), saveBaseDetails);
+
+router.delete('/general/delete_base', deleteBase);
 
 module.exports = router;

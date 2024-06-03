@@ -6,7 +6,7 @@
     <div class="dropdown_select_wrapper">
       <div class="dropdown w-100 ">
         <button class="btn btn-light border-secondary d-flex align-items-center justify-content-between w-100" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          <div>Base:<strong class="ms-1"><%=locals.base.name%></strong></div>
+          <div class="text-truncate">Base:<strong class="ms-1"><%=locals.base.name%></strong></div>
           <div><i class="bi bi-chevron-down"></i><i class="bi bi-chevron-up d-none"></i></div>
         </button>
         <ul style="width:100%;height:200px;overflow-y: auto;" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -17,7 +17,7 @@
             <hr class="dropdown-divider">
           </li>
           <%locals.bases && locals.bases.forEach((base)=>{%>
-          <li><a class="dropdown-item" href="/<%=base._id%>/dashboard"><%=base.name%></a></li>
+          <li><a class="dropdown-item text-truncate" href="/<%=base._id%>/dashboard"><%=base.name%></a></li>
           <%})%>
         </ul>
       </div>
@@ -38,7 +38,7 @@
       <a href="/<%=locals.base._id%>/assets" class="link <%if(locals.path.indexOf('assets') !== -1){%>active<%}%>">Assets</a>
     </div>
     <div class="link_wrapper">
-      <a href="/<%=locals.base._id%>/settings" class="link  <%if(locals.path.indexOf('settings') !== -1){%>active<%}%>">Settings</a>
+      <a href="/<%=locals.base._id%>/settings/general" class="link  <%if(locals.path.indexOf('settings') !== -1){%>active<%}%>">Settings</a>
     </div>
     <div class="link_wrapper">
         <div class="d-flex align-items-center" style="padding-left:10px;">

@@ -153,8 +153,8 @@ a {
 }
 .modal .modal-content .form-control,
 .modal .modal-content .form-select {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: #222f3e;
+  border-color: #222f3e;
 }
 .modal .modal-content .form-control:focus,
 .modal .modal-content .form-select:focus {
@@ -405,8 +405,8 @@ label {
 
 .form-control,
 .form-select {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: #222f3e;
+  border-color: #222f3e;
   color: #fff;
 }
 .form-control:focus,

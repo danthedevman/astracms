@@ -44,6 +44,7 @@
         form_data.set(field.getAttribute("name"),field.checked);
       });
 
+      saveRecordBtn.setAttribute("disabled",true);
       let res = await new ContentUtil().saveRecord({
         form_data: form_data,
         model_id: "<%=model._id%>",
@@ -53,7 +54,10 @@
       if (Turbo && res.status === 200) {
         let json = await res.json();
         Turbo.visit(`/<%=locals.base._id%>/content/<%=model._id%>/${json.record_id}`);
+        return;
       }
+
+      saveRecordBtn.removeAttribute("disabled");
     };
 
     const publishRecordBtn = document.querySelector(`[data-action="publish_content_record"]`);
@@ -63,6 +67,7 @@
         return;
       }
 
+      publishRecordBtn.setAttribute("disabled",true);
       const form_data = new FormData(formUtil.form);
       let res = await new ContentUtil().publishRecord({
         form_data: form_data,
@@ -73,7 +78,10 @@
       if (Turbo && res.status === 200) {
         let json = await res.json();
         Turbo.visit(`/<%=locals.base._id%>/content/<%=model._id%>/${json.record_id}`);
+        return;
       }
+
+      publishRecordBtn.removeAttribute("disabled");
     };
 
     const unpublishRecordBtn = document.querySelector(`[data-action="unpublish_record"]`);
@@ -83,6 +91,7 @@
         return;
       }
 
+      unpublishRecordBtn.setAttribute("disabled",true);
       const form_data = new FormData(formUtil.form);
       let res = await new ContentUtil().unpublishRecord({
         form_data: form_data,
@@ -93,7 +102,10 @@
       if (Turbo && res.status === 200) {
         let json = await res.json();
         Turbo.visit(`/<%=locals.base._id%>/content/<%=model._id%>/${json.record_id}`);
+        return;
       }
+
+      unpublishRecordBtn.removeAttribute("disabled");
     };
 
     const deleteRecordBtn = document.querySelector(`[data-action="delete_record"]`);
@@ -102,6 +114,7 @@
       const confirmDelete = confirm("Are you sure you want to delete this record?");
       if(!confirmDelete) return;
 
+      deleteRecordBtn.setAttribute("disabled",true);
       let res = await new ContentUtil().deleteRecord({
         model_id: "<%=model._id%>",
         record_id: "<%=typeof record !== 'undefined' ? record._id : null%>"

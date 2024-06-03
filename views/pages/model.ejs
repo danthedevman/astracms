@@ -81,6 +81,7 @@
         </div>
         <div data-bs-toggle="collapse" data-bs-target="#_<%=field._id%>" class="p-3 card-title d-flex align-items-center w-100">
           <%=field.label%><%if(field.title_field === "yes"){%><span class="ms-2 badge bg-secondary">Title Field</span><%}%>
+          <span class="mx-2 badge bg-primary"><%=fieldDefinitions[2].choices[field.type]%></span>
         </div>
         <div class="p-3 ms-auto card_actions d-flex align-items-center">
           <button data-action="delete_field" data-field_data="<%=JSON.stringify(field)%>"
