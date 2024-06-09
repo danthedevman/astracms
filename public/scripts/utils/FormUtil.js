@@ -144,7 +144,8 @@ class FormUtil {
       let deferLookup;
       let dropdown = field.closest(".dropdown").querySelector(".dropdown-menu");
       let showOnFocus = true;
-      field.onfocus = async (evt) => {
+      /*field.onfocus = async (evt) => {
+        return;
         if (showOnFocus) {
           let json = await this.searchReference(field);
           let template = "";
@@ -182,7 +183,7 @@ class FormUtil {
           dropdown.classList.add("show");
         }
         showOnFocus = false;
-      };
+      };*/
 
       field.onkeyup = (evt) => {
         clearTimeout(deferLookup);

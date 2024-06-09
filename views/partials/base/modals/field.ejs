@@ -70,7 +70,7 @@
           </div>
           <!--row 2-->
           <div data-choices_macro class="row d-none">
-          <div id="choice_list">
+          <div>
             <%-include(`../../../partials/fields/key_value.ejs`,{options:{title:"Choices",key_placeholder:"Label",value_placeholder:"Value",id:"choice_list",kv_values_name:"choice_list_values"}})%>
           </div>
           </div>
@@ -160,19 +160,17 @@
       form.getElement('[data-form_group="reference_type"]').classList.add("d-none");
       form.getElement('[data-form_group="reference"]').querySelector("[data-mandatory]").setAttribute("data-mandatory", false);
       resetChoicesMacro();
-      // document.querySelector('[data-form_group="reference_type"]').querySelector("[data-mandatory]").setAttribute("data-mandatory",false);
     }
 
     fieldType.onchange = (evt) => {
-      resetHiddenFields()
+      resetHiddenFields();
+
       if (fieldType.value === "choice") {
         choiceMacro.classList.remove("d-none");
       }
 
       if (fieldType.value === "reference") {
         reference.querySelector("[data-mandatory]").setAttribute("data-mandatory", true);
-        //reference_type.querySelector("[data-mandatory]").setAttribute("data-mandatory",true);
-        //reference_type.setAttribute("data-mandatory",true);
         save_field_modal.querySelector('[data-form_group="reference"]').classList.remove("d-none");
         save_field_modal.querySelector('[data-form_group="reference_type"]').classList.remove("d-none");
       }

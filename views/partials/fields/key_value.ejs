@@ -45,7 +45,71 @@
 
 <script>
   (() => {
-    const kvComponentWrapper = document.querySelector("[data-kv_component_wrapper]");
+      const kvComponentWrapper = document.querySelector("[data-kv_component_wrapper]");
+
+      <%if(typeof options !== "undefined" && options.id){%>
+      let ele = document.querySelector('#<%=options.id%>');
+      if (ele) {
+        ele.addEventListener("set_key_value_rows", (evt) => {
+          if (!evt.detail || !evt.detail.rows) {
+            return;
+          }
+
+          document.querySelector("[name='<%=typeof options !== 'undefined' && options.kv_values_name || 'kv_values'%>']").value = JSON.stringify(evt.detail.rows);
+
+          let kvrow = document.querySelector(".kv_row");
+          evt.detail.rows.forEach((row, index) => {
+            let clonedRow = kvrow.cloneNode(true);
+
+            clonedRow.querySelectorAll("input").forEach(element => {
+              if (element.getAttribute("name") === "key") {
+                element.value = row.key;
+              }
+
+              if (element.getAttribute("name") === "value") {
+                element.value = row.value;
+              }
+
+            });
+
+            clonedRow.querySelector('[data-action="remove_row"]').onclick = (evt) => {
+              evt.preventDefault();
+              if (index === 0) {
+                clonedRow.querySelectorAll("input").forEach((input) => {
+                  input.value = "";
+                  let change = new Event("change");
+                  input.dispatchEvent(change);
+                })
+                return;
+              }
+              clonedRow.remove();
+              setKVInputValue();
+            };
+
+            if (typeof Sortable !== "undefined") {
+              new Sortable(kvComponentWrapper.querySelector(`[data-kv_row_wrapper]`), {
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                onEnd: function(evt) {
+                  let sortableRows = Array.from(evt.target.children);
+                  sortableRows.forEach((sr, i) => {
+                    sr.setAttribute("data-order", (i + 1) * 100);
+                  });
+                  setKVInputValue();
+                }
+              });
+            }
+
+            kvrow.parentNode.appendChild(clonedRow);
+          });
+
+          kvrow.remove();
+          setKVInputsOnChange();
+        });
+      }
+      <%}%>
+   
+
 
     kvComponentWrapper.querySelector('[data-action="remove_row"]').onclick = (evt) => {
       evt.preventDefault();
@@ -118,16 +182,16 @@
       }
 
       try {
-        let valueInput = kvComponentWrapper.querySelector(`[name='<%=typeof options !== "undefined" && options.kv_values_name || "kv_values"%>']`);
-        if (answer) {
-          valueInput.value = JSON.stringify(answer);
-        } else {
-          valueInput.value = "";
-        }
-      } catch (error) {
-        console.log(error);
+        let valueInput = kvComponentWrapper.querySelector("[name='<%=typeof options !== "undefined" && options.kv_values_name || "kv_values"%>']");
+      if (answer) {
+        valueInput.value = JSON.stringify(answer);
+      } else {
+        valueInput.value = "";
       }
+    } catch (error) {
+      console.log(error);
     }
+  }
 
   })()
 </script>
