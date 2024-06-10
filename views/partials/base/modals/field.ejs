@@ -50,7 +50,12 @@
               </div>
               <div data-form_group="reference" class="mb-3 d-none">
                 <label for="name" class="form-label">Select Model</label>
-                <%-include(`../../../partials/fields/reference.ejs`,{field:{type:"reference",name:"reference_model",reference_model:"sys_model"}})%>
+                <select name="reference_model" data-mandatory="false" class="form-select">
+                  <option value="" selected>-Select-</option>
+                  <%models.forEach((model)=>{%>
+                    <option value="<%=model._id%>"><%=model.label%></option>
+                  <%})%>
+                </select>
               </div>
               <div data-form_group="title_field" class="mb-3">
                 <label for="name" class="form-label">Title Field</label>
@@ -138,6 +143,8 @@
       if (Turbo && res.status === 200) {
         let json = await res.json();
         Turbo.visit(`/<%=locals.base._id%>/models/${json.record_id}`);
+      }else{
+        saveFieldBtn.removeAttribute("disabled");
       }
     }
 
@@ -145,7 +152,7 @@
       let field_id = form.getValue("[name='field_id']");
       form.reset();
       resetHiddenFields();
-      form.getElement("[name='field_id']").value = field_id;
+      form.getElement("[name='field_id']").value = '';
     });
 
     const choiceList = save_field_modal.querySelector("#choice_list");

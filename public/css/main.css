@@ -24,8 +24,8 @@ a {
 }
 
 .bg-danger, .btn-danger {
-  border-color: #9f1239 !important;
-  background: #9f1239 !important;
+  border-color: crimson !important;
+  background: crimson !important;
 }
 
 .btn-success {
@@ -38,7 +38,7 @@ a {
 }
 
 .text-danger {
-  color: #fda4af !important;
+  color: crimson !important;
 }
 
 .btn-close {

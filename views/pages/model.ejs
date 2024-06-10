@@ -22,7 +22,8 @@
         asset:"Asset",
         multi_line_text:"Mult Line Text",
         yes_no:"Yes/No",
-        choice:"Choice"
+        choice:"Choice",
+        number:"Number"
     }
   },
   {
@@ -60,7 +61,7 @@
 <div class="row mb-3">
   <div class="d-flex align-items-center justify-content-between">
     <div>
-      <button data-bs-toggle="modal" data-bs-target="#save_field_modal" class="btn btn-primary shadow">
+      <button data-action="add_field" class="btn btn-primary shadow">
         <i class="bi bi-plus-circle me-2"></i>Add Field
       </button>
     </div>
@@ -84,8 +85,16 @@
           <span class="mx-2 badge bg-primary"><%=fieldDefinitions[2].choices[field.type]%></span>
         </div>
         <div class="p-3 ms-auto card_actions d-flex align-items-center">
-          <button data-action="delete_field" data-field_data="<%=JSON.stringify(field)%>" data-field_id="<%=field._id%>" class="btn btn-danger">Delete</button>
-          <button data-action="edit_field" data-field_data="<%=JSON.stringify(field)%>" class="ms-2 btn btn-primary">Edit</button>
+          <button data-action="delete_field" data-field_data="<%=JSON.stringify(field)%>" data-field_id="<%=field._id%>" class="btn btn-danger d-none">Delete</button>
+          <button data-action="edit_field" data-field_data="<%=JSON.stringify(field)%>" class="me-2 btn btn-primary">Edit</button>
+          <div class="dropdown">
+            <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-three-dots-vertical"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item text-danger" href="javascript:void(0);" data-action="delete_field" data-field_data="<%=JSON.stringify(field)%>" data-field_id="<%=field._id%>"><i class="bi bi-trash me-2"></i>Delete</a></li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="card-body collapse" id="_<%=field._id%>">
@@ -132,7 +141,7 @@
 <%}%>
 <div class="row">
   <div class="col-12">
-    <button data-bs-toggle="modal" data-bs-target="#save_field_modal" class="btn add_field_btn w-100 shadow">
+    <button data-action="add_field" class="btn add_field_btn w-100 shadow">
         <i class="bi bi-plus-circle me-2"></i>Add Field
     </button>
   </div>
@@ -156,6 +165,18 @@
     const modelUtil = new ModelUtil();
     const editFieldBtns = document.querySelectorAll("[data-action='edit_field']");
     const deleteFieldBtns = document.querySelectorAll("[data-action='delete_field']");
+    const saveFieldModal = document.querySelector("#save_field_modal");
+    const bsSaveModal = new bootstrap.Modal(document.getElementById("save_field_modal"), {
+      keyboard: false
+    });
+    const addFieldBtns = document.querySelectorAll(`[data-action="add_field"]`);
+    addFieldBtns.forEach((btn) => {
+      btn.onclick = (evt) => {
+        evt.preventDefault();
+        saveFieldModal.querySelector(".modal-title").innerText = "Add Field";
+        bsSaveModal.show();
+      }
+    });
 
     editFieldBtns.forEach((btn) => {
       btn.onclick = (evt) => {
@@ -163,17 +184,11 @@
         evt.preventDefault();
         try {
           let field = JSON.parse(btn.getAttribute("data-field_data"));
-          let saveFieldModal = document.querySelector("#save_field_modal");
           let saveFieldForm = saveFieldModal.querySelector('[name="save_field_form"]');
           for (let prop in field) {
             let formField = saveFieldForm.querySelector(`[name='${prop}']`);
             if (formField) {
-              if (prop === "reference_model" && field[prop] && field[prop].display_value) {
-                formField.closest("[data-lookup_wrapper]").querySelector(`[data-lookup='sys_model']`).value = field[prop].display_value;
-                formField.value = field[prop].value;
-              } else {
-                formField.value = field[prop];
-              }
+              formField.value = field[prop];
               let event = new Event("change");
               formField.dispatchEvent(event);
             }
@@ -202,11 +217,9 @@
           let fieldIdInput = saveFieldForm.querySelector('[name="field_id"]');
           if (!fieldIdInput) return;
           fieldIdInput.value = `${field._id}`;
-
-          let bsSaveModal = new bootstrap.Modal(document.getElementById("save_field_modal"), {
-            keyboard: false
-          });
+          saveFieldModal.querySelector(".modal-title").innerText = "Edit Field";
           bsSaveModal.show();
+
         } catch (error) {
           console.log(error);
         }

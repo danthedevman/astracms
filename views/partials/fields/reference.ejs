@@ -1,15 +1,37 @@
-<div data-lookup_wrapper class="dropdown w-100">
- <div class="input-group">
-  <input data-lookup="<%=typeof collection !== 'undefined' ? collection : field.reference_model%>" data-mandatory="<%=field.mandatory === "yes" ? 'true':'false'%>" class="form-control" type="text" value="<%=typeof record !== 'undefined' && record[field.name] ? record[field.name].display_value : ''%>"  placeholder="Search..." data-dropdown_btn/>
-  <a target="_blank" class="btn btn-primary" href="/<%=locals.base._id%>/<%=field.type === "asset" ? 'assets':'content'%>/<%=field.type === "asset" ? '':field.reference_model+'/'%><%=typeof record !== 'undefined' && record[field.name] ? record[field.name].value : ''%>"><i class="bi bi-eye"></i></a>
- </div>
-
-  <ul class="dropdown-menu bg-dark p-0 w-100" aria-labelledby="dropdownMenuButton1">
-    <li></li>
-    <li class="mb-2 p-3">
-      <ul data-lookup_results class="list-group bg-dark p-0" style="width:100%;max-height:200px;overflow-y: auto;">
-      </ul>
-    </li>
-  </ul>
-  <input  data-type="<%=field.type%>" name="<%=field.name%>" data-lookup_value value="<%=typeof record !== 'undefined' && record[field.name] ? record[field.name].value : ''%>" type="hidden" />
+<div data-reference_field_wrapper class="mt-2">
+  <button data-field_id="<%=field._id%>" data-reference_model="<%=field.reference_model%>" data-action="lookup_record" class="btn btn-sm btn-primary"><i class="bi bi-search me-2"></i>Select Record</button>
+  <div data-selected_record_wrapper>
+    <div class="mt-2 border border-secondary rounded">
+      <div class="text-muted p-2">No record selected</div>
+    </div>
+  </div>
 </div>
+
+<script type="module">
+  (() => {
+    const lookupBtns = document.querySelectorAll(`[data-action="lookup_record"]`);
+    lookupBtns.forEach((btn) => {
+      btn.onclick = async (evt) => {
+        evt.preventDefault();
+
+        let tableStream = await fetch(`/<%=locals.base._id%>/content/${btn.getAttribute("data-reference_model")}?get_stream=true&record_select=single&field=${btn.getAttribute('data-field_id')}`, {
+          method: "GET",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "text/vnd.turbo-stream.html",
+          },
+        });
+
+        const tableStreamTemplate = await tableStream.text();
+        Turbo.renderStreamMessage(tableStreamTemplate);
+        //reference_modal
+        let bsReferenceModal = new bootstrap.Modal(document.getElementById("reference_modal"), {
+          keyboard: false
+        });
+        bsReferenceModal.show();
+
+      };
+    });
+
+  })();
+</script>

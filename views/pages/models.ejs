@@ -37,12 +37,12 @@
         </div>
       </div>
       <div class="card-footer">
-        <div class="d-flex align-items-center justify-content-between">
-          <button data-model_label="<%=model.label%>" data-model_id="<%=model._id%>" data-action="delete_model" class="btn btn-danger btn-sm me-2">
+        <div class="d-flex align-items-center justify-content-end">
+          <button data-model_label="<%=model.label%>" data-model_id="<%=model._id%>" data-action="delete_model" class="btn btn-danger btn-sm me-2 d-none">
             Delete
           </button>
           <a href="/<%=locals.base._id%>/models/<%=model._id%>" class="btn btn-primary btn-sm">
-            Edit
+            <i class="bi bi-pencil me-2"></i>Edit
           </a>
         </div>
       </div>

@@ -1,8 +1,5 @@
 <%if(typeof model !== "undefined"){%>
 <div class="d-flex align-items-center">
-  <button data-model_label="<%=model.label.toString()%>" data-action="delete_model" data-model_id="<%=model._id.toString()%>" class="btn btn-danger me-2">
-    Delete Model
-  </button>
   <button data-bs-toggle="modal" data-bs-target="#save_model_modal" class="btn btn-primary me-2">
     Edit Details
   </button>
@@ -13,6 +10,9 @@
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
       <li><a class="dropdown-item" href="/<%=locals.base._id%>/content/<%=model._id%>"><i class="bi bi-list me-2"></i>View Content</a></li>
       <li><a class="dropdown-item" href="/<%=locals.base._id%>/content/<%=model._id%>/new"><i class="bi bi-plus me-2"></i>Add Content</a></li>
+      <li><a class="dropdown-item text-danger" data-model_label="<%=model.label.toString()%>" data-action="delete_model" data-model_id="<%=model._id.toString()%>"  href="javascript:void(0);">
+        <i class="bi bi-trash me-2"></i>Delete Model
+      </a></li>
     </ul>
   </div>
 </div>

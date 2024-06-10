@@ -33,7 +33,6 @@ const registeredUser = await db
 .collection("sys_user")
 .findOne({ _id: user.insertedId });
 
-
 let password = String(req.body.pw);
 
 console.log(registeredUser)

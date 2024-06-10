@@ -30,23 +30,13 @@ const getModel = async (req, res, next) => {
     .find({ _model: new ObjectId(req.params.id) })
     .toArray();
 
-  for (const field of fields) {
-    if (field.type === "reference") {
-      let refVal = await dbHelper.get("sys_model", {
-        _id: new ObjectId(field.reference_model),
-      });
-      if (!refVal) continue;
-      field.reference_model = {
-        value: refVal._id.toString(),
-        display_value: refVal._title,
-      };
-    }
-  }
+  const models = await db.collection("sys_model").find({}).toArray();
 
   res.render("./pages/model", {
     title: `Model - ${model.name}`,
     layout: "./layouts/base",
     model: model,
+    models:models,
     fields: fields,
     path: "models",
     navbar_actions: [{ name: "model_actions" }],
@@ -125,6 +115,11 @@ const saveField = async (req, res, next) => {
   const fieldCollection = await db.collection("sys_field");
   const title_field = fieldCollection.findOne({_model:model._id,title_field:"yes"});
   const saveData = req.body;
+  if(saveData.type === "reference"){
+    if(!saveData.reference_model || ! ObjectId.isValid(saveData.reference_model)){
+      return res.status(404).send({});
+    }
+  }
   //add logic to set req.body for predefined allowed fields
   saveData._model = new ObjectId(req.params.id);
 

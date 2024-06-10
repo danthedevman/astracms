@@ -1,9 +1,14 @@
 <table class="table records_table table-responsive">
   <thead>
     <tr>
+      <%if(!locals.stream){%>
       <th style="width:32px; vertical-align:middle;" scope="col">
         <input style="width:16px;" type="checkbox" class="form-check m-0" />
       </th>
+      <%}%>
+      <%if(locals.query && locals.query.record_select === 'single'){%>
+      <th style="vertical-align:middle;" scope="col"></th>
+      <%}%>
       <%fields.forEach((field)=>{%>
       <th scope="col">
         <label class="field_title"><%=field.label%></label>
@@ -14,14 +19,25 @@
   <tbody>
     <%records.forEach((record)=>{%>
     <tr data-clickable_row data-table_row_record_id="<%=record._id%>" data-table_row_model_id="<%=record._model && record._model.value ? record._model.value : record._model && ! record._model.value ? record._model : ''%>">
+      <%if(!locals.stream){%>
       <th scope="row" style="vertical-align: middle;">
         <input style="width:16px;" type="checkbox" class="form-check me-3 flex-shrink-0" />
       </th>
+      <%}%>
+      <%if(locals.query && locals.query.record_select === 'single'){%>
+      <th style="vertical-align:middle;" scope="col">
+        <button data-action="select_record" class="btn btn-primary">Select</button>
+      </th>
+      <%}%>
       <%fields.forEach((field)=>{%>
       <%if(field.type === "reference" || field.type === "asset"){%>
-      <td scope="col"><div class="field_value"><%=record[field.name].display_value%></div></td>
+      <td scope="col">
+        <div class="field_value"><%=record[field.name] ? record[field.name].display_value : ''%></div>
+      </td>
       <%}else{%>
-      <td scope="col"><div class="field_value"><%=record[field.name]%></div></td> 
+      <td scope="col">
+        <div class="field_value"><%=record[field.name]%></div>
+      </td>
       <%}%>
       <%})%>
     </tr>
@@ -35,7 +51,7 @@
       row.onclick = () => {
         let model = row.getAttribute("data-table_row_model_id");
         let record = row.getAttribute("data-table_row_record_id");
-        if(!model || !record) return;
+        if (!model || !record) return;
         Turbo.visit(`/<%=locals.base._id%>/content/${model}/${record}`);
       };
     });

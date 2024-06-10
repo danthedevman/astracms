@@ -12,7 +12,6 @@ const getSearch = async (req, res, next) => {
   await searchCollection.createIndex({ _title: "text" });
 
   let queryObj;
-  if (query.sys_text_search) {
     console.log("text search found")
     queryObj = {
       _title: {
@@ -24,7 +23,6 @@ const getSearch = async (req, res, next) => {
     if (modelId === "sys_content") {
       queryObj._model = new ObjectId(req.params.model);
     }
-  }
 
   let results;
   let limit = 10;
