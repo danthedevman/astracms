@@ -20,7 +20,7 @@ const getContent = async (req, res, next) => {
     });
   }
 
-  if(!model){
+  if(!model && req.query.get_stream){
     res.status(404);
     res.send();
     return;

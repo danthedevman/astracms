@@ -338,7 +338,7 @@ main {
     margin-left: calc($sidemenuWidth);
     overflow-x: hidden;
     min-height: calc(100vh - $navbarHeight - 24px);
-    //padding-bottom: $navbarHeight;
+    padding-bottom: $navbarHeight;
 }
 
 .card-title {

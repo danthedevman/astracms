@@ -277,6 +277,7 @@ main {
   margin-left: 250px;
   overflow-x: hidden;
   min-height: calc(100vh - 80px - 24px);
+  padding-bottom: 80px;
 }
 
 .card-title {
