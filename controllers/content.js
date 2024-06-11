@@ -1,5 +1,4 @@
 const ObjectId = require("mongodb").ObjectId;
-const e = require("express");
 const DBConnection = require("../database/DBConnection");
 const DBHelper = require("../database/DBHelper");
 const contentRecordStatusMap = {
@@ -26,7 +25,7 @@ const getContent = async (req, res, next) => {
     return;
   }
 
-  const records = await dbHelper.query("sys_content", queryObj);
+  const records = await dbHelper.query("sys_content", queryObj,{sort_by:req.query.sort_by,sort_by_direction:req.query.sort_by_direction});
   let fields = [
     { name: "_title", label: "Title" },
     { name: "_model", label: "Model", type: "reference" },
@@ -46,6 +45,10 @@ const getContent = async (req, res, next) => {
       _model: new ObjectId(model._id),
     });
   }
+
+  fields.push(
+    { name: "_updated_on", label: "Updated On" },
+  )
 
   for (const record of records) {
     if (!record._title) {
@@ -97,6 +100,8 @@ const getContent = async (req, res, next) => {
     records: records,
     model: model,
     fields: fields,
+    sort_by:req.query.sort_by,
+    sort_by_direction:req.query.sort_by_direction,
     navbar_actions: [{ name: "add_content_all", order: 100 }],
     crumbs: [{ label: "Content" }],
     contentRecordStatusMap: contentRecordStatusMap,
@@ -121,7 +126,7 @@ if(req.query.get_stream){
     "charset=utf-8",
   ]);
 
-  renderPath = "./partials/streams/content_table"
+  renderPath = `./partials/streams/${req.query.target}`
 }
 
   res.render(renderPath, renderObj);

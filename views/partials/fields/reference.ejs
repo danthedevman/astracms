@@ -14,7 +14,7 @@
       btn.onclick = async (evt) => {
         evt.preventDefault();
 
-        let tableStream = await fetch(`/<%=locals.base._id%>/content/${btn.getAttribute("data-reference_model")}?get_stream=true&record_select=single&field=${btn.getAttribute('data-field_id')}`, {
+        let tableStream = await fetch(`/<%=locals.base._id%>/content/${btn.getAttribute("data-reference_model")}?get_stream=true&record_select=single&field=${btn.getAttribute('data-field_id')}&target=content_table_reference`, {
           method: "GET",
           credentials: "same-origin",
           headers: {
@@ -22,13 +22,17 @@
           },
         });
 
-        const tableStreamTemplate = await tableStream.text();
-        Turbo.renderStreamMessage(tableStreamTemplate);
-        //reference_modal
-        let bsReferenceModal = new bootstrap.Modal(document.getElementById("reference_modal"), {
-          keyboard: false
-        });
-        bsReferenceModal.show();
+        if (tableStream && tableStream.status === 200) {
+          const tableStreamTemplate = await tableStream.text();
+          Turbo.renderStreamMessage(tableStreamTemplate);
+          //reference_modal
+          let bsReferenceModal = new bootstrap.Modal(document.getElementById("reference_modal"), {
+            keyboard: false
+          });
+          bsReferenceModal.show();
+        }else{
+          alert("There was an error retrieving data for this reference field. Confirm this model exists, and if not, this field should be removed.");
+        }
 
       };
     });

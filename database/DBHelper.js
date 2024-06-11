@@ -33,9 +33,14 @@ class DBHelper {
 
   async query(collection, query, options) {
     const db = await DBConnection.getDB(this.DB);
-    const answer = await db.collection(collection).find(query).toArray();
+    const answer = await db.collection(collection).find(query);
+    if(options && options.sort_by){
+      let sortObj = {};
+      sortObj[options.sort_by] = options.sort_by_direction === "asc" ? 1 : -1;
+      answer.sort(sortObj);
+    }
 
-    return answer;
+    return answer.toArray();
   }
 
   async get(collection, query) {

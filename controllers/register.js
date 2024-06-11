@@ -26,6 +26,7 @@ if(userExists){
 let user = await db.collection("sys_user").insertOne({
   name: String(req.body.name),
   email: String(req.body.email),
+  roles:["admin"],
   sys_created: new Date(),
 });
 
@@ -34,8 +35,6 @@ const registeredUser = await db
 .findOne({ _id: user.insertedId });
 
 let password = String(req.body.pw);
-
-console.log(registeredUser)
 
   const authManagementClient = new ManagementClient({
     domain: process.env.AUTH_DOMAIN,

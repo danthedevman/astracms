@@ -1,4 +1,4 @@
-<div>
+<div data-table_parent_wrapper>
   <div data-table_search_wrapper class="d-flex align-items-center justify-content-between flex-wrap mb-2">
     <div>
       <input style="min-width:300px;" class="form-control" placeholder="Search keywords...">
@@ -25,14 +25,14 @@
             </div>
           </th>
           <%}%>
-      <%fields.forEach((field)=>{%>
+      <%fields.forEach((field,i)=>{%>
           <th scope="col">
             <div class="field_title d-flex align-items-center justify-content-between"><%=field.label%>
-              <div role="button" data-sort_by_asc="<%=field.name%>">
+              <div <%if((locals.sort_by_direction === "desc" && locals.sort_by === field.name)){%>class="d-block" <%}else{%>class="d-none" <%}%> role="button" data-sort_by="<%=field.name%>" data-sort_by_direction="asc">
                 <i class="text-white bi bi-caret-up-fill"></i>
               </div>
-              <div class="d-none" role="button" data-sort_by_desc="<%=field.name%>">
-                <i class="text-white bi bi-caret-up-fill"></i>
+              <div <%if(locals.sort_by_direction === "asc" && locals.sort_by === field.name || !locals.sort_by && field.name === "_updated_on"){%>class="d-block" <%}else{%>class="d-none" <%}%> role="button" data-sort_by="<%=field.name%>" data-sort_by_direction="desc">
+                <i class="text-white bi bi-caret-down-fill"></i>
               </div>
             </div>
           </th>
@@ -85,24 +85,41 @@
       </li>
     </ul>
   </div>
+  <input type="hidden" name="reference_field_id" value=""/>
 </div>
 <script>
   (() => {
-    const recordRows = document.querySelectorAll(`[data-table_row_record_id]`);
-    recordRows.forEach((row) => {
-      row.onclick = () => {
-        let model = row.getAttribute("data-table_row_model_id");
-        let record = row.getAttribute("data-table_row_record_id");
-        if (!model || !record) return;
-        Turbo.visit(`/<%=locals.base._id%>/content/${model}/${record}`);
-      };
-    });
-
-    const sortAscBtns = document.querySelectorAll("[data-sort_by_asc]");
-    sortAscBtns.forEach((btn)=>{
-      btn.onclick = ((evt)=>{
-        evt.preventDefault();
+      const recordRows = document.querySelectorAll(`[data-table_row_record_id]`);
+      recordRows.forEach((row) => {
+        row.onclick = () => {
+          let model = row.getAttribute("data-table_row_model_id");
+          let record = row.getAttribute("data-table_row_record_id");
+          if (!model || !record) return;
+          Turbo.visit(`/<%=locals.base._id%>/content/${model}/${record}`);
+        };
       });
+
+      const sortBtns = document.querySelectorAll("[data-sort_by]");
+      sortBtns.forEach((btn) => {
+            btn.onclick = async (evt) => {
+                  evt.preventDefault();
+                  <%if(!locals.stream){%>
+                  Turbo.visit(`${location.toString().replace(location.search, "")}?sort_by=${btn.getAttribute("data-sort_by")}&sort_by_direction=${btn.getAttribute("data-sort_by_direction")}`)
+                  <%}else{%>
+                  let tableStream = await fetch(`/<%=locals.base._id%>/content/<%=locals.model._id%>?get_stream=true&record_select=single&field=123&target=content_table_reference&sort_by=${btn.getAttribute("data-sort_by")}&sort_by_direction=${btn.getAttribute("data-sort_by_direction")}`, {
+                    method: "GET",
+                    credentials: "same-origin",
+                    headers: {
+                      "Content-Type": "text/vnd.turbo-stream.html",
+                    },
+                  });
+
+                  if (tableStream && tableStream.status === 200) {
+                    const tableStreamTemplate = await tableStream.text();
+                    Turbo.renderStreamMessage(tableStreamTemplate);
+                  }
+                <%}%>
+      };
     });
 
   })();

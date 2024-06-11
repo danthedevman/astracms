@@ -16,6 +16,7 @@ const modelsRouter = require('./routes/models');
 const assetsRouter = require('./routes/assets');
 const usersRouter = require('./routes/users');
 const settingsRouter = require('./routes/settings');
+const streamRouter = require('./routes/streams');
 const {isLoggedIn} = require('./middleware/auth');
 
 //middleware
@@ -59,6 +60,7 @@ app.use('/', indexRouter);
 app.use('/sys_base', indexRouter);
 
 app.use('/:base/', canAccessBase);
+app.use('/:base/streams', streamRouter);
 app.use('/:base/:model/search',searchRouter);
 app.use('/:base/dashboard',dashboardRouter);
 app.use('/:base/content', contentRouter);

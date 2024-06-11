@@ -2,10 +2,12 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const {getContent,getContentRecord,saveContentRecord,deleteContentRecord} = require('../controllers/content');
 const {contentMiddleware} = require('../middleware/content');
+const { getStream } = require('../controllers/streams');
 const multer  = require('multer');
 const upload = multer();
 
 router.get('/',contentMiddleware, getContent);
+router.get('/:model/streams',contentMiddleware, getStream);
 router.get('/:model',contentMiddleware, getContent);
 
 router.get('/:model/:id', getContentRecord);
