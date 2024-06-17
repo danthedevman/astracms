@@ -56,7 +56,7 @@ a {
 }
 
 .card-header {
-  background: #4338ca;
+  background: rgba(255, 255, 255, 0.05) !important;
   color: #fff;
 }
 
@@ -472,6 +472,54 @@ thead th {
 
 [data-bs-toggle=collapse]:hover {
   cursor: pointer;
+}
+
+/*.modal{
+    padding-left: 0px;
+    height:48px !important;
+    //background: $secondaryColor !important;
+    border-top:12px solid $secondaryColor;
+    border-bottom:12px solid $secondaryColor;
+    transform: translate(calc(50% + ($sidemenuWidth / 2)), -50%) scale(0.0);
+    top: 50%;
+    transition: height .2s ease;
+    overflow: hidden;
+    &:not(.modal_lg_wrapper) {
+    max-width: 500px;
+    }
+
+    &.modal_lg_wrapper{
+        max-width: 800px;
+    }
+    //width:500px;
+    margin: 0 auto !important;
+    left: calc(50% + ($sidemenuWidth / 2));
+    border-radius: 0;
+
+    transition-delay: .1s,.6s,.1s;
+    transition-property: height, background, border;
+
+    .modal-content{
+        background: $secondaryColor !important;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+
+
+
+    &.show {
+        border-color: transparent;
+        height: 100% !important;
+        background: transparent !important;
+        transform: translate(-50%, -50%) scale(1);
+        .modal-content{
+            background: $bodyBG !important;
+        }
+    }
+}*/
+td {
+  vertical-align: middle;
 }
 
 /*# sourceMappingURL=main.css.map */

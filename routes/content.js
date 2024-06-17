@@ -10,7 +10,7 @@ router.get('/',contentMiddleware, getContent);
 router.get('/:model/streams',contentMiddleware, getStream);
 router.get('/:model',contentMiddleware, getContent);
 
-router.get('/:model/:id', getContentRecord);
+router.get('/:model/:id',contentMiddleware, getContentRecord);
 router.post('/:model/:id',upload.none(),saveContentRecord);
 router.delete('/:model/:id', deleteContentRecord);
 

@@ -1,6 +1,11 @@
 <%-include('../partials/container_start.ejs')%>
 <div class="row">
   <div class="col-md-<%=typeof record !== "undefined" ? '8' : '12'%>">
+    <div class="row">
+      <div class="col-md-5">
+        <%-include('../partials/menus/content_model_dropdown.ejs')%>
+      </div>
+    </div>
     <div>
       <%-include('../partials/forms/content_form.ejs')%>
     </div>

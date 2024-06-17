@@ -60,7 +60,6 @@ app.use('/', indexRouter);
 app.use('/sys_base', indexRouter);
 
 app.use('/:base/', canAccessBase);
-app.use('/:base/streams', streamRouter);
 app.use('/:base/:model/search',searchRouter);
 app.use('/:base/dashboard',dashboardRouter);
 app.use('/:base/content', contentRouter);

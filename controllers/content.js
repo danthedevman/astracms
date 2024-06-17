@@ -25,7 +25,7 @@ const getContent = async (req, res, next) => {
     return;
   }
 
-  const records = await dbHelper.query("sys_content", queryObj,{sort_by:req.query.sort_by,sort_by_direction:req.query.sort_by_direction});
+  const records = await dbHelper.query("sys_content", queryObj, {sort_by:req.query.sort_by,sort_by_direction:req.query.sort_by_direction});
   let fields = [
     { name: "_title", label: "Title" },
     { name: "_model", label: "Model", type: "reference" },
@@ -65,7 +65,7 @@ const getContent = async (req, res, next) => {
       if (field.type === "reference") {
         if (!record[field.name] || !ObjectId.isValid(record[field.name]))
           continue;
-        let refCollection = model ? "sys_content" : "sys_model";
+        let refCollection = field.reference_model;//model ? "sys_content" : "sys_model";
         if (!refCollection) continue;
         let refVal = await dbHelper.get(refCollection, {
           _id: new ObjectId(record[field.name]),

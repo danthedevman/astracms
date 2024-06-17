@@ -9,7 +9,6 @@ const getStream = async (req,res,next)=>{
 
     const data = await dbHelper.get(req.query.collection,{});
 
-
     res.setHeader("Content-Type", [
       "text/vnd.turbo-stream.html",
       "charset=utf-8",

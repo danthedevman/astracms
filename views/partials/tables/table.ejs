@@ -49,7 +49,7 @@
           <%}%>
       <%if(locals.query && locals.query.record_select === 'single'){%>
           <th style="vertical-align:middle;" scope="col">
-            <button data-action="select_record" class="btn btn-primary">Select</button>
+            <button data-action="select_record" data-record_id="<%=record._id%>" data-record_title="<%=record._title%>" class="btn btn-primary">Select</button>
           </th>
           <%}%>
       <%fields.forEach((field)=>{%>
@@ -85,13 +85,16 @@
       </li>
     </ul>
   </div>
-  <input type="hidden" name="reference_field_id" value=""/>
+  <input type="hidden" name="reference_field" value="<%=locals.query && locals.query.reference_field ? locals.query.reference_field:''%>"/>
 </div>
 <script>
   (() => {
       const recordRows = document.querySelectorAll(`[data-table_row_record_id]`);
       recordRows.forEach((row) => {
         row.onclick = () => {
+          <%if(!locals.stream){%>
+            return;
+          <%}%>
           let model = row.getAttribute("data-table_row_model_id");
           let record = row.getAttribute("data-table_row_record_id");
           if (!model || !record) return;
@@ -121,6 +124,26 @@
                 <%}%>
       };
     });
+
+    const selectReferenceBtn = document.querySelectorAll("[data-action='select_record']");
+    selectReferenceBtn.forEach((btn) => {
+            btn.onclick = async (evt) => {
+                  evt.preventDefault();
+                  evt.stopPropagation();
+                
+                  let record_id = btn.getAttribute("data-record_id");
+                  let record_title = btn.getAttribute("data-record_title");
+                  let reference_field =  document.querySelector(`#field_<%=locals.query && locals.query.reference_field ? locals.query.reference_field:''%>`);
+                  if(!reference_field){
+                    return;
+                  }
+                  reference_field.value = record_id;
+                  reference_field.closest("[data-reference_field_wrapper]").querySelector("[data-selected_record_wrapper]").innerHTML = `${record_title}`;
+                
+           };
+    });
+
+
 
   })();
 </script>
