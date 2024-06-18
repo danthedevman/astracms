@@ -5,7 +5,7 @@ $primaryColor: #4338ca;
 $secondaryColor: #818cf8;
 $navbarBG: #020617;
 $bodyBG: #0f172a;
-$fieldBG:#222f3e;//rgba(255, 255, 255, .05);
+$fieldBG: #222f3e; //rgba(255, 255, 255, .05);
 
 html,
 body {
@@ -32,23 +32,24 @@ a {
     background: $primaryColor  !important;
 }
 
-.bg-danger,.btn-danger{
-    border-color:crimson !important;
-    background:crimson !important;
+.bg-danger,
+.btn-danger {
+    border-color: crimson !important;
+    background: crimson !important;
 }
-    
-    
-.btn-success{
-        border-color:#10b981 !important;
-        background:#10b981 !important;
+
+
+.btn-success {
+    border-color: #10b981 !important;
+    background: #10b981 !important;
 }
 
 .text-secondary {
     color: $secondaryColor  !important;
 }
 
-.text-danger{
-    color:crimson !important;
+.text-danger {
+    color: crimson !important;
 }
 
 .btn-close {
@@ -267,8 +268,8 @@ table {
     padding: 0 10px;
     margin-bottom: 10px;
 
-        li {
-        
+    li {
+
         &:hover {
             background: rgba(255, 255, 255, .30);
             color: $secondaryColor;
@@ -494,7 +495,7 @@ label {
 
 .form-control,
 .form-select {
-    background:$fieldBG;
+    background: $fieldBG;
     border-color: $fieldBG;
     color: #fff;
 
@@ -555,9 +556,9 @@ thead th {
     font-size: 1.6rem !important;
 }
 
-.records_table_overflow{
-    min-width:500px;
-    overflow-x:auto;
+.records_table_overflow {
+    min-width: 500px;
+    overflow-x: auto;
     min-height: calc(100vh - ($navbarHeight * 2));
     scrollbar-color: #818cf8 #000;
     scrollbar-width: thin;
@@ -567,60 +568,66 @@ thead th {
     transition: none !important;
 }
 
-[data-bs-toggle="collapse"]{
-    &:hover{
+[data-bs-toggle="collapse"] {
+    &:hover {
         cursor: pointer;
     }
 }
 
 /*.modal{
-    padding-left: 0px;
-    height:48px !important;
-    //background: $secondaryColor !important;
-    border-top:12px solid $secondaryColor;
-    border-bottom:12px solid $secondaryColor;
-    transform: translate(calc(50% + ($sidemenuWidth / 2)), -50%) scale(0.0);
-    top: 50%;
-    transition: height .2s ease;
-    overflow: hidden;
-    &:not(.modal_lg_wrapper) {
-    max-width: 500px;
-    }
+padding-left: 0px;
+height:48px !important;
+//background: $secondaryColor !important;
+border-top:12px solid $secondaryColor;
+border-bottom:12px solid $secondaryColor;
+transform: translate(calc(50% + ($sidemenuWidth / 2)), -50%) scale(0.0);
+top: 50%;
+transition: height .2s ease;
+overflow: hidden;
+&:not(.modal_lg_wrapper) {
+max-width: 500px;
+}
 
-    &.modal_lg_wrapper{
-        max-width: 800px;
-    }
-    //width:500px;
-    margin: 0 auto !important;
-    left: calc(50% + ($sidemenuWidth / 2));
-    border-radius: 0;
+&.modal_lg_wrapper{
+    max-width: 800px;
+}
+//width:500px;
+margin: 0 auto !important;
+left: calc(50% + ($sidemenuWidth / 2));
+border-radius: 0;
 
-    transition-delay: .1s,.6s,.1s;
-    transition-property: height, background, border;
+transition-delay: .1s,.6s,.1s;
+transition-property: height, background, border;
 
+.modal-content{
+    background: $secondaryColor !important;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+
+
+&.show {
+    border-color: transparent;
+    height: 100% !important;
+    background: transparent !important;
+    transform: translate(-50%, -50%) scale(1);
     .modal-content{
-        background: $secondaryColor !important;
-        left: 50%;
-        transform: translateX(-50%);
+        background: $bodyBG !important;
     }
-
-
-    
-
-    &.show {
-        border-color: transparent;
-        height: 100% !important;
-        background: transparent !important;
-        transform: translate(-50%, -50%) scale(1);
-        .modal-content{
-            background: $bodyBG !important;
-        }
-    }
+}
 }*/
-td{
+td {
     vertical-align: middle;
 }
 
-.reference_field_record{
+.reference_field_record {
     background: $fieldBG;
+}
+
+table{
+    th{
+        cursor: pointer;
+    }
 }

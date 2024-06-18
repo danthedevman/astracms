@@ -65,7 +65,8 @@ const getContent = async (req, res, next) => {
       if (field.type === "reference") {
         if (!record[field.name] || !ObjectId.isValid(record[field.name]))
           continue;
-        let refCollection = model ? "sys_content" : "";
+        //if on main content page use sys_model to query collection
+        let refCollection = model ? "sys_content" : "sys_model";
         if (!refCollection) continue;
         let refVal = await dbHelper.get(refCollection, {
           _id: new ObjectId(record[field.name])

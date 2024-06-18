@@ -23,7 +23,8 @@ a {
   background: #4338ca !important;
 }
 
-.bg-danger, .btn-danger {
+.bg-danger,
+.btn-danger {
   border-color: crimson !important;
   background: crimson !important;
 }
@@ -475,48 +476,48 @@ thead th {
 }
 
 /*.modal{
-    padding-left: 0px;
-    height:48px !important;
-    //background: $secondaryColor !important;
-    border-top:12px solid $secondaryColor;
-    border-bottom:12px solid $secondaryColor;
-    transform: translate(calc(50% + ($sidemenuWidth / 2)), -50%) scale(0.0);
-    top: 50%;
-    transition: height .2s ease;
-    overflow: hidden;
-    &:not(.modal_lg_wrapper) {
-    max-width: 500px;
-    }
+padding-left: 0px;
+height:48px !important;
+//background: $secondaryColor !important;
+border-top:12px solid $secondaryColor;
+border-bottom:12px solid $secondaryColor;
+transform: translate(calc(50% + ($sidemenuWidth / 2)), -50%) scale(0.0);
+top: 50%;
+transition: height .2s ease;
+overflow: hidden;
+&:not(.modal_lg_wrapper) {
+max-width: 500px;
+}
 
-    &.modal_lg_wrapper{
-        max-width: 800px;
-    }
-    //width:500px;
-    margin: 0 auto !important;
-    left: calc(50% + ($sidemenuWidth / 2));
-    border-radius: 0;
+&.modal_lg_wrapper{
+    max-width: 800px;
+}
+//width:500px;
+margin: 0 auto !important;
+left: calc(50% + ($sidemenuWidth / 2));
+border-radius: 0;
 
-    transition-delay: .1s,.6s,.1s;
-    transition-property: height, background, border;
+transition-delay: .1s,.6s,.1s;
+transition-property: height, background, border;
 
+.modal-content{
+    background: $secondaryColor !important;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+
+
+&.show {
+    border-color: transparent;
+    height: 100% !important;
+    background: transparent !important;
+    transform: translate(-50%, -50%) scale(1);
     .modal-content{
-        background: $secondaryColor !important;
-        left: 50%;
-        transform: translateX(-50%);
+        background: $bodyBG !important;
     }
-
-
-
-
-    &.show {
-        border-color: transparent;
-        height: 100% !important;
-        background: transparent !important;
-        transform: translate(-50%, -50%) scale(1);
-        .modal-content{
-            background: $bodyBG !important;
-        }
-    }
+}
 }*/
 td {
   vertical-align: middle;
@@ -524,6 +525,10 @@ td {
 
 .reference_field_record {
   background: #222f3e;
+}
+
+table th {
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=main.css.map */

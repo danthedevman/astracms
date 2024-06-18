@@ -26,12 +26,12 @@
           </th>
           <%}%>
       <%fields.forEach((field,i)=>{%>
-          <th scope="col">
+          <th scope="col" data-sort_by="<%=field.name%>" data-sort_by_direction="<%=locals.sort_by_direction && locals.sort_by_direction  === "asc" ? "desc" : "asc" || 'asc'%>">
             <div class="field_title d-flex align-items-center justify-content-between"><%=field.label%>
-              <div <%if((locals.sort_by_direction === "desc" && locals.sort_by === field.name)){%>class="d-block" <%}else{%>class="d-none" <%}%> role="button" data-sort_by="<%=field.name%>" data-sort_by_direction="asc">
+              <div <%if((locals.sort_by_direction === "asc" && locals.sort_by === field.name)){%>class="d-block" <%}else{%>class="d-none" <%}%> role="button">
                 <i class="text-white bi bi-caret-up-fill"></i>
               </div>
-              <div <%if(locals.sort_by_direction === "asc" && locals.sort_by === field.name || !locals.sort_by && field.name === "_updated_on"){%>class="d-block" <%}else{%>class="d-none" <%}%> role="button" data-sort_by="<%=field.name%>" data-sort_by_direction="desc">
+              <div <%if(locals.sort_by_direction === "desc" && locals.sort_by === field.name || !locals.sort_by && field.name === "_updated_on"){%>class="d-block" <%}else{%>class="d-none" <%}%> role="button">
                 <i class="text-white bi bi-caret-down-fill"></i>
               </div>
             </div>
