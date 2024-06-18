@@ -65,10 +65,10 @@ const getContent = async (req, res, next) => {
       if (field.type === "reference") {
         if (!record[field.name] || !ObjectId.isValid(record[field.name]))
           continue;
-        let refCollection = field.reference_model;//model ? "sys_content" : "sys_model";
+        let refCollection = model ? "sys_content" : "";
         if (!refCollection) continue;
         let refVal = await dbHelper.get(refCollection, {
-          _id: new ObjectId(record[field.name]),
+          _id: new ObjectId(record[field.name])
         });
         if (!refVal) continue;
         record[field.name] = {

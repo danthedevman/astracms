@@ -85,54 +85,52 @@
       </li>
     </ul>
   </div>
-  <input type="hidden" name="reference_field" value="<%=locals.query && locals.query.reference_field ? locals.query.reference_field:''%>" />
+  <input type="hidden" name="reference_field" value="<%=locals.query && locals.query.reference_field ? locals.query.reference_field:''%>"/>
 </div>
 <script>
   (() => {
-    const recordRows = document.querySelectorAll(`[data-table_row_record_id]`);
-    recordRows.forEach((row) => {
-      row.onclick = () => {
-        <%if(locals.stream){%>
-        return;
-        <%}%>
+      const recordRows = document.querySelectorAll(`[data-table_row_record_id]`);
+      recordRows.forEach((row) => {
+        row.onclick = () => {
+          <%if(locals.stream){%>
+            return;
+          <%}%>
           let model = row.getAttribute("data-table_row_model_id");
           let record = row.getAttribute("data-table_row_record_id");
           if (!model || !record) return;
-          Turbo.visit(`/<%=locals.base._id%> / content / $ {
-          model
-        }
-        /${record}`);
+          Turbo.visit(`/<%=locals.base._id%>/content/${model}/${record}`);
+        };
+      });
+
+      const sortBtns = document.querySelectorAll("[data-sort_by]");
+      sortBtns.forEach((btn) => {
+            btn.onclick = async (evt) => {
+                  evt.preventDefault();
+                  <%if(!locals.stream){%>
+                  Turbo.visit(`${location.toString().replace(location.search, "")}?sort_by=${btn.getAttribute("data-sort_by")}&sort_by_direction=${btn.getAttribute("data-sort_by_direction")}`)
+                  <%}else{%>
+                  let tableStream = await fetch(`/<%=locals.base._id%>/content/<%=locals.model._id%>?get_stream=true&record_select=single&field=123&target=content_table_reference&sort_by=${btn.getAttribute("data-sort_by")}&sort_by_direction=${btn.getAttribute("data-sort_by_direction")}`, {
+                    method: "GET",
+                    credentials: "same-origin",
+                    headers: {
+                      "Content-Type": "text/vnd.turbo-stream.html",
+                    },
+                  });
+
+                  if (tableStream && tableStream.status === 200) {
+                    const tableStreamTemplate = await tableStream.text();
+                    Turbo.renderStreamMessage(tableStreamTemplate);
+                  }
+                <%}%>
       };
     });
-
-    const sortBtns = document.querySelectorAll("[data-sort_by]");
-    sortBtns.forEach((btn) => {
-      btn.onclick = async (evt) => {
-        evt.preventDefault();
-        <%if(!locals.stream){%>
-        Turbo.visit(`${location.toString().replace(location.search, "")}?sort_by=${btn.getAttribute("data-sort_by")}&sort_by_direction=${btn.getAttribute("data-sort_by_direction")}`)
-        <%}else{%>
-        let tableStream = await fetch(`/<%=locals.base._id%>/content/<%=locals.model._id%>?get_stream=true&record_select=single&field=123&target=content_table_reference&sort_by=${btn.getAttribute("data-sort_by")}&sort_by_direction=${btn.getAttribute("data-sort_by_direction")}`, {
-          method: "GET",
-          credentials: "same-origin",
-          headers: {
-            "Content-Type": "text/vnd.turbo-stream.html",
-          },
-        });
-
-        if (tableStream && tableStream.status === 200) {
-          const tableStreamTemplate = await tableStream.text();
-          Turbo.renderStreamMessage(tableStreamTemplate);
-        }
-        <%}%>
-      };
-    });
-
+    <%if(locals.stream){%>
     const selectReferenceBtn = document.querySelectorAll("[data-action='select_record']");
     selectReferenceBtn.forEach((btn) => {
             btn.onclick = async (evt) => {
                   evt.preventDefault();
                   evt.stopPropagation();
+                  
                 
                   let record_id = btn.getAttribute("data-record_id");
                   let record_title = btn.getAttribute("data-record_title");
@@ -141,19 +139,18 @@
                     return;
                   }
                   reference_field.value = record_id;
-                  let template = ` < div class = "mt-2 reference_field_record rounded" >
-          <
-          div class = "text-white p-2" > $ {
-            record_title
-          } < /div> <
-          /div>`;
-        reference_field.closest("[data-reference_field_wrapper]").querySelector("[data-selected_record_wrapper]").innerHTML = template;
-        const referenceMOdal = bootstrap.Modal.getInstance(document.getElementById("reference_modal"));
+                  let template = `<a target="_blank" href="/<%=locals.base._id%>/content/<%=locals.model._id%>/${record_id}" class="d-flex align-items-center justify-content-between mt-2 reference_field_record rounded">
+      <div class="text-white p-2">${record_title}</div>
+      <div><i class="bi bi-chevron-right text-white"></i></div>
+    </a>`;
+                  reference_field.closest("[data-reference_field_wrapper]").querySelector("[data-selected_record_wrapper]").innerHTML = template;
+                  const referenceMOdal = bootstrap.Modal.getInstance(document.getElementById("reference_modal"));
 
-        console.log(referenceMOdal)
-        referenceMOdal.hide();
-      };
+    console.log(referenceMOdal)
+    referenceMOdal.hide();
+           };
     });
+    <%}%>
 
 
 

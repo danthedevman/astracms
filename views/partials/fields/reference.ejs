@@ -1,42 +1,49 @@
 <div data-reference_field_wrapper class="mt-2">
   <button data-field_id="<%=field._id%>" data-reference_model="<%=field.reference_model%>" data-action="lookup_record" class="btn btn-sm btn-primary"><i class="bi bi-search me-2"></i>Select Record</button>
   <div data-selected_record_wrapper>
+    <%if(typeof record === 'undefined' || !record[field.name]){%>
     <div class="mt-2 border border-secondary rounded">
       <div class="text-muted p-2">No record selected</div>
     </div>
+    <%}else{%>
+    <a data-selected_reference_record target="_blank" href="/<%=locals.base._id%>/content/<%=field.reference_model%>/<%=record[field.name].value%>" class="d-flex align-items-center justify-content-between mt-2 reference_field_record rounded">
+      <div class="text-white p-2"><%=record[field.name].display_value%></div>
+      <div><i class="bi bi-chevron-right text-white"></i></div>
+    </a>
+    <%}%>
   </div>
-  <input type="hidden" data-reference_field_input id="<%=typeof field !== 'undefined' ? 'field_'+field._id :'' %>" name="<%=typeof field !== 'undefined' ? field.name :'' %>"/>
-</div>
+  <input type="hidden" data-reference_field_input id="<%=typeof field !== 'undefined' ? 'field_'+field._id :'' %>" name="<%=typeof field !== 'undefined' ? field.name :'' %>" value="<%=typeof record !== 'undefined' && record[field.name] ? record[field.name].value : ''%>"/>
+  </div>
 
-<script type="module">
-  (() => {
-    const lookupBtns = document.querySelectorAll(`[data-action="lookup_record"]`);
-    lookupBtns.forEach((btn) => {
-      btn.onclick = async (evt) => {
-        evt.preventDefault();
+  <script type="module">
+    (() => {
+      const lookupBtns = document.querySelectorAll(`[data-action="lookup_record"]`);
+      lookupBtns.forEach((btn) => {
+        btn.onclick = async (evt) => {
+          evt.preventDefault();
 
-        let tableStream = await fetch(`/<%=locals.base._id%>/content/${btn.getAttribute("data-reference_model")}?get_stream=true&record_select=single&reference_field=${btn.getAttribute('data-field_id')}&target=content_table_reference`, {
-          method: "GET",
-          credentials: "same-origin",
-          headers: {
-            "Content-Type": "text/vnd.turbo-stream.html",
-          },
-        });
-
-        if (tableStream && tableStream.status === 200) {
-          const tableStreamTemplate = await tableStream.text();
-          Turbo.renderStreamMessage(tableStreamTemplate);
-          //reference_modal
-          let bsReferenceModal = new bootstrap.Modal(document.getElementById("reference_modal"), {
-            keyboard: false
+          let tableStream = await fetch(`/<%=locals.base._id%>/content/${btn.getAttribute("data-reference_model")}?get_stream=true&record_select=single&reference_field=${btn.getAttribute('data-field_id')}&target=content_table_reference`, {
+            method: "GET",
+            credentials: "same-origin",
+            headers: {
+              "Content-Type": "text/vnd.turbo-stream.html",
+            },
           });
-          bsReferenceModal.show();
-        }else{
-          alert("There was an error retrieving data for this reference field. Confirm this model exists, and if not, this field should be removed.");
-        }
 
-      };
-    });
+          if (tableStream && tableStream.status === 200) {
+            const tableStreamTemplate = await tableStream.text();
+            Turbo.renderStreamMessage(tableStreamTemplate);
+            //reference_modal
+            let bsReferenceModal = new bootstrap.Modal(document.getElementById("reference_modal"), {
+              keyboard: false
+            });
+            bsReferenceModal.show();
+          } else {
+            alert("There was an error retrieving data for this reference field. Confirm this model exists, and if not, this field should be removed.");
+          }
 
-  })();
-</script>
+        };
+      });
+
+    })();
+  </script>

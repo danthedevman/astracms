@@ -74,7 +74,7 @@ class DBHelper {
         if (field.type === "reference") {
           if (!record[field.name] || !ObjectId.isValid(record[field.name]))
             continue;
-          let refVal = await this.get("sys_content", {
+          let refVal = await db.collection("sys_content").findOne({
             _id: new ObjectId(record[field.name]),
           });
           if (!refVal) continue;
@@ -92,9 +92,9 @@ class DBHelper {
           field.reference_model = "sys_asset";
           if (!record[field.name] || !ObjectId.isValid(record[field.name]))
             continue;
-          let refVal = await this.get("sys_asset", {
-            _id: new ObjectId(record[field.name]),
-          });
+            let refVal = await db.collection("sys_asset").findOne({
+              _id: new ObjectId(record[field.name]),
+            });
           if (!refVal) continue;
           record[field.name] = {
             value: refVal._id.toString(),
