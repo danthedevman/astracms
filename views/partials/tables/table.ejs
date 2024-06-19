@@ -109,7 +109,7 @@
                   <%if(!locals.stream){%>
                   Turbo.visit(`${location.toString().replace(location.search, "")}?sort_by=${btn.getAttribute("data-sort_by")}&sort_by_direction=${btn.getAttribute("data-sort_by_direction")}`)
                   <%}else{%>
-                  let tableStream = await fetch(`/<%=locals.base._id%>/content/<%=locals.model._id%>?get_stream=true&record_select=single&field=123&target=content_table_reference&sort_by=${btn.getAttribute("data-sort_by")}&sort_by_direction=${btn.getAttribute("data-sort_by_direction")}`, {
+                  let tableStream = await fetch(`/<%=locals.base._id%>/content/<%=locals.model._id%>?get_stream=true&record_select=single&target=content_table_reference&sort_by=${btn.getAttribute("data-sort_by")}&sort_by_direction=${btn.getAttribute("data-sort_by_direction")}&reference_field=${document.querySelector('[name="reference_field"]').value}`, {
                     method: "GET",
                     credentials: "same-origin",
                     headers: {
@@ -130,7 +130,6 @@
             btn.onclick = async (evt) => {
                   evt.preventDefault();
                   evt.stopPropagation();
-                  
                 
                   let record_id = btn.getAttribute("data-record_id");
                   let record_title = btn.getAttribute("data-record_title");
@@ -145,8 +144,6 @@
     </a>`;
                   reference_field.closest("[data-reference_field_wrapper]").querySelector("[data-selected_record_wrapper]").innerHTML = template;
                   const referenceMOdal = bootstrap.Modal.getInstance(document.getElementById("reference_modal"));
-
-    console.log(referenceMOdal)
     referenceMOdal.hide();
            };
     });

@@ -3,7 +3,7 @@
   <div class="col-12">
     <div class="d-flex align-items-center justify-content-between">
       <h1 class="m-0">Bases</h1>
-      <button data-bs-toggle="modal" data-bs-target="#add_base_modal" class="ms-2 btn btn-primary">
+      <button data-action="show_add_base_modal" class="ms-2 btn btn-primary">
         <i class="bi bi-plus me-1"></i>Add Base
       </button>
     </div>
@@ -15,23 +15,34 @@
   <div class="col-12 col-md-6 mb-2">
     <a href="/<%=base._id%>/dashboard" class="card text-decoration-none base_card shadow">
       <div class="card-body d-flex align-items-center justify-content-between">
-       <div class="text-truncate"><%=base.name%></div>
-       <div><i class="bi bi-rocket-takeoff"></i></div>
+        <div class="text-truncate"><%=base.name%></div>
+        <div><i class="bi bi-rocket-takeoff"></i></div>
       </div>
     </a>
   </div>
   <%})%>
-<%}else{%>
+  <%}else{%>
 
-    <div style="min-height:calc(100vh - 200px)" class="empty_state_wrapper align-items-center justify-content-center d-flex flex-column">
-        <div class="text-muted h2">Add a Base to Get Started</div>
-        <div>
-            <img style="height:200px;width:200px;border-radius:50%;" class="img-responsive shadow" src="../images/space_base.png"/>
-        </div>
+  <div style="min-height:calc(100vh - 200px)" class="empty_state_wrapper align-items-center justify-content-center d-flex flex-column">
+    <div class="text-muted h2">Add a Base to Get Started</div>
+    <div>
+      <img style="height:200px;width:200px;border-radius:50%;" class="img-responsive shadow" src="../images/space_base.png" />
     </div>
-    <%}%>
+  </div>
+  <%}%>
 </div>
+<script>
+  (()=>{
+    let show_add_base_modal = document.querySelector("[data-action='show_add_base_modal']");
+    show_add_base_modal.onclick  = (evt)=>{
+      evt.preventDefault();
+      const bs_show_add_base_modal = new bootstrap.Modal(document.getElementById("add_base_modal"), {
+  keyboard: false
+    });
+    bs_show_add_base_modal.show();
+    }
+  })();
+</script>
 <%-include('../partials/container_end.ejs')%>
 
-<%-include('../partials/bases/modals/add_base.ejs')%>
-
+  <%-include('../partials/bases/modals/add_base.ejs')%>

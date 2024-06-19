@@ -166,6 +166,7 @@
       form.getElement('[data-form_group="reference"]').classList.add("d-none");
       form.getElement('[data-form_group="reference_type"]').classList.add("d-none");
       form.getElement('[data-form_group="reference"]').querySelector("[data-mandatory]").setAttribute("data-mandatory", false);
+      save_field_modal.querySelector('[data-form_group="title_field"]').classList.remove("d-none");
       resetChoicesMacro();
     }
 
@@ -180,6 +181,7 @@
         reference.querySelector("[data-mandatory]").setAttribute("data-mandatory", true);
         save_field_modal.querySelector('[data-form_group="reference"]').classList.remove("d-none");
         save_field_modal.querySelector('[data-form_group="reference_type"]').classList.remove("d-none");
+        save_field_modal.querySelector('[data-form_group="title_field"]').classList.add("d-none");
       }
 
       if (fieldType.value === "asset") {

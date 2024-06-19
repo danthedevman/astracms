@@ -72,7 +72,14 @@
 
     const add_base_modal = document.getElementById('add_base_modal');
     add_base_modal.addEventListener('hidden.bs.modal', function(event) {
+      add_base_modal.querySelector(".modal-dialog").style.overflow = "hidden";
       form.reset();
+    })
+
+    add_base_modal.addEventListener('shown.bs.modal', function(event) {
+      setTimeout(()=>{
+        add_base_modal.querySelector(".modal-dialog").style.overflow = "visible";
+      },300);
     })
   })()
 </script>

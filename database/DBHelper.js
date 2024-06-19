@@ -80,7 +80,7 @@ class DBHelper {
           if (!refVal) continue;
           record[field.name] = {
             value: refVal._id.toString(),
-            display_value: refVal._title,
+            display_value: refVal._title || "-No title found-",
           };
 
           if(field.title_field === "yes"){

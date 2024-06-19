@@ -8,13 +8,16 @@
         </div>
     </div>
     <div class="col-md-6">
-      <div class="d-flex align-items-center justify-content-end">
-          <div>
-            <select class="form-select">
-              <option value="desc">Updated</option>
-              <option value="asc">Updated</option>
-            </select>
+      <div class="d-flex justify-content-end align-items-center">
+         <button data-action="sort_by_updated" type="button" class="btn btn-secondary d-flex justify-content-between align-items-center">
+         <span class="me-2">Updated</span>
+          <div <%if((locals.sort_by_direction === "asc") || !locals.sort_by_direction){%>class="d-block" <%}else{%>class="d-none" <%}%> role="button">
+            <i class="text-white bi bi-caret-up-fill"></i>
           </div>
+          <div <%if(locals.sort_by_direction === "desc"){%>class="d-block" <%}else{%>class="d-none" <%}%> role="button">
+            <i class="text-white bi bi-caret-down-fill"></i>
+          </div>
+         </button>
       </div>
   </div>
 </div>
@@ -89,5 +92,13 @@
             }
         }
       })
+
+      const sort_by_updated_btn = document.querySelector('[data-action="sort_by_updated"]');
+      sort_by_updated_btn.onclick = (evt)=>{
+        evt.preventDefault();
+        const sortBy = "<%=locals.sort_by_direction || 'asc'%>";
+        const newSort = sortBy === "asc" ? "desc" : "asc";
+        Turbo.visit("/<%=locals.base._id%>/models?sort_by_direction="+newSort);
+      };
     })()
   </script>

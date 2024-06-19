@@ -3,13 +3,19 @@ const DBConnection = require("../database/DBConnection");
 const DBHelper = require("../database/DBHelper");
 
 const getModels = async (req, res, next) => {
-  const db = await DBConnection.getDB(req.params.base);
-  const models = await db.collection("sys_model").find({}).toArray();
+  const dbHelper = new DBHelper({ db: req.params.base, request: req });
+  //const db = await DBConnection.getDB(req.params.base);
+  req.query.sort_by = "sys_created";
+  req.query.sort_by_direction = req.query.sort_by_direction || "asc";
+
+  let models = await dbHelper.query("sys_model",{},{sort_by:req.query.sort_by,sort_by_direction:req.query.sort_by_direction})
+
   res.render("./pages/models", {
     title: "Models",
     layout: "./layouts/base",
     models: models,
     path: "models",
+    sort_by_direction:req.query.sort_by_direction,
     navbar_actions: [{ name: "add_model", order: 100 }],
     crumbs: [{ label: "Models" }],
   });
@@ -120,6 +126,11 @@ const saveField = async (req, res, next) => {
       return res.status(404).send({});
     }
   }
+
+  if(saveData.type === "asset" || saveData.type === "reference"){
+    saveData.title_field = "no";
+  }
+
   //add logic to set req.body for predefined allowed fields
   saveData._model = new ObjectId(req.params.id);
 
@@ -147,7 +158,11 @@ const saveField = async (req, res, next) => {
    const contentCollection = await db.collection("sys_content").find({_model:model._id}).toArray();
   
    for(let content of contentCollection){
-     await db.collection("sys_content").findOneAndUpdate({_id:content._id},{$set:{_title:content[saveData.name]}});
+    if(saveData.type === "reference"){
+      const refCollection = await db.collection("sys_content").findOne({_id:new ObjectId(content[saveData.name])});
+      content[saveData.name] = refCollection._title; 
+    }
+     await db.collection("sys_content").findOneAndUpdate({_id:content._id},{$set:{_title:content[saveData.name] || ''}});
    }
   }
 

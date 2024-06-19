@@ -94,9 +94,9 @@ h6 {
 
 .modal .modal-dialog {
   padding-left: 0px;
-  height: 48px !important;
-  border-top: 12px solid #818cf8;
-  border-bottom: 12px solid #818cf8;
+  height: 1px !important;
+  border-top: 4px solid #818cf8;
+  border-bottom: 4px solid #818cf8;
   transform: translate(-50%, -50%) scale(0);
   top: 50%;
   transition: height 0.2s ease;
@@ -104,12 +104,14 @@ h6 {
   max-width: 500px;
   margin: 0 !important;
   left: 50%;
-  border-radius: 0;
+  border-radius: 6px;
   transition-delay: 0.1s, 0.6s, 0.1s;
   transition-property: height, background, border;
 }
 .modal .modal-content {
   background: #818cf8 !important;
+  transform: translateY(-50%);
+  top: 50%;
 }
 .modal.show .modal-dialog {
   border-color: transparent;
