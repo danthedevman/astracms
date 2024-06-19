@@ -1,24 +1,8 @@
 <%if(typeof models !== "undefined" && models.length > 0){%>
 <%-include('../partials/container_start.ejs')%>
 <div class="row mb-3">
-    <div class="col-md-6">
-        <div class="d-flex align-items-center justify-content-between">
-            <input class="form-control filter_search" type="search" placeholder="Search...">
-            <div></div>
-        </div>
-    </div>
-    <div class="col-md-6">
-      <div class="d-flex justify-content-end align-items-center">
-         <button data-action="sort_by_updated" type="button" class="btn btn-secondary d-flex justify-content-between align-items-center">
-         <span class="me-2">Updated</span>
-          <div <%if((locals.sort_by_direction === "asc") || !locals.sort_by_direction){%>class="d-block" <%}else{%>class="d-none" <%}%> role="button">
-            <i class="text-white bi bi-caret-up-fill"></i>
-          </div>
-          <div <%if(locals.sort_by_direction === "desc"){%>class="d-block" <%}else{%>class="d-none" <%}%> role="button">
-            <i class="text-white bi bi-caret-down-fill"></i>
-          </div>
-         </button>
-      </div>
+  <div class="col-12">
+    <%-include('../partials/search/search_and_sort.ejs')%>
   </div>
 </div>
 <div class="row">
@@ -91,14 +75,6 @@
               }
             }
         }
-      })
-
-      const sort_by_updated_btn = document.querySelector('[data-action="sort_by_updated"]');
-      sort_by_updated_btn.onclick = (evt)=>{
-        evt.preventDefault();
-        const sortBy = "<%=locals.sort_by_direction || 'asc'%>";
-        const newSort = sortBy === "asc" ? "desc" : "asc";
-        Turbo.visit("/<%=locals.base._id%>/models?sort_by_direction="+newSort);
-      };
+      });
     })()
   </script>

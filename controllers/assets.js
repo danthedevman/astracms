@@ -1,14 +1,16 @@
 const ObjectId = require("mongodb").ObjectId;
 const DBConnection = require("../database/DBConnection");
 const FileUtil = require("../utils/FileUtil");
+const DBHelper = require("../database/DBHelper");
 
 const getAssets = async (req, res, next) => {
-  const db = await DBConnection.getDB(req.params.base);
-  const assets = await db
-    .collection("sys_asset")
-    .find({})
-    .sort({ sys_created: -1 })
-    .toArray();
+
+  const dbHelper = new DBHelper({ db: req.params.base, request: req });
+  //const db = await DBConnection.getDB(req.params.base);
+  req.query.sort_by = "_updated_on";
+  req.query.sort_by_direction = req.query.sort_by_direction || "asc";
+
+  const assets = await dbHelper.query("sys_asset",{},{sort_by:req.query.sort_by,sort_by_direction:req.query.sort_by_direction})
 
   res.render("./pages/assets", {
     title: "Assets",
@@ -16,6 +18,7 @@ const getAssets = async (req, res, next) => {
     path: "assets",
     assets: assets,
     navbar_actions: [{ name: "add_asset", order: 100 }],
+    sort_by_direction:req.query.sort_by_direction,
     crumbs: [{ label: "Assets" }],
   });
 };
